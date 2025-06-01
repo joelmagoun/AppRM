@@ -1,7 +1,7 @@
 name: apprm
 description: "A new Flutter project."
 publish_to: "none"
-version: 2.0.9+2
+version: 1.0.2+0
 
 environment:
   sdk: ^3.5.0
