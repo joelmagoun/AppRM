@@ -1,4 +1,4 @@
-import 'package:demorm/features/notification/foundation/models/notification.dart';
+import 'package:apprm/features/notification/foundation/models/notification.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../notification_repository.dart';

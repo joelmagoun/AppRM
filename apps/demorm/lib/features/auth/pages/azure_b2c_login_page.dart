@@ -1,6 +1,6 @@
 import 'package:aad_b2c_webview/aad_b2c_webview.dart';
-import 'package:demorm/configs/azure_b2c.dart';
-import 'package:demorm/router.dart';
+import 'package:apprm/configs/azure_b2c.dart';
+import 'package:apprm/router.dart';
 import 'package:flutter/material.dart';
 
 class AzureB2CLoginPage extends StatefulWidget {

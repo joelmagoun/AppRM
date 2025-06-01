@@ -1,5 +1,5 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
-import 'package:demorm/constants/color.dart';
+import 'package:apprm/constants/color.dart';
 import 'package:flutter/material.dart';
 
 import '../foundation/object_repository.dart';

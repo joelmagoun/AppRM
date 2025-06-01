@@ -1,7 +1,7 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
-import 'package:demorm/bootstrap/powersync.dart';
-import 'package:demorm/constants/color.dart';
-import 'package:demorm/router.dart';
+import 'package:apprm/bootstrap/powersync.dart';
+import 'package:apprm/constants/color.dart';
+import 'package:apprm/router.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';

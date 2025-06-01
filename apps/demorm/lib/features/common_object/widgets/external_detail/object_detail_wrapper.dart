@@ -1,6 +1,6 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
-import 'package:demorm/constants/mapper.dart';
-import 'package:demorm/typedefs/action_button.dart';
+import 'package:apprm/constants/mapper.dart';
+import 'package:apprm/typedefs/action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';

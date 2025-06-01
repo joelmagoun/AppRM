@@ -1,5 +1,5 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
-import 'package:demorm/configs/supabase.dart';
+import 'package:apprm/configs/supabase.dart';
 
 import '../attachments/queue.dart';
 import 'logging.dart';

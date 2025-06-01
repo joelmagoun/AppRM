@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:demorm/configs/supabase.dart';
+import 'package:apprm/configs/supabase.dart';
 import 'package:powersync/powersync.dart';
 import 'package:powersync_attachments_helper/powersync_attachments_helper.dart';
 

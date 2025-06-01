@@ -143,7 +143,7 @@ String? getUserId() {
 }
 
 Future<String> getDatabasePath() async {
-  const dbFilename = 'powersync-demorm.db';
+  const dbFilename = 'powersync-apprm.db';
   final dir = await getApplicationSupportDirectory();
   return join(dir.path, dbFilename);
 }

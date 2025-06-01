@@ -1,4 +1,4 @@
-package vc.rms.demorm
+package vc.rms.apprm
 
 import io.flutter.embedding.android.FlutterActivity
 

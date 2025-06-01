@@ -1,7 +1,7 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
-import 'package:demorm/constants/color.dart';
-import 'package:demorm/constants/mock.dart';
-import 'package:demorm/router.dart';
+import 'package:apprm/constants/color.dart';
+import 'package:apprm/constants/mock.dart';
+import 'package:apprm/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';

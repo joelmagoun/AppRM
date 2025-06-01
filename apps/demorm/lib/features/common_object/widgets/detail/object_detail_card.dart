@@ -1,5 +1,5 @@
-import 'package:demorm/features/common_object/widgets/detail/external_system_connected.dart';
-import 'package:demorm/typedefs/display_field.dart';
+import 'package:apprm/features/common_object/widgets/detail/external_system_connected.dart';
+import 'package:apprm/typedefs/display_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
