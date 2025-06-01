@@ -1,0 +1,174 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../common_object/widgets/managing/object_adding_wrapper.dart';
+
+class ObjectAddingPage extends StatefulWidget {
+  const ObjectAddingPage({super.key});
+
+  @override
+  State<ObjectAddingPage> createState() => _ObjectAddingPageState();
+}
+
+class _ObjectAddingPageState extends State<ObjectAddingPage> {
+  final objectDataMap = {
+    'people': (
+      label: 'person',
+      inputFields: [
+        (
+          key: 'first',
+          label: 'First Name',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'last',
+          label: 'Last Name',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'email',
+          label: 'Email',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'jobTitle',
+          label: 'Job title',
+          placeholder: null,
+          displayMode: 'SINGLE_SELECT',
+          options: null,
+          asyncOptions: () async {
+            return [
+              'Software Engineer',
+              'Data Analyst',
+              'Product Manager',
+              'Marketing Specialist',
+              'Human Resources Coordinator'
+            ];
+          },
+        ),
+        (
+          key: 'location',
+          label: 'Location',
+          placeholder: null,
+          displayMode: 'SINGLE_SELECT',
+          options: ['Home Office', 'Branch Office'],
+          asyncOptions: null,
+        ),
+      ],
+    ),
+    'cars': (
+      label: 'car',
+      inputFields: [
+        (
+          key: 'make',
+          label: 'Make',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'model',
+          label: 'Model',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'year',
+          label: 'Year',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'vinNumber',
+          label: 'VIN number',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+      ],
+    ),
+    'locations': (
+      label: 'location',
+      inputFields: [
+        (
+          key: 'type',
+          label: 'Type',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'streetAddress',
+          label: 'Street address',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'city',
+          label: 'City',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'state',
+          label: 'State',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'country',
+          label: 'Country',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+      ],
+    ),
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final objectTypeParam =
+        GoRouterState.of(context).pathParameters['objectType']!;
+    final objectData = objectDataMap[objectTypeParam];
+
+    return ObjectAddingWrapper(
+      objectType: objectTypeParam,
+      objectLabel: objectData?.label ?? '',
+      inputFields: objectData?.inputFields
+              .map((e) => (
+                    key: e.key,
+                    label: e.label,
+                    placeholder: null,
+                    displayMode: e.displayMode,
+                    options: e.options,
+                    asyncOptions: e.asyncOptions,
+                  ))
+              .toList() ??
+          [],
+    );
+  }
+}

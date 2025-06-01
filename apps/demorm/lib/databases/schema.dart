@@ -1,0 +1,140 @@
+import 'package:powersync/powersync.dart';
+import 'package:powersync_attachments_helper/powersync_attachments_helper.dart';
+
+Schema schema = Schema(
+  [
+    const Table(
+      'locations',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('type'),
+        Column.text('country'),
+        Column.text('state'),
+        Column.text('streetAddress'),
+        Column.text('city'),
+      ],
+      indexes: [
+        Index('locations_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
+      'people',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('first'),
+        Column.text('last'),
+        Column.text('jobTitle'),
+        Column.text('location'),
+        Column.text('email'),
+      ],
+      indexes: [
+        Index('people_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
+      'cars',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('vinNumber'),
+        Column.text('make'),
+        Column.text('year'),
+        Column.text('model'),
+      ],
+      indexes: [
+        Index('cars_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
+      'linked_objects',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('parent_object_type'),
+        Column.text('child_object_type'),
+        Column.text('parent_object_id'),
+        Column.text('child_object_id'),
+      ],
+      indexes: [
+        Index('linked_objects_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
+      'sap_system_users',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('username_sap'),
+        Column.text('first_name'),
+        Column.text('last_name'),
+        Column.text('job_title'),
+        Column.text('email'),
+        Column.text('start_date_sap'),
+        Column.text('end_date_sap'),
+      ],
+      indexes: [
+        Index('sap_system_users_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
+      'adp_system_users',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('username_adp'),
+        Column.text('first_name'),
+        Column.text('last_name'),
+        Column.text('job_title'),
+        Column.text('email'),
+        Column.text('start_date_adp'),
+        Column.text('end_date_adp'),
+      ],
+      indexes: [
+        Index('adp_system_users_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
+      'notifications',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('message'),
+        Column.text('user_id'),
+        Column.text('job_id'),
+        Column.text('read_at'),
+      ],
+      indexes: [
+        Index('notifications_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
+      'actions',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('user_id'),
+        Column.text('action'),
+        Column.text('params'),
+        Column.text('status'),
+        Column.text('external_object_type'),
+        Column.text('external_object_id'),
+      ],
+      indexes: [
+        Index('notifications_list', [IndexedColumn('id')])
+      ],
+    ),
+    AttachmentsQueueTable(
+      attachmentsQueueTableName: defaultAttachmentsQueueTableName,
+    )
+  ],
+);
