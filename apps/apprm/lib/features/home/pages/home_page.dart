@@ -6,9 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-import '../../notification/foundation/notification_repository.dart';
-import '../../notification/foundation/use_cases/count_notification_unread_usecase.dart';
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -24,7 +21,7 @@ class _HomePageState extends State<HomePage> {
       route: '/internal/people'
     ),
     (
-      icon: PhosphorIconsFill.tree-structure,
+      icon: PhosphorIconsFill.treeStructure,
       title: 'Data Model',
       route: '/internal/locations'
     ),
@@ -49,13 +46,7 @@ class _HomePageState extends State<HomePage> {
           QueryBuilder<int>(
             query: Query(
               key: ["notification", "list", "count"],
-              queryFn: () async {
-                final result = await CountNotificationUnreadUseCase(
-                  notificationRepository: NotificationRepository(),
-                ).execute();
-
-                return result;
-              },
+              queryFn: () async => 0,
               config: QueryConfig(
                 cacheDuration: const Duration(seconds: 1),
                 refetchDuration: const Duration(seconds: 1),
