@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () async {
                       NotificationRoute().push(context);
                     },
-                    icon: const Icon(PhosphorIconsBold.bell),
+                    icon: const Icon(PhosphorIconsBold.dog),
                   ),
                   if (state.data != null && state.data! > 0)
                     const Positioned(
