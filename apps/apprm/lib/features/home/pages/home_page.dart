@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
       route: '/internal/people'
     ),
     (
-      icon: PhosphorIconsFill.code,
+      icon: PhosphorIconsFill.tree-structure,
       title: 'Data Model',
       route: '/internal/locations'
     ),
