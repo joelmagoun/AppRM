@@ -75,7 +75,7 @@ extension $SupabaseSignUpRouteExtension on SupabaseSignUpRoute {
 extension $SupabaseLoginRouteExtension on SupabaseLoginRoute {
   static SupabaseLoginRoute _fromState(GoRouterState state) =>
       SupabaseLoginRoute(
-        email: state.queryParameters['email'],
+        email: state.uri.queryParameters['email'],
       );
 
   String get location => GoRouteData.$location(
@@ -98,7 +98,7 @@ extension $SupabaseLoginRouteExtension on SupabaseLoginRoute {
 extension $AzureB2CLoginRouteExtension on AzureB2CLoginRoute {
   static AzureB2CLoginRoute _fromState(GoRouterState state) =>
       AzureB2CLoginRoute(
-        email: state.queryParameters['email'],
+        email: state.uri.queryParameters['email'],
       );
 
   String get location => GoRouteData.$location(
@@ -120,7 +120,7 @@ extension $AzureB2CLoginRouteExtension on AzureB2CLoginRoute {
 
 extension $Auth0LoginRouteExtension on Auth0LoginRoute {
   static Auth0LoginRoute _fromState(GoRouterState state) => Auth0LoginRoute(
-        email: state.queryParameters['email'],
+        email: state.uri.queryParameters['email'],
       );
 
   String get location => GoRouteData.$location(
@@ -278,8 +278,8 @@ extension $ExternalObjectListingRouteExtension on ExternalObjectListingRoute {
   static ExternalObjectListingRoute _fromState(GoRouterState state) =>
       ExternalObjectListingRoute(
         externalObjectType: state.pathParameters['externalObjectType']!,
-        objectType: state.queryParameters['object-type'],
-        objectId: state.queryParameters['object-id'],
+        objectType: state.uri.queryParameters['object-type'],
+        objectId: state.uri.queryParameters['object-id'],
       );
 
   String get location => GoRouteData.$location(
@@ -305,8 +305,8 @@ extension $ExternalObjectDetailRouteExtension on ExternalObjectDetailRoute {
       ExternalObjectDetailRoute(
         externalObjectType: state.pathParameters['externalObjectType']!,
         externalObjectId: state.pathParameters['externalObjectId']!,
-        objectType: state.queryParameters['object-type'],
-        objectId: state.queryParameters['object-id'],
+        objectType: state.uri.queryParameters['object-type'],
+        objectId: state.uri.queryParameters['object-id'],
       );
 
   String get location => GoRouteData.$location(

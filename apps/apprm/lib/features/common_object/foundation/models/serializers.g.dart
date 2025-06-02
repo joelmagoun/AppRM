@@ -11,6 +11,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Car.serializer)
       ..add(Location.serializer)
       ..add(Person.serializer)
+      ..add(Requirement.serializer)
       ..add(SapUser.serializer))
     .build();
 

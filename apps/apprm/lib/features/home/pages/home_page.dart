@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
     (
       icon: PhosphorIconsFill.asterisk,
       title: 'Requirements',
-      route: '/internal/people'
+      route: '/internal/requirements'
     ),
     (
       icon: PhosphorIconsFill.treeStructure,

@@ -10,6 +10,7 @@ import 'location.dart';
 import 'person.dart';
 import 'sap_user.dart';
 import 'serialize_plugins/custom_8601_date_time_plugin.dart';
+import 'requirement.dart';
 
 part 'serializers.g.dart';
 
@@ -20,6 +21,7 @@ const List<Type> _registeredTypes = [
   Car,
   AdpUser,
   SapUser,
+  Requirement,
 ];
 
 /// Addition builder factories, if needed.

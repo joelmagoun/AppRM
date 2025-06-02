@@ -117,6 +117,22 @@ Schema schema = Schema(
       ],
     ),
     const Table(
+      'requirements',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('app_id'),
+        Column.text('requirement'),
+        Column.text('description'),
+        Column.text('completed'),
+        Column.text('completed_at'),
+      ],
+      indexes: [
+        Index('requirements_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
       'actions',
       [
         Column.text('id'),
