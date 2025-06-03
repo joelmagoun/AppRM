@@ -13,7 +13,6 @@ class GenericItemCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
-      onTap: () {},
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),

@@ -30,6 +30,16 @@ class _HomePageState extends State<HomePage> {
       icon: PhosphorIconsFill.books,
       title: 'User Stories',
       route: '/internal/stories'
+    ),
+    (
+      icon: PhosphorIconsFill.mapPin,
+      title: 'Locations',
+      route: '/internal/locations'
+    ),
+    (
+      icon: PhosphorIconsFill.car,
+      title: 'Cars',
+      route: '/internal/cars'
     )
   ];
 
