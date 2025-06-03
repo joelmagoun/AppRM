@@ -6,7 +6,10 @@ import '../../common_object/entities/object_item.dart';
 import '../../common_object/mappers/car_mapper.dart';
 import '../../common_object/mappers/location_mapper.dart';
 import '../../common_object/mappers/person_mapper.dart';
+import '../../common_object/mappers/screen_mapper.dart';
+import '../../common_object/mappers/data_object_mapper.dart';
 import '../../common_object/mappers/requirement_mapper.dart';
+import '../../common_object/mappers/story_mapper.dart';
 import '../../common_object/widgets/detail/object_detail_wrapper.dart';
 
 class ObjectDetailPage extends StatefulWidget {
@@ -39,6 +42,27 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
       dataMapperFn: RequirementToObjectItemMapper.fromJson,
       displayFields: [
         (key: 'requirement', label: 'Requirement'),
+        (key: 'description', label: 'Description'),
+      ],
+    ),
+    'stories': (
+      dataMapperFn: StoryToObjectItemMapper.fromJson,
+      displayFields: [
+        (key: 'name', label: 'Name'),
+        (key: 'description', label: 'Description'),
+      ],
+    ),
+    'screens': (
+      dataMapperFn: ScreenToObjectItemMapper.fromJson,
+      displayFields: [
+        (key: 'name', label: 'Name'),
+        (key: 'description', label: 'Description'),
+      ],
+    ),
+    'data_objects': (
+      dataMapperFn: DataObjectToObjectItemMapper.fromJson,
+      displayFields: [
+        (key: 'name', label: 'Name'),
         (key: 'description', label: 'Description'),
       ],
     ),

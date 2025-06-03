@@ -133,6 +133,48 @@ Schema schema = Schema(
       ],
     ),
     const Table(
+      'stories',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('app_id'),
+        Column.text('name'),
+        Column.text('description'),
+      ],
+      indexes: [
+        Index('stories_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
+      'data_objects',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('app_id'),
+        Column.text('name'),
+        Column.text('description'),
+      ],
+      indexes: [
+        Index('data_objects_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
+      'screens',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('app_id'),
+        Column.text('name'),
+        Column.text('description'),
+      ],
+      indexes: [
+        Index('screens_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
       'actions',
       [
         Column.text('id'),

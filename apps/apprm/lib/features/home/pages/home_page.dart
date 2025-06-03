@@ -23,13 +23,13 @@ class _HomePageState extends State<HomePage> {
     (
       icon: PhosphorIconsFill.treeStructure,
       title: 'Data Model',
-      route: '/internal/locations'
+      route: '/internal/data_objects'
     ),
-    (icon: PhosphorIconsFill.chalkboard, title: 'Screens', route: '/internal/cars'),
+    (icon: PhosphorIconsFill.chalkboard, title: 'Screens', route: '/internal/screens'),
     (
       icon: PhosphorIconsFill.books,
       title: 'User Stories',
-      route: '/internal/locations'
+      route: '/internal/stories'
     )
   ];
 

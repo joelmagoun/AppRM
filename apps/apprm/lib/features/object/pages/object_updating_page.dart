@@ -125,6 +125,69 @@ class _ObjectUpdatingPageState extends State<ObjectUpdatingPage> {
         ),
       ],
     ),
+    'stories': (
+      label: 'story',
+      inputFields: [
+        (
+          key: 'name',
+          label: 'Name',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'description',
+          label: 'Description',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+      ],
+    ),
+    'screens': (
+      label: 'screen',
+      inputFields: [
+        (
+          key: 'name',
+          label: 'Name',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'description',
+          label: 'Description',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+      ],
+    ),
+    'data_objects': (
+      label: 'data_object',
+      inputFields: [
+        (
+          key: 'name',
+          label: 'Name',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'description',
+          label: 'Description',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+      ],
+    ),
     'locations': (
       label: 'location',
       inputFields: [
