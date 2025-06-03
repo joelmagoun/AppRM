@@ -9,7 +9,10 @@ import '../../common_object/entities/object_item.dart';
 import '../../common_object/mappers/car_mapper.dart';
 import '../../common_object/mappers/location_mapper.dart';
 import '../../common_object/mappers/person_mapper.dart';
+import '../../common_object/mappers/requirement_mapper.dart';
 import '../../common_object/widgets/listing/object_list_wrapper.dart';
+import '../widgets/generic_item_card.dart';
+import '../widgets/generic_list_empty.dart';
 import '../widgets/car_item_card.dart';
 import '../widgets/car_list_empty.dart';
 import '../widgets/external_system_selection.dart';
@@ -57,6 +60,19 @@ class _ObjectListingPageState extends State<ObjectListingPage> {
         (key: 'make', label: 'Make'),
       ],
       searchField: ['model', 'make']
+    ),
+    'requirements': (
+      title: 'Requirements',
+      objectItemCard: (item) => GenericItemCard(item: item),
+      objectEmptyWidget: () => const GenericListEmpty(),
+      dataMapperFn: RequirementToObjectItemMapper.fromJson,
+      sortFields: [
+        (key: 'requirement', label: 'Requirement'),
+      ],
+      filterFields: [
+        (key: 'completed', label: 'Completed'),
+      ],
+      searchField: ['requirement']
     ),
     'locations': (
       title: 'Locations',

@@ -6,6 +6,7 @@ import '../../common_object/entities/object_item.dart';
 import '../../common_object/mappers/car_mapper.dart';
 import '../../common_object/mappers/location_mapper.dart';
 import '../../common_object/mappers/person_mapper.dart';
+import '../../common_object/mappers/requirement_mapper.dart';
 import '../../common_object/widgets/detail/object_detail_wrapper.dart';
 
 class ObjectDetailPage extends StatefulWidget {
@@ -32,6 +33,13 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
         (key: 'model', label: 'Model'),
         (key: 'year', label: 'Year'),
         (key: 'vinNumber', label: 'VIN number'),
+      ],
+    ),
+    'requirements': (
+      dataMapperFn: RequirementToObjectItemMapper.fromJson,
+      displayFields: [
+        (key: 'requirement', label: 'Requirement'),
+        (key: 'description', label: 'Description'),
       ],
     ),
     'locations': (

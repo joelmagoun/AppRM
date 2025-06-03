@@ -104,6 +104,27 @@ class _ObjectUpdatingPageState extends State<ObjectUpdatingPage> {
         ),
       ],
     ),
+    'requirements': (
+      label: 'requirement',
+      inputFields: [
+        (
+          key: 'requirement',
+          label: 'Requirement',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'description',
+          label: 'Description',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+      ],
+    ),
     'locations': (
       label: 'location',
       inputFields: [
