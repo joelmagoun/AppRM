@@ -14,7 +14,7 @@ class GenericListEmpty extends ConsumerWidget {
       child: Column(
         children: [
           Image.asset(
-            'assets/images/img_location_empty.png',
+            'assets/images/img_generic_empty.png',
             width: 128,
             height: 128,
           ),
