@@ -15,11 +15,11 @@ abstract class Requirement implements Built<Requirement, RequirementBuilder> {
   DateTime? get updatedAt;
 
   @BuiltValueField(wireName: 'app_id')
-  String get appId;
+  String? get appId;
 
-  String get requirement;
+  String? get requirement;
 
-  String get description;
+  String? get description;
 
   @BuiltValueField(wireName: 'completed_at')
   DateTime? get completedAt;

@@ -5,7 +5,7 @@ class RequirementToObjectItemMapper {
   static ObjectItem fromModel(Requirement item, Map<String, dynamic> json) {
     return ObjectItem(
       id: item.id,
-      title: item.requirement,
+      title: item.requirement ?? '',
       subTitle: '',
       sortFields: [
         (key: 'requirement', label: 'Requirement'),

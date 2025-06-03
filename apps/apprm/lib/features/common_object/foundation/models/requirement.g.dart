@@ -23,15 +23,6 @@ class _$RequirementSerializer implements StructuredSerializer<Requirement> {
       'created_at',
       serializers.serialize(object.createdAt,
           specifiedType: const FullType(DateTime)),
-      'app_id',
-      serializers.serialize(object.appId,
-          specifiedType: const FullType(String)),
-      'requirement',
-      serializers.serialize(object.requirement,
-          specifiedType: const FullType(String)),
-      'description',
-      serializers.serialize(object.description,
-          specifiedType: const FullType(String)),
     ];
     Object? value;
     value = object.updatedAt;
@@ -40,6 +31,27 @@ class _$RequirementSerializer implements StructuredSerializer<Requirement> {
         ..add('updated_at')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(DateTime)));
+    }
+    value = object.appId;
+    if (value != null) {
+      result
+        ..add('app_id')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.requirement;
+    if (value != null) {
+      result
+        ..add('requirement')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.description;
+    if (value != null) {
+      result
+        ..add('description')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
     }
     value = object.completedAt;
     if (value != null) {
@@ -76,15 +88,15 @@ class _$RequirementSerializer implements StructuredSerializer<Requirement> {
           break;
         case 'app_id':
           result.appId = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'requirement':
           result.requirement = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'description':
           result.description = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'completed_at':
           result.completedAt = serializers.deserialize(value,
@@ -105,11 +117,11 @@ class _$Requirement extends Requirement {
   @override
   final DateTime? updatedAt;
   @override
-  final String appId;
+  final String? appId;
   @override
-  final String requirement;
+  final String? requirement;
   @override
-  final String description;
+  final String? description;
   @override
   final DateTime? completedAt;
 
@@ -120,19 +132,14 @@ class _$Requirement extends Requirement {
       {required this.id,
       required this.createdAt,
       this.updatedAt,
-      required this.appId,
-      required this.requirement,
-      required this.description,
+      this.appId,
+      this.requirement,
+      this.description,
       this.completedAt})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, r'Requirement', 'id');
     BuiltValueNullFieldError.checkNotNull(
         createdAt, r'Requirement', 'createdAt');
-    BuiltValueNullFieldError.checkNotNull(appId, r'Requirement', 'appId');
-    BuiltValueNullFieldError.checkNotNull(
-        requirement, r'Requirement', 'requirement');
-    BuiltValueNullFieldError.checkNotNull(
-        description, r'Requirement', 'description');
   }
 
   @override
@@ -252,12 +259,9 @@ class RequirementBuilder implements Builder<Requirement, RequirementBuilder> {
             createdAt: BuiltValueNullFieldError.checkNotNull(
                 createdAt, r'Requirement', 'createdAt'),
             updatedAt: updatedAt,
-            appId: BuiltValueNullFieldError.checkNotNull(
-                appId, r'Requirement', 'appId'),
-            requirement: BuiltValueNullFieldError.checkNotNull(
-                requirement, r'Requirement', 'requirement'),
-            description: BuiltValueNullFieldError.checkNotNull(
-                description, r'Requirement', 'description'),
+            appId: appId,
+            requirement: requirement,
+            description: description,
             completedAt: completedAt);
     replace(_$result);
     return _$result;
