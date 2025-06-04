@@ -5,9 +5,9 @@ import 'dart:convert';
 
 import 'serializers.dart';
 
-part 'story.g.dart';
+part 'user_story.g.dart';
 
-abstract class Story implements Built<Story, StoryBuilder> {
+abstract class UserStory implements Built<UserStory, UserStoryBuilder> {
   String get id;
 
   @BuiltValueField(wireName: 'created_at')
@@ -24,14 +24,14 @@ abstract class Story implements Built<Story, StoryBuilder> {
   String? get description;
 
 
-  Story._();
-  factory Story([void Function(StoryBuilder) updates]) = _$Story;
+  UserStory._();
+  factory UserStory([void Function(UserStoryBuilder) updates]) = _$UserStory;
 
-  static Serializer<Story> get serializer => _$storySerializer;
+  static Serializer<UserStory> get serializer => _$userStorySerializer;
 
-  factory Story.fromJson(Map<String, dynamic> json) {
-    debugPrint('Story.fromJson: ${jsonEncode(json)}');
-    return serializers.deserializeWith<Story>(serializer, json)!;
+  factory UserStory.fromJson(Map<String, dynamic> json) {
+    debugPrint('UserStory.fromJson: ${jsonEncode(json)}');
+    return serializers.deserializeWith<UserStory>(serializer, json)!;
   }
 
   Map<String, dynamic> toJson() =>

@@ -175,6 +175,20 @@ Schema schema = Schema(
       ],
     ),
     const Table(
+      'user_stories',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('app_id'),
+        Column.text('name'),
+        Column.text('description'),
+      ],
+      indexes: [
+        Index('user_stories_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
       'actions',
       [
         Column.text('id'),

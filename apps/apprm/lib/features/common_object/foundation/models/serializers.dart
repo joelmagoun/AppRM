@@ -11,6 +11,8 @@ import 'person.dart';
 import 'sap_user.dart';
 import 'data_object.dart';
 import 'screen.dart';
+import 'story.dart';
+import 'user_story.dart';
 import 'serialize_plugins/custom_8601_date_time_plugin.dart';
 import 'requirement.dart';
 
@@ -26,6 +28,8 @@ const List<Type> _registeredTypes = [
   Requirement,
   DataObject,
   Screen,
+  Story,
+  UserStory,
 ];
 
 /// Addition builder factories, if needed.

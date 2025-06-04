@@ -14,7 +14,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Person.serializer)
       ..add(Requirement.serializer)
       ..add(SapUser.serializer)
-      ..add(Screen.serializer))
+      ..add(Screen.serializer)
+      ..add(Story.serializer)
+      ..add(UserStory.serializer))
     .build();
 
 // ignore_for_file: deprecated_member_use_from_same_package,type=lint

@@ -11,6 +11,7 @@ import '../../common_object/mappers/location_mapper.dart';
 import '../../common_object/mappers/person_mapper.dart';
 import '../../common_object/mappers/screen_mapper.dart';
 import '../../common_object/mappers/story_mapper.dart';
+import '../../common_object/mappers/user_story_mapper.dart';
 import '../../common_object/mappers/data_object_mapper.dart';
 import '../../common_object/mappers/requirement_mapper.dart';
 import '../../common_object/widgets/listing/object_list_wrapper.dart';
@@ -82,6 +83,19 @@ class _ObjectListingPageState extends State<ObjectListingPage> {
       objectItemCard: (item) => GenericItemCard(item: item),
       objectEmptyWidget: () => const GenericListEmpty(),
       dataMapperFn: ScreenToObjectItemMapper.fromJson,
+      sortFields: [
+        (key: 'name', label: 'Name'),
+      ],
+      filterFields: [
+        (key: 'name', label: 'Name'),
+      ],
+      searchField: ['name']
+    ),
+    'user_stories': (
+      title: 'User Stories',
+      objectItemCard: (item) => GenericItemCard(item: item),
+      objectEmptyWidget: () => const GenericListEmpty(),
+      dataMapperFn: UserStoryToObjectItemMapper.fromJson,
       sortFields: [
         (key: 'name', label: 'Name'),
       ],

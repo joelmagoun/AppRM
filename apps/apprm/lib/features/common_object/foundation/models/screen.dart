@@ -1,5 +1,7 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:flutter/foundation.dart';
+import 'dart:convert';
 
 import 'serializers.dart';
 
@@ -27,8 +29,10 @@ abstract class Screen implements Built<Screen, ScreenBuilder> {
 
   static Serializer<Screen> get serializer => _$screenSerializer;
 
-  factory Screen.fromJson(Map<String, dynamic> json) =>
-      serializers.deserializeWith<Screen>(serializer, json)!;
+  factory Screen.fromJson(Map<String, dynamic> json) {
+    debugPrint('Screen.fromJson: ${jsonEncode(json)}');
+    return serializers.deserializeWith<Screen>(serializer, json)!;
+  }
 
   Map<String, dynamic> toJson() =>
       serializers.serializeWith(serializer, this)! as Map<String, dynamic>;
