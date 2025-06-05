@@ -22,6 +22,8 @@ class ObjectListWrapper extends ConsumerStatefulWidget {
     required this.filterFields,
     required this.searchFields,
     required this.onDetailNavigateFn,
+    this.initialFilterValues,
+    this.initialSortValues,
   });
 
   final String objectType;
@@ -32,6 +34,8 @@ class ObjectListWrapper extends ConsumerStatefulWidget {
   final List<FilterField> filterFields;
   final List<String> searchFields;
   final void Function(String itemId) onDetailNavigateFn;
+  final Map<String, String?>? initialFilterValues;
+  final Map<String, String?>? initialSortValues;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -41,9 +45,18 @@ class ObjectListWrapper extends ConsumerStatefulWidget {
 class ObjectListWrapperState extends ConsumerState<ObjectListWrapper> {
   final listKey = GlobalKey<ObjectListState>();
 
-  final sortValuesNotifier = ValueNotifier<Map<String, String?>>({});
-  final filterValuesNotifier = ValueNotifier<Map<String, String?>>({});
+  late final ValueNotifier<Map<String, String?>> sortValuesNotifier;
+  late final ValueNotifier<Map<String, String?>> filterValuesNotifier;
   final searchValueNotifier = ValueNotifier<String?>(null);
+
+  @override
+  void initState() {
+    sortValuesNotifier =
+        ValueNotifier<Map<String, String?>>(widget.initialSortValues ?? {});
+    filterValuesNotifier =
+        ValueNotifier<Map<String, String?>>(widget.initialFilterValues ?? {});
+    super.initState();
+  }
 
   @override
   void dispose() {

@@ -90,6 +90,7 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
     final objectTypeParam =
         GoRouterState.of(context).pathParameters['objectType']!;
     final objectIdParam = GoRouterState.of(context).pathParameters['objectId']!;
+    final appIdParam = GoRouterState.of(context).pathParameters['appId'];
     final objectData = objectDataMap[objectTypeParam];
 
     return ObjectDetailWrapper(
@@ -102,6 +103,7 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
           [],
       onEditingNavigateFn: () {
         ObjectUpdatingRoute(
+          appId: appIdParam!,
           objectType: objectTypeParam,
           objectId: objectIdParam,
         ).push(context);

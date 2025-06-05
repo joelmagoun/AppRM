@@ -258,6 +258,7 @@ class _ObjectAddingPageState extends State<ObjectAddingPage> {
   Widget build(BuildContext context) {
     final objectTypeParam =
         GoRouterState.of(context).pathParameters['objectType']!;
+    final appIdParam = GoRouterState.of(context).pathParameters['appId']!;
     final objectData = objectDataMap[objectTypeParam];
 
     return ObjectAddingWrapper(
@@ -274,6 +275,7 @@ class _ObjectAddingPageState extends State<ObjectAddingPage> {
                   ))
               .toList() ??
           [],
+      extraData: {'app_id': appIdParam},
     );
   }
 }
