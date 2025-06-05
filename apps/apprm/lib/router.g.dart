@@ -9,6 +9,8 @@ part of 'router.dart';
 List<RouteBase> get $appRoutes => [
       $authPageRoute,
       $homeRoute,
+      $appHomeRoute,
+      $applicationAddingRoute,
       $objectListingRoute,
       $externalObjectListingRoute,
       $notificationRoute,
@@ -42,6 +44,52 @@ extension $AuthPageRouteExtension on AuthPageRoute {
 
   String get location => GoRouteData.$location(
         '/auth',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $appHomeRoute => GoRouteData.$route(
+      path: '/app/:appId',
+      factory: $AppHomeRouteExtension._fromState,
+    );
+
+extension $AppHomeRouteExtension on AppHomeRoute {
+  static AppHomeRoute _fromState(GoRouterState state) =>
+      AppHomeRoute(appId: state.pathParameters['appId']!);
+
+  String get location => GoRouteData.$location(
+        '/app/${Uri.encodeComponent(appId)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $applicationAddingRoute => GoRouteData.$route(
+      path: '/applications/add',
+      factory: $ApplicationAddingRouteExtension._fromState,
+    );
+
+extension $ApplicationAddingRouteExtension on ApplicationAddingRoute {
+  static ApplicationAddingRoute _fromState(GoRouterState state) =>
+      ApplicationAddingRoute();
+
+  String get location => GoRouteData.$location(
+        '/applications/add',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -163,7 +211,7 @@ extension $HomeRouteExtension on HomeRoute {
 }
 
 RouteBase get $objectListingRoute => GoRouteData.$route(
-      path: '/internal/:objectType',
+      path: '/app/:appId/internal/:objectType',
       factory: $ObjectListingRouteExtension._fromState,
       routes: [
         GoRouteData.$route(
@@ -186,11 +234,12 @@ RouteBase get $objectListingRoute => GoRouteData.$route(
 extension $ObjectListingRouteExtension on ObjectListingRoute {
   static ObjectListingRoute _fromState(GoRouterState state) =>
       ObjectListingRoute(
+        appId: state.pathParameters['appId']!,
         objectType: state.pathParameters['objectType']!,
       );
 
   String get location => GoRouteData.$location(
-        '/internal/${Uri.encodeComponent(objectType)}',
+        '/app/${Uri.encodeComponent(appId)}/internal/${Uri.encodeComponent(objectType)}',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -205,11 +254,12 @@ extension $ObjectListingRouteExtension on ObjectListingRoute {
 
 extension $ObjectAddingRouteExtension on ObjectAddingRoute {
   static ObjectAddingRoute _fromState(GoRouterState state) => ObjectAddingRoute(
+        appId: state.pathParameters['appId']!,
         objectType: state.pathParameters['objectType']!,
       );
 
   String get location => GoRouteData.$location(
-        '/internal/${Uri.encodeComponent(objectType)}/add',
+        '/app/${Uri.encodeComponent(appId)}/internal/${Uri.encodeComponent(objectType)}/add',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -224,12 +274,13 @@ extension $ObjectAddingRouteExtension on ObjectAddingRoute {
 
 extension $ObjectDetailRouteExtension on ObjectDetailRoute {
   static ObjectDetailRoute _fromState(GoRouterState state) => ObjectDetailRoute(
+        appId: state.pathParameters['appId']!,
         objectType: state.pathParameters['objectType']!,
         objectId: state.pathParameters['objectId']!,
       );
 
   String get location => GoRouteData.$location(
-        '/internal/${Uri.encodeComponent(objectType)}/${Uri.encodeComponent(objectId)}',
+        '/app/${Uri.encodeComponent(appId)}/internal/${Uri.encodeComponent(objectType)}/${Uri.encodeComponent(objectId)}',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -245,12 +296,13 @@ extension $ObjectDetailRouteExtension on ObjectDetailRoute {
 extension $ObjectUpdatingRouteExtension on ObjectUpdatingRoute {
   static ObjectUpdatingRoute _fromState(GoRouterState state) =>
       ObjectUpdatingRoute(
+        appId: state.pathParameters['appId']!,
         objectType: state.pathParameters['objectType']!,
         objectId: state.pathParameters['objectId']!,
       );
 
   String get location => GoRouteData.$location(
-        '/internal/${Uri.encodeComponent(objectType)}/${Uri.encodeComponent(objectId)}/update',
+        '/app/${Uri.encodeComponent(appId)}/internal/${Uri.encodeComponent(objectType)}/${Uri.encodeComponent(objectId)}/update',
       );
 
   void go(BuildContext context) => context.go(location);
