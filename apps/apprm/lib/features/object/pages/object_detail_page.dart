@@ -44,6 +44,7 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
       displayFields: [
         (key: 'requirement', label: 'Requirement'),
         (key: 'description', label: 'Description'),
+        (key: 'completed', label: 'Completed'),
       ],
     ),
     'stories': (
