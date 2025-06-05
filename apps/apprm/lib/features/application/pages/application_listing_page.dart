@@ -52,7 +52,9 @@ class _ApplicationListingPageState extends State<ApplicationListingPage> {
         mapperFn: ApplicationToObjectItemMapper.fromJson,
         itemCardBuilder: (item) => GenericItemCard(item: item),
         emptyBuilder: () => const GenericListEmpty(),
-        sortFields: const [(key: 'name', label: 'Name')],
+        sortFields: const [
+          (key: 'name', label: 'Name', value: null),
+        ],
         filterFields: const [],
         searchFields: const ['name'],
         onDetailNavigateFn: (id) {
