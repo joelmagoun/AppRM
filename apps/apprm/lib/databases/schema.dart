@@ -160,6 +160,23 @@ Schema schema = Schema(
         Index('data_objects_list', [IndexedColumn('id')])
       ],
     ),
+        const Table(
+      'data_fields',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('app_id'),
+        Column.text('data_object'),
+        Column.text('name'),
+        Column.text('description'),
+        Column.text('type'),
+        Column.text('default_value'),
+      ],
+      indexes: [
+        Index('data_fields_list', [IndexedColumn('id')])
+      ],
+    ),
     const Table(
       'screens',
       [
