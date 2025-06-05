@@ -8,3 +8,6 @@ v.1.1.0.7 - we tried to add bouncy menus, but reverted
 git reset --hard [commit hash]
 v.1.1.0.8 - adding applications to schema
 v.1.1.1.0 - adding application mgmt via codex
+v.1.1.1.1 - fix
+v.1.1.1.2 - allowing requrements to be completed
+v.1.1.1.3 - default list logo change

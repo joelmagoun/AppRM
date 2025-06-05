@@ -25,7 +25,7 @@ class GenericItemCard extends ConsumerWidget {
       leading: CircleAvatar(
         backgroundColor: AppColors.primaryColor.withOpacity(0.1),
         child: const Icon(
-          PhosphorIconsFill.mapPin,
+          PhosphorIconsFill.lightbulbFilament,
           color: AppColors.primaryColor,
           size: 24,
         ),
