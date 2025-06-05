@@ -172,6 +172,7 @@ class _ObjectListingPageState extends State<ObjectListingPage> {
                   await showCupertinoModalBottomSheet(
                     context: context,
                     builder: (context) => ExternalSystemSelection(
+                      appId: appIdParam,
                       objectType: objectTypeParam,
                     ),
                   );
