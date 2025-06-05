@@ -123,6 +123,14 @@ class _ObjectUpdatingPageState extends State<ObjectUpdatingPage> {
           options: null,
           asyncOptions: null,
         ),
+        (
+          key: 'completed',
+          label: 'Completed',
+          placeholder: null,
+          displayMode: 'SINGLE_SELECT',
+          options: ['false', 'true'],
+          asyncOptions: null,
+        ),
       ],
     ),
     'stories': (

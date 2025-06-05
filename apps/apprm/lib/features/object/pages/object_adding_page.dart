@@ -205,6 +205,14 @@ class _ObjectAddingPageState extends State<ObjectAddingPage> {
           options: null,
           asyncOptions: null,
         ),
+        (
+          key: 'completed',
+          label: 'Completed',
+          placeholder: null,
+          displayMode: 'SINGLE_SELECT',
+          options: ['false', 'true'],
+          asyncOptions: null,
+        ),
       ],
     ),
     'locations': (
