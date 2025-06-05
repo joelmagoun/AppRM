@@ -9,10 +9,12 @@ class ExternalSystemSelection extends StatefulWidget {
   const ExternalSystemSelection({
     super.key,
     required this.objectType,
+    required this.appId,
     this.externalDataMapperFnMap,
   });
 
   final String objectType;
+  final String appId;
   final Map<String, Map<String, dynamic> Function(Map<String, dynamic>)>?
       externalDataMapperFnMap;
 
@@ -125,8 +127,10 @@ class _ExternalSystemSelectionState extends State<ExternalSystemSelection> {
               color: Colors.transparent,
               child: ListTile(
                 onTap: () async {
-                  await ObjectAddingRoute(objectType: widget.objectType)
-                      .push(context);
+                  await ObjectAddingRoute(
+                    appId: widget.appId,
+                    objectType: widget.objectType,
+                  ).push(context);
                   if (context.mounted) {
                     Navigator.of(context).pop();
                   }

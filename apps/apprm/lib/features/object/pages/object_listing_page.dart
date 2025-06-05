@@ -153,6 +153,7 @@ class _ObjectListingPageState extends State<ObjectListingPage> {
   Widget build(BuildContext context) {
     final objectTypeParam =
         GoRouterState.of(context).pathParameters['objectType']!;
+    final appIdParam = GoRouterState.of(context).pathParameters['appId']!;
     final objectData = objectDataMap[objectTypeParam];
 
     return Scaffold(
@@ -171,12 +172,15 @@ class _ObjectListingPageState extends State<ObjectListingPage> {
                   await showCupertinoModalBottomSheet(
                     context: context,
                     builder: (context) => ExternalSystemSelection(
+                      appId: appIdParam,
                       objectType: objectTypeParam,
                     ),
                   );
                 } else {
-                  await ObjectAddingRoute(objectType: objectTypeParam)
-                      .push(context);
+                  await ObjectAddingRoute(
+                    appId: appIdParam,
+                    objectType: objectTypeParam,
+                  ).push(context);
                 }
 
                 listWrapperKey.currentState?.listKey.currentState
@@ -210,8 +214,10 @@ class _ObjectListingPageState extends State<ObjectListingPage> {
                 .toList() ??
             [],
         searchFields: objectData?.searchField ?? [],
+        initialFilterValues: {'app_id': appIdParam},
         onDetailNavigateFn: (itemId) async {
           await ObjectDetailRoute(
+            appId: appIdParam,
             objectType: objectTypeParam,
             objectId: itemId,
           ).push(context);
