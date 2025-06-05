@@ -18,11 +18,13 @@ class ObjectAddingWrapper extends ConsumerStatefulWidget {
     required this.objectType,
     required this.objectLabel,
     required this.inputFields,
+    this.extraData,
   });
 
   final String objectType;
   final String objectLabel;
   final List<InputField> inputFields;
+  final Map<String, dynamic>? extraData;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -64,9 +66,13 @@ class _ObjectAddingWrapperState extends ConsumerState<ObjectAddingWrapper> {
                 if (formGroup.valid) {
                   try {
                     EasyLoading.show(status: 'Creating...');
+                    final data = {
+                      ...formGroup.value,
+                      if (widget.extraData != null) ...widget.extraData!,
+                    };
                     await createObjectMutation.mutate(CreateObjectUseCaseParams(
                       objectType: widget.objectType,
-                      data: formGroup.value,
+                      data: data,
                     ));
                     CachedQuery.instance.refetchQueries(
                       keys: [widget.objectType, "list"],

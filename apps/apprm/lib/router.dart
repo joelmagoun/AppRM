@@ -7,7 +7,9 @@ import 'features/auth/pages/auth_page.dart';
 import 'features/auth/pages/azure_b2c_login_page.dart';
 import 'features/auth/pages/supabase_login_page.dart';
 import 'features/auth/pages/supabase_signup_page.dart';
-import 'features/home/pages/home_page.dart';
+import 'features/application/pages/application_listing_page.dart';
+import 'features/application/pages/app_home_page.dart';
+import 'features/application/pages/application_adding_page.dart';
 import 'features/notification/pages/powersync_debug_page.dart';
 import 'features/object/pages/external_object_detail_page.dart';
 import 'features/object/pages/external_object_listing_page.dart';
@@ -112,12 +114,36 @@ class Auth0LoginRoute extends GoRouteData {
 class HomeRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const HomePage();
+    return const ApplicationListingPage();
+  }
+}
+
+@TypedGoRoute<AppHomeRoute>(
+  path: '/app/:appId',
+)
+class AppHomeRoute extends GoRouteData {
+  const AppHomeRoute({required this.appId});
+
+  final String appId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return AppHomePage(appId: appId);
+  }
+}
+
+@TypedGoRoute<ApplicationAddingRoute>(
+  path: '/applications/add',
+)
+class ApplicationAddingRoute extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ApplicationAddingPage();
   }
 }
 
 @TypedGoRoute<ObjectListingRoute>(
-  path: '/internal/:objectType',
+  path: '/app/:appId/internal/:objectType',
   routes: [
     TypedGoRoute<ObjectAddingRoute>(
       path: 'add',
@@ -133,8 +159,9 @@ class HomeRoute extends GoRouteData {
   ],
 )
 class ObjectListingRoute extends GoRouteData {
-  ObjectListingRoute({required this.objectType});
+  ObjectListingRoute({required this.appId, required this.objectType});
 
+  final String appId;
   final String objectType;
 
   @override
@@ -144,8 +171,9 @@ class ObjectListingRoute extends GoRouteData {
 }
 
 class ObjectAddingRoute extends GoRouteData {
-  ObjectAddingRoute({required this.objectType});
+  ObjectAddingRoute({required this.appId, required this.objectType});
 
+  final String appId;
   final String objectType;
 
   @override
@@ -155,8 +183,9 @@ class ObjectAddingRoute extends GoRouteData {
 }
 
 class ObjectDetailRoute extends GoRouteData {
-  ObjectDetailRoute({required this.objectType, required this.objectId});
+  ObjectDetailRoute({required this.appId, required this.objectType, required this.objectId});
 
+  final String appId;
   final String objectType;
   final String objectId;
 
@@ -167,8 +196,9 @@ class ObjectDetailRoute extends GoRouteData {
 }
 
 class ObjectUpdatingRoute extends GoRouteData {
-  ObjectUpdatingRoute({required this.objectType, required this.objectId});
+  ObjectUpdatingRoute({required this.appId, required this.objectType, required this.objectId});
 
+  final String appId;
   final String objectType;
   final String objectId;
 

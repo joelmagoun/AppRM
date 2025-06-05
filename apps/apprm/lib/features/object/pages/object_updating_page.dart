@@ -261,6 +261,7 @@ class _ObjectUpdatingPageState extends State<ObjectUpdatingPage> {
     final objectTypeParam =
         GoRouterState.of(context).pathParameters['objectType']!;
     final objectIdParam = GoRouterState.of(context).pathParameters['objectId']!;
+    final appIdParam = GoRouterState.of(context).pathParameters['appId']!;
     final objectData = objectDataMap[objectTypeParam];
 
     return ObjectUpdatingWrapper(
