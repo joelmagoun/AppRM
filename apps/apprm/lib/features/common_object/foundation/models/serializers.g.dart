@@ -9,6 +9,7 @@ part of 'serializers.dart';
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(AdpUser.serializer)
       ..add(Car.serializer)
+      ..add(DataField.serializer)
       ..add(DataObject.serializer)
       ..add(Location.serializer)
       ..add(Person.serializer)
