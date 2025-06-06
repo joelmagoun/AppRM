@@ -1,4 +1,5 @@
 import 'package:apprm/features/common_object/widgets/detail/external_system_connected.dart';
+import 'package:apprm/features/common_object/widgets/detail/data_field_list.dart';
 import 'package:apprm/typedefs/display_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -54,6 +55,10 @@ class ObjectDetailCard extends ConsumerWidget {
               ExternalSystemConnected(
                 objectType: objectType,
                 objectId: objectId,
+              ),
+            if (objectType == 'data_objects')
+              DataFieldList(
+                dataObjectId: objectId,
               ),
           ],
         ),
