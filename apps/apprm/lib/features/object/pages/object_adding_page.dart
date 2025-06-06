@@ -186,6 +186,43 @@ class _ObjectAddingPageState extends State<ObjectAddingPage> {
         ),
       ],
     ),
+    'data_fields': (
+      label: 'data_field',
+      inputFields: [
+        (
+          key: 'name',
+          label: 'Name',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'description',
+          label: 'Description',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'type',
+          label: 'Type',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'default_value',
+          label: 'Default value',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+      ],
+    ),
     'requirements': (
       label: 'requirement',
       inputFields: [
@@ -267,6 +304,7 @@ class _ObjectAddingPageState extends State<ObjectAddingPage> {
     final objectTypeParam =
         GoRouterState.of(context).pathParameters['objectType']!;
     final appIdParam = GoRouterState.of(context).pathParameters['appId']!;
+    final dataObjectParam = GoRouterState.of(context).queryParameters['data_object'];
     final objectData = objectDataMap[objectTypeParam];
 
     return ObjectAddingWrapper(
@@ -283,7 +321,10 @@ class _ObjectAddingPageState extends State<ObjectAddingPage> {
                   ))
               .toList() ??
           [],
-      extraData: {'app_id': appIdParam},
+      extraData: {
+        'app_id': appIdParam,
+        if (dataObjectParam != null) 'data_object': dataObjectParam,
+      },
     );
   }
 }

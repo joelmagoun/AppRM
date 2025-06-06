@@ -10,6 +10,7 @@ import 'location.dart';
 import 'person.dart';
 import 'sap_user.dart';
 import 'data_object.dart';
+import 'data_field.dart';
 import 'screen.dart';
 import 'story.dart';
 import 'user_story.dart';
@@ -27,6 +28,7 @@ const List<Type> _registeredTypes = [
   SapUser,
   Requirement,
   DataObject,
+  DataField,
   Screen,
   Story,
   UserStory,
