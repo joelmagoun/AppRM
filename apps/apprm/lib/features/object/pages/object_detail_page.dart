@@ -11,6 +11,7 @@ import '../../common_object/mappers/data_object_mapper.dart';
 import '../../common_object/mappers/requirement_mapper.dart';
 import '../../common_object/mappers/story_mapper.dart';
 import '../../common_object/mappers/user_story_mapper.dart';
+import '../../common_object/mappers/data_field_mapper.dart';
 import '../../common_object/widgets/detail/object_detail_wrapper.dart';
 
 class ObjectDetailPage extends StatefulWidget {
@@ -73,6 +74,15 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
       displayFields: [
         (key: 'name', label: 'Name'),
         (key: 'description', label: 'Description'),
+      ],
+    ),
+    'data_fields': (
+      dataMapperFn: DataFieldToObjectItemMapper.fromJson,
+      displayFields: [
+        (key: 'name', label: 'Name'),
+        (key: 'description', label: 'Description'),
+        (key: 'type', label: 'Type'),
+        (key: 'default_value', label: 'Default value'),
       ],
     ),
     'locations': (
