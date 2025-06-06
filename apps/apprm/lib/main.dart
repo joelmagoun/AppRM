@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'bootstrap/bootstrap.dart';
 import 'router.dart';
@@ -7,7 +8,7 @@ import 'router.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await bootstrap();
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
