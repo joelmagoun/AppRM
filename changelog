@@ -14,3 +14,4 @@ v.1.1.1.3 - default list logo change
 v.1.1.1.4 - adding data_fields to schema
 v.1.1.1.5 - adding data_fields to ui
 v.1.1.1.6 - fixing provider scope error
+v.1.1.1.7 - making data fields clickable
