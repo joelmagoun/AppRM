@@ -192,6 +192,23 @@ Schema schema = Schema(
       ],
     ),
     const Table(
+      'screen_photos',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('app_id'),
+        Column.text('screen_id'),
+        Column.text('name'),
+        Column.text('description'),
+        Column.text('path'),
+        Column.text('photo_id'),
+      ],
+      indexes: [
+        Index('screen_photos_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
       'user_stories',
       [
         Column.text('id'),
