@@ -22,6 +22,7 @@ class ObjectDetailWrapper extends ConsumerStatefulWidget {
     super.key,
     required this.objectType,
     required this.objectId,
+    required this.appId,
     required this.mapperFn,
     required this.displayFields,
     required this.onEditingNavigateFn,
@@ -29,6 +30,7 @@ class ObjectDetailWrapper extends ConsumerStatefulWidget {
 
   final String objectType;
   final String objectId;
+  final String appId;
   final ObjectItem Function(Map<String, dynamic>) mapperFn;
   final List<DisplayField> displayFields;
   final VoidCallback onEditingNavigateFn;
@@ -190,6 +192,7 @@ class _ObjectDetailWrapperState extends ConsumerState<ObjectDetailWrapper> {
               child: ObjectDetailCard(
                 objectType: widget.objectType,
                 objectId: widget.objectId,
+                appId: widget.appId,
                 displayFields: widget.displayFields,
                 objectItem: state.data,
               ),

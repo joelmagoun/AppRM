@@ -68,9 +68,9 @@ class PhotoAttachmentQueue extends AbstractAttachmentQueue {
 
   @override
   StreamSubscription<void> watchIds({String fileExtension = 'jpg'}) {
-    log.info('Watching photos in demo...');
+    log.info('Watching screen photos...');
     return db.watch('''
-      SELECT photo_id FROM demo
+      SELECT photo_id FROM screen_photos
       WHERE photo_id IS NOT NULL
     ''').map((results) {
       return results.map((row) => row['photo_id'] as String).toList();

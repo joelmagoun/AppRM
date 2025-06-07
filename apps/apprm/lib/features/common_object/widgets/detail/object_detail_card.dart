@@ -1,5 +1,6 @@
 import 'package:apprm/features/common_object/widgets/detail/external_system_connected.dart';
 import 'package:apprm/features/common_object/widgets/detail/data_field_list.dart';
+import 'package:apprm/features/screens/widgets/screen_photo_list.dart';
 import 'package:apprm/typedefs/display_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,12 +10,14 @@ class ObjectDetailCard extends ConsumerWidget {
     super.key,
     required this.objectType,
     required this.objectId,
+    required this.appId,
     required this.displayFields,
     this.objectItem,
   });
 
   final String objectType;
   final String objectId;
+  final String appId;
   final List<DisplayField> displayFields;
   final Map<String, dynamic>? objectItem;
 
@@ -59,6 +62,11 @@ class ObjectDetailCard extends ConsumerWidget {
             if (objectType == 'data_objects')
               DataFieldList(
                 dataObjectId: objectId,
+              ),
+            if (objectType == 'screens')
+              ScreenPhotoList(
+                appId: appId,
+                screenId: objectId,
               ),
           ],
         ),

@@ -107,6 +107,7 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
     return ObjectDetailWrapper(
       objectType: objectTypeParam,
       objectId: objectIdParam,
+      appId: appIdParam!,
       mapperFn: objectData?.dataMapperFn ?? (e) => ObjectItem.fromJson(e),
       displayFields: objectData?.displayFields
               .map((e) => (key: e.key, label: e.label))
