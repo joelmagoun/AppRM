@@ -45,8 +45,7 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
     final bytes = await file.readAsBytes();
     final photoId = const Uuid().v4();
     final filename = '$photoId.jpg';
-    final filePath = attachmentQueue.getLocalFilePathSuffix(filename);
-    final localUri = await attachmentQueue.getLocalUri(filePath);
+    final localUri = await attachmentQueue.getLocalUri(filename);
 
     // Ensure the directory exists
     final destDir = Directory(localUri).parent;
@@ -128,9 +127,8 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
                       runSpacing: 8,
                       children: list.map((e) {
                         return FutureBuilder<String>(
-                          future: attachmentQueue.getLocalUri(
-                              attachmentQueue.getLocalFilePathSuffix(
-                                  '${e['photo_id']}.jpg')),
+                          future: attachmentQueue
+                              .getLocalUri('${e['photo_id']}.jpg'),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
                               return const SizedBox(

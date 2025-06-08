@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:powersync/powersync.dart' as powersync;
 import '../../../bootstrap/powersync.dart' show db;
+import '../../attachments/queue.dart';
+import 'package:powersync_attachments_helper/powersync_attachments_helper.dart';
 
 class PowerSyncDebugPage extends StatefulWidget {
   const PowerSyncDebugPage({Key? key}) : super(key: key);
@@ -59,8 +61,48 @@ class _PowerSyncDebugPageState extends State<PowerSyncDebugPage> {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Sync Status: [${snapshot.data?.toString() ?? 'Unknown'}',
+                    "Sync Status: ${snapshot.data?.toString() ?? 'Unknown'}",
                   style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              );
+            },
+          ),
+          StreamBuilder<List<Map<String, dynamic>>>(
+            stream: db.watch('SELECT * FROM ${attachmentQueue.attachmentsService.table} ORDER BY timestamp DESC'),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: CircularProgressIndicator(),
+                );
+              }
+              final attachments = snapshot.data!;
+              if (attachments.isEmpty) {
+                return const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text('Attachment queue empty'),
+                );
+              }
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: DataTable(
+                  columns: const [
+                    DataColumn(label: Text('id')),
+                    DataColumn(label: Text('state')),
+                    DataColumn(label: Text('filename')),
+                  ],
+                  rows: attachments.map((row) {
+                    final stateIndex = row['state'] as int? ?? 0;
+                    final stateName = AttachmentState.values[stateIndex]
+                        .toString()
+                        .split('.')
+                        .last;
+                    return DataRow(cells: [
+                      DataCell(Text(row['id'].toString())),
+                      DataCell(Text(stateName)),
+                      DataCell(Text(row['filename'].toString())),
+                    ]);
+                  }).toList(),
                 ),
               );
             },
