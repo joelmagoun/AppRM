@@ -48,6 +48,12 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
     final filePath = attachmentQueue.getLocalFilePathSuffix(filename);
     final localUri = await attachmentQueue.getLocalUri(filePath);
 
+    // Ensure the directory exists
+    final destDir = Directory(localUri).parent;
+    if (!await destDir.exists()) {
+      await destDir.create(recursive: true);
+    }
+
     await attachmentQueue.localStorage.copyFile(file.path, localUri);
     await attachmentQueue.saveFile(photoId, bytes.length);
 

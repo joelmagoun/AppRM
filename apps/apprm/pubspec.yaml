@@ -1,7 +1,7 @@
 name: apprm
 description: "A new Flutter project."
 publish_to: "none"
-version: 1.1.1+8
+version: 1.1.1+9
 
 environment:
   sdk: ^3.5.0
@@ -22,8 +22,7 @@ dependencies:
   sqlite_async: ^0.8.1
   logging: ^1.2.0
   image: ^4.2.0
-  image_picker: ^1.1.2
-  uuid: ^4.5.1
+  image_picker: ^1.0.4
   phosphor_flutter: ^2.1.0
   modal_bottom_sheet: ^3.0.0
   flutter_riverpod: ^2.5.1
