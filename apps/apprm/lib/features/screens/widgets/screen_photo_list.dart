@@ -9,18 +9,22 @@ import 'package:uuid/uuid.dart';
 
 import '../../../attachments/queue.dart';
 import '../../../constants/color.dart';
+import '../../../router.dart';
 import '../../common_object/foundation/object_repository.dart';
 import '../../common_object/foundation/use_cases/create_object_usecase.dart';
+import '../../common_object/foundation/use_cases/delete_object_item_usecase.dart';
 import '../../common_object/foundation/use_cases/get_object_list_usecase.dart';
 
 class ScreenPhotoList extends ConsumerStatefulWidget {
-  const ScreenPhotoList({super.key, required this.appId, required this.screenId});
+  const ScreenPhotoList(
+      {super.key, required this.appId, required this.screenId});
 
   final String appId;
   final String screenId;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ScreenPhotoListState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ScreenPhotoListState();
 }
 
 class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
@@ -28,6 +32,12 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
 
   final _createMutation = Mutation<void, CreateObjectUseCaseParams>(
     queryFn: (params) => CreateObjectUseCase(
+      objectRepository: ObjectRepository(),
+    ).execute(params),
+  );
+
+  final _deleteMutation = Mutation<void, DeleteObjectItemUseCaseParams>(
+    queryFn: (params) => DeleteObjectItemUseCase(
       objectRepository: ObjectRepository(),
     ).execute(params),
   );
@@ -69,6 +79,73 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
     );
 
     _refresh();
+  }
+
+  Future<void> _deletePhoto(Map<String, dynamic> item) async {
+    await attachmentQueue.deleteFile(item['photo_id']);
+    await _deleteMutation.mutate(
+      DeleteObjectItemUseCaseParams(
+        objectType: 'screen_photos',
+        objectId: item['id'],
+      ),
+    );
+    _refresh();
+  }
+
+  Future<void> _openPhotoDetail(Map<String, dynamic> item) async {
+    final localPath =
+        await attachmentQueue.getLocalUri('${item['photo_id']}.jpg');
+    if (!mounted) return;
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Image.file(File(localPath)),
+                const SizedBox(height: 8),
+                Text(item['name'] ?? '',
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 4),
+                Text(item['description'] ?? '--'),
+                const SizedBox(height: 4),
+                Text('ID: ${item['photo_id']}'),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                ObjectUpdatingRoute(
+                  appId: widget.appId,
+                  objectType: 'screen_photos',
+                  objectId: item['id'],
+                ).push(context);
+              },
+              child: const Text('Edit'),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+                await _deletePhoto(item);
+              },
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              child: const Text('Delete'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -134,15 +211,19 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
                               return const SizedBox(
                                 width: 80,
                                 height: 80,
-                                child: Center(child: CircularProgressIndicator()),
+                                child:
+                                    Center(child: CircularProgressIndicator()),
                               );
                             }
                             final file = File(snapshot.data!);
-                            return Image.file(
-                              file,
-                              width: 80,
-                              height: 80,
-                              fit: BoxFit.cover,
+                            return InkWell(
+                              onTap: () => _openPhotoDetail(e),
+                              child: Image.file(
+                                file,
+                                width: 80,
+                                height: 80,
+                                fit: BoxFit.cover,
+                              ),
                             );
                           },
                         );
