@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:powersync/powersync.dart' as powersync;
 import '../../../bootstrap/powersync.dart' show db;
-import '../../attachments/queue.dart';
+import '../../../attachments/queue.dart';
 import 'package:powersync_attachments_helper/powersync_attachments_helper.dart';
 
 class PowerSyncDebugPage extends StatefulWidget {
