@@ -144,6 +144,27 @@ class _ObjectAddingPageState extends State<ObjectAddingPage> {
         ),
       ],
     ),
+    'screen_functions': (
+      label: 'function',
+      inputFields: [
+        (
+          key: 'name',
+          label: 'Name',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'description',
+          label: 'Description',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+      ],
+    ),
     'user_stories': (
       label: 'user_story',
       inputFields: [
@@ -305,6 +326,7 @@ class _ObjectAddingPageState extends State<ObjectAddingPage> {
         GoRouterState.of(context).pathParameters['objectType']!;
     final appIdParam = GoRouterState.of(context).pathParameters['appId']!;
     final dataObjectParam = GoRouterState.of(context).queryParameters['data_object'];
+    final screenIdParam = GoRouterState.of(context).queryParameters['screen_id'];
     final objectData = objectDataMap[objectTypeParam];
 
     return ObjectAddingWrapper(
@@ -324,6 +346,7 @@ class _ObjectAddingPageState extends State<ObjectAddingPage> {
       extraData: {
         'app_id': appIdParam,
         if (dataObjectParam != null) 'data_object': dataObjectParam,
+        if (screenIdParam != null) 'screen_id': screenIdParam,
       },
     );
   }

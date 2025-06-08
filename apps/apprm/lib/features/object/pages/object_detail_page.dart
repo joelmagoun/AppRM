@@ -12,6 +12,7 @@ import '../../common_object/mappers/requirement_mapper.dart';
 import '../../common_object/mappers/story_mapper.dart';
 import '../../common_object/mappers/user_story_mapper.dart';
 import '../../common_object/mappers/data_field_mapper.dart';
+import '../../common_object/mappers/screen_function_mapper.dart';
 import '../../common_object/widgets/detail/object_detail_wrapper.dart';
 
 class ObjectDetailPage extends StatefulWidget {
@@ -57,6 +58,13 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
     ),
     'screens': (
       dataMapperFn: ScreenToObjectItemMapper.fromJson,
+      displayFields: [
+        (key: 'name', label: 'Name'),
+        (key: 'description', label: 'Description'),
+      ],
+    ),
+    'screen_functions': (
+      dataMapperFn: ScreenFunctionToObjectItemMapper.fromJson,
       displayFields: [
         (key: 'name', label: 'Name'),
         (key: 'description', label: 'Description'),

@@ -12,6 +12,7 @@ import 'sap_user.dart';
 import 'data_object.dart';
 import 'data_field.dart';
 import 'screen.dart';
+import 'screen_function.dart';
 import 'story.dart';
 import 'user_story.dart';
 import 'serialize_plugins/custom_8601_date_time_plugin.dart';
@@ -30,6 +31,7 @@ const List<Type> _registeredTypes = [
   DataObject,
   DataField,
   Screen,
+  ScreenFunction,
   Story,
   UserStory,
 ];

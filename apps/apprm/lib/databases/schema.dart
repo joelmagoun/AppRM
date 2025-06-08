@@ -209,6 +209,21 @@ Schema schema = Schema(
       ],
     ),
     const Table(
+      'screen_functions',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('app_id'),
+        Column.text('screen_id'),
+        Column.text('name'),
+        Column.text('description'),
+      ],
+      indexes: [
+        Index('screen_functions_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
       'user_stories',
       [
         Column.text('id'),
