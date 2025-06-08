@@ -16,6 +16,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Requirement.serializer)
       ..add(SapUser.serializer)
       ..add(Screen.serializer)
+      ..add(ScreenFunction.serializer)
       ..add(Story.serializer)
       ..add(UserStory.serializer))
     .build();

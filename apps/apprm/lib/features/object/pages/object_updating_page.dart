@@ -175,6 +175,27 @@ class _ObjectUpdatingPageState extends State<ObjectUpdatingPage> {
         ),
       ],
     ),
+    'screen_functions': (
+      label: 'function',
+      inputFields: [
+        (
+          key: 'name',
+          label: 'Name',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'description',
+          label: 'Description',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+      ],
+    ),
     'screen_photos': (
       label: 'photo',
       inputFields: [
