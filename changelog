@@ -17,4 +17,5 @@ v.1.1.1.6 - fixing provider scope error
 v.1.1.1.7 - making data fields clickable
 v.1.1.1.8 - adding screen_photos to schema
 v.1.1.1.9 - adding photo functionality and messing up android build
+v.1.1.1.10 - trying to fix photo synchronization
 
