@@ -61,15 +61,14 @@ class _PowerSyncDebugPageState extends State<PowerSyncDebugPage> {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "Sync Status: ${snapshot.data?.toString() ?? 'Unknown'}",
+                    "Sync Status: ${snapshot.data?.toString() ?? 'Unknown'}",
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
               );
             },
           ),
           StreamBuilder<List<Map<String, dynamic>>>(
-            stream: db.watch(
-                'SELECT * FROM ${attachmentQueue.attachmentsService.table} ORDER BY timestamp DESC'),
+            stream: db.watch('SELECT * FROM ${attachmentQueue.attachmentsService.table} ORDER BY timestamp DESC'),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Padding(
