@@ -56,52 +56,6 @@ extension $AuthPageRouteExtension on AuthPageRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $appHomeRoute => GoRouteData.$route(
-      path: '/app/:appId',
-      factory: $AppHomeRouteExtension._fromState,
-    );
-
-extension $AppHomeRouteExtension on AppHomeRoute {
-  static AppHomeRoute _fromState(GoRouterState state) =>
-      AppHomeRoute(appId: state.pathParameters['appId']!);
-
-  String get location => GoRouteData.$location(
-        '/app/${Uri.encodeComponent(appId)}',
-      );
-
-  void go(BuildContext context) => context.go(location);
-
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  void replace(BuildContext context) => context.replace(location);
-}
-
-RouteBase get $applicationAddingRoute => GoRouteData.$route(
-      path: '/applications/add',
-      factory: $ApplicationAddingRouteExtension._fromState,
-    );
-
-extension $ApplicationAddingRouteExtension on ApplicationAddingRoute {
-  static ApplicationAddingRoute _fromState(GoRouterState state) =>
-      ApplicationAddingRoute();
-
-  String get location => GoRouteData.$location(
-        '/applications/add',
-      );
-
-  void go(BuildContext context) => context.go(location);
-
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  void replace(BuildContext context) => context.replace(location);
-}
-
 extension $SupabaseSignUpRouteExtension on SupabaseSignUpRoute {
   static SupabaseSignUpRoute _fromState(GoRouterState state) =>
       const SupabaseSignUpRoute();
@@ -123,7 +77,7 @@ extension $SupabaseSignUpRouteExtension on SupabaseSignUpRoute {
 extension $SupabaseLoginRouteExtension on SupabaseLoginRoute {
   static SupabaseLoginRoute _fromState(GoRouterState state) =>
       SupabaseLoginRoute(
-        email: state.queryParameters['email'],
+        email: state.uri.queryParameters['email'],
       );
 
   String get location => GoRouteData.$location(
@@ -146,7 +100,7 @@ extension $SupabaseLoginRouteExtension on SupabaseLoginRoute {
 extension $AzureB2CLoginRouteExtension on AzureB2CLoginRoute {
   static AzureB2CLoginRoute _fromState(GoRouterState state) =>
       AzureB2CLoginRoute(
-        email: state.queryParameters['email'],
+        email: state.uri.queryParameters['email'],
       );
 
   String get location => GoRouteData.$location(
@@ -168,7 +122,7 @@ extension $AzureB2CLoginRouteExtension on AzureB2CLoginRoute {
 
 extension $Auth0LoginRouteExtension on Auth0LoginRoute {
   static Auth0LoginRoute _fromState(GoRouterState state) => Auth0LoginRoute(
-        email: state.queryParameters['email'],
+        email: state.uri.queryParameters['email'],
       );
 
   String get location => GoRouteData.$location(
@@ -198,6 +152,53 @@ extension $HomeRouteExtension on HomeRoute {
 
   String get location => GoRouteData.$location(
         '/',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $appHomeRoute => GoRouteData.$route(
+      path: '/app/:appId',
+      factory: $AppHomeRouteExtension._fromState,
+    );
+
+extension $AppHomeRouteExtension on AppHomeRoute {
+  static AppHomeRoute _fromState(GoRouterState state) => AppHomeRoute(
+        appId: state.pathParameters['appId']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/app/${Uri.encodeComponent(appId)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $applicationAddingRoute => GoRouteData.$route(
+      path: '/applications/add',
+      factory: $ApplicationAddingRouteExtension._fromState,
+    );
+
+extension $ApplicationAddingRouteExtension on ApplicationAddingRoute {
+  static ApplicationAddingRoute _fromState(GoRouterState state) =>
+      ApplicationAddingRoute();
+
+  String get location => GoRouteData.$location(
+        '/applications/add',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -330,8 +331,8 @@ extension $ExternalObjectListingRouteExtension on ExternalObjectListingRoute {
   static ExternalObjectListingRoute _fromState(GoRouterState state) =>
       ExternalObjectListingRoute(
         externalObjectType: state.pathParameters['externalObjectType']!,
-        objectType: state.queryParameters['object-type'],
-        objectId: state.queryParameters['object-id'],
+        objectType: state.uri.queryParameters['object-type'],
+        objectId: state.uri.queryParameters['object-id'],
       );
 
   String get location => GoRouteData.$location(
@@ -357,8 +358,8 @@ extension $ExternalObjectDetailRouteExtension on ExternalObjectDetailRoute {
       ExternalObjectDetailRoute(
         externalObjectType: state.pathParameters['externalObjectType']!,
         externalObjectId: state.pathParameters['externalObjectId']!,
-        objectType: state.queryParameters['object-type'],
-        objectId: state.queryParameters['object-id'],
+        objectType: state.uri.queryParameters['object-type'],
+        objectId: state.uri.queryParameters['object-id'],
       );
 
   String get location => GoRouteData.$location(

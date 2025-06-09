@@ -53,6 +53,13 @@ class _$RequirementSerializer implements StructuredSerializer<Requirement> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.completed;
+    if (value != null) {
+      result
+        ..add('completed')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.completedAt;
     if (value != null) {
       result
@@ -98,6 +105,10 @@ class _$RequirementSerializer implements StructuredSerializer<Requirement> {
           result.description = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
+        case 'completed':
+          result.completed = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
         case 'completed_at':
           result.completedAt = serializers.deserialize(value,
               specifiedType: const FullType(DateTime)) as DateTime?;
@@ -123,6 +134,8 @@ class _$Requirement extends Requirement {
   @override
   final String? description;
   @override
+  final String? completed;
+  @override
   final DateTime? completedAt;
 
   factory _$Requirement([void Function(RequirementBuilder)? updates]) =>
@@ -135,6 +148,7 @@ class _$Requirement extends Requirement {
       this.appId,
       this.requirement,
       this.description,
+      this.completed,
       this.completedAt})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, r'Requirement', 'id');
@@ -159,6 +173,7 @@ class _$Requirement extends Requirement {
         appId == other.appId &&
         requirement == other.requirement &&
         description == other.description &&
+        completed == other.completed &&
         completedAt == other.completedAt;
   }
 
@@ -171,6 +186,7 @@ class _$Requirement extends Requirement {
     _$hash = $jc(_$hash, appId.hashCode);
     _$hash = $jc(_$hash, requirement.hashCode);
     _$hash = $jc(_$hash, description.hashCode);
+    _$hash = $jc(_$hash, completed.hashCode);
     _$hash = $jc(_$hash, completedAt.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -185,6 +201,7 @@ class _$Requirement extends Requirement {
           ..add('appId', appId)
           ..add('requirement', requirement)
           ..add('description', description)
+          ..add('completed', completed)
           ..add('completedAt', completedAt))
         .toString();
   }
@@ -217,6 +234,10 @@ class RequirementBuilder implements Builder<Requirement, RequirementBuilder> {
   String? get description => _$this._description;
   set description(String? description) => _$this._description = description;
 
+  String? _completed;
+  String? get completed => _$this._completed;
+  set completed(String? completed) => _$this._completed = completed;
+
   DateTime? _completedAt;
   DateTime? get completedAt => _$this._completedAt;
   set completedAt(DateTime? completedAt) => _$this._completedAt = completedAt;
@@ -232,6 +253,7 @@ class RequirementBuilder implements Builder<Requirement, RequirementBuilder> {
       _appId = $v.appId;
       _requirement = $v.requirement;
       _description = $v.description;
+      _completed = $v.completed;
       _completedAt = $v.completedAt;
       _$v = null;
     }
@@ -262,6 +284,7 @@ class RequirementBuilder implements Builder<Requirement, RequirementBuilder> {
             appId: appId,
             requirement: requirement,
             description: description,
+            completed: completed,
             completedAt: completedAt);
     replace(_$result);
     return _$result;
