@@ -16,22 +16,18 @@ class ObjectRepository {
   }) async {
     var sortStatement = "";
     if (sortValues.isNotEmpty) {
-      final orderByKey =
-          sortValues.entries.map((e) => '${e.key} ${e.value}').join(', ');
+      final orderByKey = sortValues.entries.map((e) => '${e.key} ${e.value}').join(', ');
       sortStatement = " ORDER BY $orderByKey";
     }
 
     var filterStatement = "";
     if (filterValues.isNotEmpty) {
-      final conditionByKey = filterValues.entries
-          .map((e) => '${e.key}=\'${e.value}\'')
-          .join(' AND ');
+      final conditionByKey = filterValues.entries.map((e) => '${e.key}=\'${e.value}\'').join(' AND ');
       filterStatement = " WHERE $conditionByKey";
     }
 
     if (searchValue?.isNotEmpty ?? false) {
-      final searchStatement =
-          searchFields.map((e) => '$e LIKE \'%$searchValue%\'').join(' OR ');
+      final searchStatement = searchFields.map((e) => '$e LIKE \'%$searchValue%\'').join(' OR ');
       if (filterStatement.isNotEmpty) {
         filterStatement = "$filterStatement $searchStatement";
       } else {
@@ -48,12 +44,10 @@ class ObjectRepository {
       //   ],
       // );
 
-      final results = await db
-          .getAll('SELECT * FROM $tableName$filterStatement$sortStatement');
+      final results = await db.getAll('SELECT * FROM $tableName$filterStatement$sortStatement');
 
       return results
-          .map((r) => r.entries.fold<Map<String, dynamic>>(
-              {}, (res, e) => {...res, e.key: e.value}))
+          .map((r) => r.entries.fold<Map<String, dynamic>>({}, (res, e) => {...res, e.key: e.value}))
           .toList();
     } catch (e) {
       rethrow;
@@ -65,11 +59,9 @@ class ObjectRepository {
     required String objectId,
   }) async {
     try {
-      final result =
-          await db.get('SELECT * FROM $tableName WHERE id=?', [objectId]);
+      final result = await db.get('SELECT * FROM $tableName WHERE id=?', [objectId]);
 
-      return result.entries
-          .fold<Map<String, dynamic>>({}, (res, e) => {...res, e.key: e.value});
+      return result.entries.fold<Map<String, dynamic>>({}, (res, e) => {...res, e.key: e.value});
     } catch (e) {
       rethrow;
     }
@@ -83,8 +75,7 @@ class ObjectRepository {
       final results = await db.getAll('SELECT DISTINCT $field FROM $tableName');
 
       return results
-          .map((r) => r.entries.fold<Map<String, dynamic>>(
-              {}, (res, e) => {...res, e.key: e.value}))
+          .map((r) => r.entries.fold<Map<String, dynamic>>({}, (res, e) => {...res, e.key: e.value}))
           .toList();
     } catch (e) {
       rethrow;
@@ -117,8 +108,7 @@ class ObjectRepository {
   }) async {
     if (data.isEmpty) throw Exception('Please input at least 1 field');
     try {
-      final setStatement =
-          data.entries.map((e) => "'${e.key}' = '${e.value ?? ''}'").join(', ');
+      final setStatement = data.entries.map((e) => "'${e.key}' = '${e.value ?? ''}'").join(', ');
       await db.execute(
         "UPDATE $tableName SET $setStatement WHERE id = ?",
         [objectId],
@@ -153,8 +143,29 @@ class ObjectRepository {
       );
 
       return results
-          .map((r) => r.entries.fold<Map<String, dynamic>>(
-              {}, (res, e) => {...res, e.key: e.value}))
+          .map((r) => r.entries.fold<Map<String, dynamic>>({}, (res, e) => {...res, e.key: e.value}))
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getDataLinks({
+    required String functionId,
+  }) async {
+    try {
+      final results = await db.getAll(
+        '''
+        SELECT dl.*, do.name AS data_object_name
+        FROM data_links dl
+        LEFT JOIN data_objects do ON do.id = dl.object_id
+        WHERE dl.function_id = ?
+        ''',
+        [functionId],
+      );
+
+      return results
+          .map((r) => r.entries.fold<Map<String, dynamic>>({}, (res, e) => {...res, e.key: e.value}))
           .toList();
     } catch (e) {
       rethrow;

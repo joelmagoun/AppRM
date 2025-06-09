@@ -2,6 +2,7 @@ import 'package:apprm/features/common_object/widgets/detail/external_system_conn
 import 'package:apprm/features/common_object/widgets/detail/data_field_list.dart';
 import 'package:apprm/features/screens/widgets/screen_photo_list.dart';
 import 'package:apprm/features/screens/widgets/screen_function_list.dart';
+import 'package:apprm/features/screens/widgets/data_link_list.dart';
 import 'package:apprm/typedefs/display_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -73,6 +74,11 @@ class ObjectDetailCard extends ConsumerWidget {
                 screenId: objectId,
               ),
             ],
+            if (objectType == 'screen_functions')
+              DataLinkList(
+                appId: appId,
+                functionId: objectId,
+              ),
           ],
         ),
       ),

@@ -11,6 +11,7 @@ import 'person.dart';
 import 'sap_user.dart';
 import 'data_object.dart';
 import 'data_field.dart';
+import 'data_link.dart';
 import 'screen.dart';
 import 'screen_function.dart';
 import 'story.dart';
@@ -32,6 +33,7 @@ const List<Type> _registeredTypes = [
   DataField,
   Screen,
   ScreenFunction,
+  DataLink,
   Story,
   UserStory,
 ];
@@ -89,8 +91,7 @@ BuiltList<T> deserializeBuiltList<T extends Object>(Object json) {
     )! as BuiltList<dynamic>;
     return listOfDynamic.cast<T>().toBuiltList();
   } on DeserializationError catch (e) {
-    debugPrint(
-        '>>>>> Try to add specified type, eg: deserializeBuiltList<MyModel>(json) $e');
+    debugPrint('>>>>> Try to add specified type, eg: deserializeBuiltList<MyModel>(json) $e');
     rethrow;
   }
 }
@@ -110,8 +111,7 @@ BuiltList<T?> deserializeBuiltListNullable<T extends Object>(Object json) {
     )! as BuiltList<dynamic>;
     return listOfDynamic.cast<T?>().toBuiltList();
   } on DeserializationError catch (_) {
-    debugPrint(
-        '>>>>> Try to add specified type, eg: deserializeBuiltListNullable<MyModel>(json)');
+    debugPrint('>>>>> Try to add specified type, eg: deserializeBuiltListNullable<MyModel>(json)');
     rethrow;
   }
 }
