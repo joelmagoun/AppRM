@@ -186,6 +186,27 @@ class _ObjectAddingPageState extends State<ObjectAddingPage> {
         ),
       ],
     ),
+    'work_logs': (
+      label: 'work log',
+      inputFields: [
+        (
+          key: 'amount',
+          label: 'Amount',
+          placeholder: null,
+          displayMode: 'SINGLE_SELECT',
+          options: ['0.5', '1', '1.5', '2'],
+          asyncOptions: null,
+        ),
+        (
+          key: 'description',
+          label: 'Description',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+      ],
+    ),
     'data_objects': (
       label: 'data_object',
       inputFields: [
@@ -325,8 +346,10 @@ class _ObjectAddingPageState extends State<ObjectAddingPage> {
     final objectTypeParam =
         GoRouterState.of(context).pathParameters['objectType']!;
     final appIdParam = GoRouterState.of(context).pathParameters['appId']!;
-    final dataObjectParam = GoRouterState.of(context).queryParameters['data_object'];
-    final screenIdParam = GoRouterState.of(context).queryParameters['screen_id'];
+    final dataObjectParam =
+        GoRouterState.of(context).queryParameters['data_object'];
+    final screenIdParam =
+        GoRouterState.of(context).queryParameters['screen_id'];
     final objectData = objectDataMap[objectTypeParam];
 
     return ObjectAddingWrapper(

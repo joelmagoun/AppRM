@@ -252,6 +252,20 @@ Schema schema = Schema(
       ],
     ),
     const Table(
+      'work_logs',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('app_id'),
+        Column.text('amount'),
+        Column.text('description'),
+      ],
+      indexes: [
+        Index('work_logs_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
       'applications',
       [
         Column.text('id'),

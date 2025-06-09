@@ -14,6 +14,7 @@ import '../../common_object/mappers/story_mapper.dart';
 import '../../common_object/mappers/user_story_mapper.dart';
 import '../../common_object/mappers/data_object_mapper.dart';
 import '../../common_object/mappers/requirement_mapper.dart';
+import '../../common_object/mappers/work_log_mapper.dart';
 import '../../common_object/widgets/listing/object_list_wrapper.dart';
 import '../widgets/generic_item_card.dart';
 import '../widgets/generic_list_empty.dart';
@@ -24,6 +25,7 @@ import '../widgets/location_item_card.dart';
 import '../widgets/location_list_empty.dart';
 import '../widgets/people_empty.dart';
 import '../widgets/person_item_card.dart';
+import '../../../typedefs/sort_field.dart';
 
 class ObjectListingPage extends StatefulWidget {
   const ObjectListingPage({super.key});
@@ -103,6 +105,17 @@ class _ObjectListingPageState extends State<ObjectListingPage> {
         (key: 'name', label: 'Name'),
       ],
       searchField: ['name']
+    ),
+    'work_logs': (
+      title: 'Work Log',
+      objectItemCard: (item) => GenericItemCard(item: item),
+      objectEmptyWidget: () => const GenericListEmpty(),
+      dataMapperFn: WorkLogToObjectItemMapper.fromJson,
+      sortFields: [
+        (key: 'created_at', label: 'Date'),
+      ],
+      filterFields: [],
+      searchField: ['description']
     ),
     'stories': (
       title: 'Stories',
@@ -206,11 +219,17 @@ class _ObjectListingPageState extends State<ObjectListingPage> {
             ? null
             : () => objectData.objectEmptyWidget.call(),
         sortFields: objectData?.sortFields
-                .map((e) => (key: e.key, label: e.label, value: null))
+                .map<({String key, String label, SortValueEnum? value})>((e) =>
+                    (
+                      key: e.key as String,
+                      label: e.label as String,
+                      value: null
+                    ))
                 .toList() ??
             [],
         filterFields: objectData?.filterFields
-                .map((e) => (key: e.key, label: e.label))
+                .map<({String key, String label})>(
+                    (e) => (key: e.key as String, label: e.label as String))
                 .toList() ??
             [],
         searchFields: objectData?.searchField ?? [],
