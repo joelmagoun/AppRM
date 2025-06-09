@@ -238,6 +238,27 @@ class _ObjectUpdatingPageState extends State<ObjectUpdatingPage> {
         ),
       ],
     ),
+    'work_logs': (
+      label: 'work log',
+      inputFields: [
+        (
+          key: 'amount',
+          label: 'Amount',
+          placeholder: null,
+          displayMode: 'SINGLE_SELECT',
+          options: ['0.5', '1', '1.5', '2'],
+          asyncOptions: null,
+        ),
+        (
+          key: 'description',
+          label: 'Description',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+      ],
+    ),
     'data_objects': (
       label: 'data_object',
       inputFields: [

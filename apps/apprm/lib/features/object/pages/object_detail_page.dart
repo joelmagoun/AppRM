@@ -13,6 +13,7 @@ import '../../common_object/mappers/story_mapper.dart';
 import '../../common_object/mappers/user_story_mapper.dart';
 import '../../common_object/mappers/data_field_mapper.dart';
 import '../../common_object/mappers/screen_function_mapper.dart';
+import '../../common_object/mappers/work_log_mapper.dart';
 import '../../common_object/widgets/detail/object_detail_wrapper.dart';
 
 class ObjectDetailPage extends StatefulWidget {
@@ -74,6 +75,13 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
       dataMapperFn: UserStoryToObjectItemMapper.fromJson,
       displayFields: [
         (key: 'name', label: 'Name'),
+        (key: 'description', label: 'Description'),
+      ],
+    ),
+    'work_logs': (
+      dataMapperFn: WorkLogToObjectItemMapper.fromJson,
+      displayFields: [
+        (key: 'amount', label: 'Amount'),
         (key: 'description', label: 'Description'),
       ],
     ),
