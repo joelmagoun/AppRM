@@ -92,6 +92,26 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
     _refresh();
   }
 
+  Future<void> _openFullScreenImage(String path) async {
+    if (!mounted) return;
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => Scaffold(
+          backgroundColor: Colors.black,
+          body: GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            onDoubleTap: () => Navigator.of(context).pop(),
+            child: Center(
+              child: InteractiveViewer(
+                child: Image.file(File(path)),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Future<void> _openPhotoDetail(Map<String, dynamic> item) async {
     final localPath =
         await attachmentQueue.getLocalUri('${item['photo_id']}.jpg');
@@ -105,7 +125,11 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Image.file(File(localPath)),
+                GestureDetector(
+                  onTap: () => _openFullScreenImage(localPath),
+                  onDoubleTap: () => _openFullScreenImage(localPath),
+                  child: Image.file(File(localPath)),
+                ),
                 const SizedBox(height: 8),
                 Text(item['name'] ?? '',
                     style: const TextStyle(fontWeight: FontWeight.bold)),
