@@ -160,7 +160,7 @@ Schema schema = Schema(
         Index('data_objects_list', [IndexedColumn('id')])
       ],
     ),
-        const Table(
+    const Table(
       'data_fields',
       [
         Column.text('id'),
@@ -224,6 +224,20 @@ Schema schema = Schema(
       ],
     ),
     const Table(
+      'data_links',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('function_id'),
+        Column.text('object_id'),
+        Column.text('read_write'),
+      ],
+      indexes: [
+        Index('data_links_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
       'user_stories',
       [
         Column.text('id'),
@@ -236,8 +250,9 @@ Schema schema = Schema(
       indexes: [
         Index('user_stories_list', [IndexedColumn('id')])
       ],
-    ), const Table(
-    'applications',
+    ),
+    const Table(
+      'applications',
       [
         Column.text('id'),
         Column.text('created_at'),
