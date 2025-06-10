@@ -81,7 +81,13 @@ class _ApplicationHomePageState extends State<ApplicationHomePage> {
             ),
           ),
           builder: (context, state) {
-            return Text(state.data?['name'] ?? 'Home');
+            if (state.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state.hasError) {
+              return const Center(child: Text('Error loading data'));
+            } else {
+              return Text(state.data?['name'] ?? 'Home');
+            }
           },
         ),
         actions: [
