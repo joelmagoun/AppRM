@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../common_object/widgets/managing/object_adding_wrapper.dart';
+import '../../../bootstrap/powersync.dart';
 
 class ObjectAddingPage extends StatefulWidget {
   const ObjectAddingPage({super.key});
@@ -343,13 +344,10 @@ class _ObjectAddingPageState extends State<ObjectAddingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final objectTypeParam =
-        GoRouterState.of(context).pathParameters['objectType']!;
+    final objectTypeParam = GoRouterState.of(context).pathParameters['objectType']!;
     final appIdParam = GoRouterState.of(context).pathParameters['appId']!;
-    final dataObjectParam =
-        GoRouterState.of(context).queryParameters['data_object'];
-    final screenIdParam =
-        GoRouterState.of(context).queryParameters['screen_id'];
+    final dataObjectParam = GoRouterState.of(context).queryParameters['data_object'];
+    final screenIdParam = GoRouterState.of(context).queryParameters['screen_id'];
     final objectData = objectDataMap[objectTypeParam];
 
     return ObjectAddingWrapper(
@@ -368,6 +366,7 @@ class _ObjectAddingPageState extends State<ObjectAddingPage> {
           [],
       extraData: {
         'app_id': appIdParam,
+        if (objectTypeParam == 'work_logs') 'user_id': getUserId(),
         if (dataObjectParam != null) 'data_object': dataObjectParam,
         if (screenIdParam != null) 'screen_id': screenIdParam,
       },

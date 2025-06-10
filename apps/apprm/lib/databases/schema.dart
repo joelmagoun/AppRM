@@ -20,6 +20,16 @@ Schema schema = Schema(
       ],
     ),
     const Table(
+      'profile',
+      [
+        Column.text('id'),
+        Column.text('email'),
+      ],
+      indexes: [
+        Index('profile_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
       'people',
       [
         Column.text('id'),
@@ -258,6 +268,7 @@ Schema schema = Schema(
         Column.text('created_at'),
         Column.text('updated_at'),
         Column.text('app_id'),
+        Column.text('user_id'),
         Column.text('amount'),
         Column.text('description'),
       ],
