@@ -5,6 +5,8 @@ import 'package:apprm/router.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import '../../common_object/foundation/object_repository.dart';
+import '../../common_object/foundation/use_cases/get_object_item_usecase.dart';
 
 class ApplicationHomePage extends StatefulWidget {
   const ApplicationHomePage({super.key, required this.appId});
@@ -59,7 +61,35 @@ class _ApplicationHomePageState extends State<ApplicationHomePage> {
         backgroundColor: Colors.white,
         automaticallyImplyLeading: true,
         centerTitle: false,
-        title: const Text('Home'),
+        title: QueryBuilder<Map<String, dynamic>>( 
+          query: Query(
+            key: ['applications', 'item', widget.appId],
+            queryFn: () async {
+              return await GetObjectItemUseCase(
+                objectRepository: ObjectRepository(),
+              ).execute(
+                GetObjectItemUseCaseParams(
+                  objectType: 'applications',
+                  objectId: widget.appId,
+                ),
+              );
+            },
+            config: QueryConfig(
+              cacheDuration: Duration(seconds: 1),
+              refetchDuration: Duration(seconds: 1),
+              storeQuery: false,
+            ),
+          ),
+          builder: (context, state) {
+            if (state.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state.hasError) {
+              return const Center(child: Text('Error loading data'));
+            } else {
+              return Text(state.data?['name'] ?? 'Home');
+            }
+          },
+        ),
         actions: [
           QueryBuilder<int>(
             query: Query(
