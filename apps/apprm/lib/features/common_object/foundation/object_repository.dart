@@ -36,15 +36,17 @@ class ObjectRepository {
     }
 
     try {
-      // final results = await db.getAll(
-      //   'SELECT * FROM $tableName$sortStatement',
-      //   [
-      //     if (sortStatement.isNotEmpty)
-      //       sortValues.entries.map((e) => '${e.key} ${e.value}').join(', ')
-      //   ],
-      // );
+      String query = 'SELECT * FROM $tableName';
+      if (tableName == 'work_logs') {
+        query = '''
+          SELECT wl.*, p.email AS username, a.name AS app_name
+          FROM work_logs wl
+          LEFT JOIN profile p ON wl.user_id = p.id
+          LEFT JOIN applications a ON wl.app_id = a.id''';
+      }
+      query = '$query$filterStatement$sortStatement';
 
-      final results = await db.getAll('SELECT * FROM $tableName$filterStatement$sortStatement');
+      final results = await db.getAll(query);
 
       return results
           .map((r) => r.entries.fold<Map<String, dynamic>>({}, (res, e) => {...res, e.key: e.value}))
@@ -59,7 +61,16 @@ class ObjectRepository {
     required String objectId,
   }) async {
     try {
-      final result = await db.get('SELECT * FROM $tableName WHERE id=?', [objectId]);
+      String query = 'SELECT * FROM $tableName WHERE id=?';
+      if (tableName == 'work_logs') {
+        query = '''
+          SELECT wl.*, p.email AS username, a.name AS app_name
+          FROM work_logs wl
+          LEFT JOIN profile p ON wl.user_id = p.id
+          LEFT JOIN applications a ON wl.app_id = a.id
+          WHERE wl.id = ?''';
+      }
+      final result = await db.get(query, [objectId]);
 
       return result.entries.fold<Map<String, dynamic>>({}, (res, e) => {...res, e.key: e.value});
     } catch (e) {
