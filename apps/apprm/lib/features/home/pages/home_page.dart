@@ -16,29 +16,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final objectListData = [
     (
-      icon: PhosphorIconsFill.asterisk,
-      title: 'Requirements',
-      route: '/internal/requirements'
-    ),
-    (
-      icon: PhosphorIconsFill.treeStructure,
-      title: 'Data Model',
-      route: '/internal/data_objects'
-    ),
-    (
-      icon: PhosphorIconsFill.chalkboard,
-      title: 'Screens',
-      route: '/internal/screens'
-    ),
-    (
-      icon: PhosphorIconsFill.books,
-      title: 'User Stories',
-      route: '/internal/user_stories'
+      icon: PhosphorIconsFill.appWindow,
+      title: 'Applications',
+      route: '/applications'
     ),
     (
       icon: PhosphorIconsFill.clock,
       title: 'Work Log',
-      route: '/internal/work_logs'
+      route: '/work_logs'
     )
   ];
 

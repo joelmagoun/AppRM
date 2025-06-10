@@ -58,7 +58,7 @@ class _ApplicationListingPageState extends State<ApplicationListingPage> {
         filterFields: const [],
         searchFields: const ['name'],
         onDetailNavigateFn: (id) {
-          AppHomeRoute(appId: id).push(context);
+          ApplicationHomeRoute(appId: id).push(context);
         },
       ),
     );
