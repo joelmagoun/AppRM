@@ -9,8 +9,10 @@ part of 'router.dart';
 List<RouteBase> get $appRoutes => [
       $authPageRoute,
       $homeRoute,
-      $appHomeRoute,
+      $applicationHomeRoute,
+      $applicationListingRoute,
       $applicationAddingRoute,
+      $workLogListingRoute,
       $objectListingRoute,
       $externalObjectListingRoute,
       $notificationRoute,
@@ -164,18 +166,42 @@ extension $HomeRouteExtension on HomeRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $appHomeRoute => GoRouteData.$route(
+RouteBase get $applicationHomeRoute => GoRouteData.$route(
       path: '/app/:appId',
-      factory: $AppHomeRouteExtension._fromState,
+      factory: $ApplicationHomeRouteExtension._fromState,
     );
 
-extension $AppHomeRouteExtension on AppHomeRoute {
-  static AppHomeRoute _fromState(GoRouterState state) => AppHomeRoute(
+extension $ApplicationHomeRouteExtension on ApplicationHomeRoute {
+  static ApplicationHomeRoute _fromState(GoRouterState state) =>
+      ApplicationHomeRoute(
         appId: state.pathParameters['appId']!,
       );
 
   String get location => GoRouteData.$location(
         '/app/${Uri.encodeComponent(appId)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $applicationListingRoute => GoRouteData.$route(
+      path: '/applications',
+      factory: $ApplicationListingRouteExtension._fromState,
+    );
+
+extension $ApplicationListingRouteExtension on ApplicationListingRoute {
+  static ApplicationListingRoute _fromState(GoRouterState state) =>
+      const ApplicationListingRoute();
+
+  String get location => GoRouteData.$location(
+        '/applications',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -199,6 +225,29 @@ extension $ApplicationAddingRouteExtension on ApplicationAddingRoute {
 
   String get location => GoRouteData.$location(
         '/applications/add',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $workLogListingRoute => GoRouteData.$route(
+      path: '/work_logs',
+      factory: $WorkLogListingRouteExtension._fromState,
+    );
+
+extension $WorkLogListingRouteExtension on WorkLogListingRoute {
+  static WorkLogListingRoute _fromState(GoRouterState state) =>
+      const WorkLogListingRoute();
+
+  String get location => GoRouteData.$location(
+        '/work_logs',
       );
 
   void go(BuildContext context) => context.go(location);

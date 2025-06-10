@@ -6,16 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-class AppHomePage extends StatefulWidget {
-  const AppHomePage({super.key, required this.appId});
+class ApplicationHomePage extends StatefulWidget {
+  const ApplicationHomePage({super.key, required this.appId});
 
   final String appId;
 
   @override
-  State<AppHomePage> createState() => _AppHomePageState();
+  State<ApplicationHomePage> createState() => _ApplicationHomePageState();
 }
 
-class _AppHomePageState extends State<AppHomePage> {
+class _ApplicationHomePageState extends State<ApplicationHomePage> {
   late final List<({IconData icon, String title, String route})> objectListData;
 
   @override

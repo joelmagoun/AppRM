@@ -8,8 +8,10 @@ import 'features/auth/pages/azure_b2c_login_page.dart';
 import 'features/auth/pages/supabase_login_page.dart';
 import 'features/auth/pages/supabase_signup_page.dart';
 import 'features/application/pages/application_listing_page.dart';
-import 'features/application/pages/app_home_page.dart';
+import 'features/application/pages/application_home_page.dart';
 import 'features/application/pages/application_adding_page.dart';
+import 'features/home/pages/home_page.dart';
+import 'features/work_log/pages/work_log_listing_page.dart';
 import 'features/notification/pages/powersync_debug_page.dart';
 import 'features/object/pages/external_object_detail_page.dart';
 import 'features/object/pages/external_object_listing_page.dart';
@@ -114,21 +116,33 @@ class Auth0LoginRoute extends GoRouteData {
 class HomeRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const ApplicationListingPage();
+    return const HomePage();
   }
 }
 
-@TypedGoRoute<AppHomeRoute>(
+@TypedGoRoute<ApplicationHomeRoute>(
   path: '/app/:appId',
 )
-class AppHomeRoute extends GoRouteData {
-  const AppHomeRoute({required this.appId});
+class ApplicationHomeRoute extends GoRouteData {
+  const ApplicationHomeRoute({required this.appId});
 
   final String appId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return AppHomePage(appId: appId);
+    return ApplicationHomePage(appId: appId);
+  }
+}
+
+@TypedGoRoute<ApplicationListingRoute>(
+  path: '/applications',
+)
+class ApplicationListingRoute extends GoRouteData {
+  const ApplicationListingRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ApplicationListingPage();
   }
 }
 
@@ -139,6 +153,18 @@ class ApplicationAddingRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const ApplicationAddingPage();
+  }
+}
+
+@TypedGoRoute<WorkLogListingRoute>(
+  path: '/work_logs',
+)
+class WorkLogListingRoute extends GoRouteData {
+  const WorkLogListingRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const WorkLogListingPage();
   }
 }
 
