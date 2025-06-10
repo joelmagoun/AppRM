@@ -15,8 +15,8 @@ class GenericListEmpty extends ConsumerWidget {
         children: [
           Image.asset(
             'assets/images/img_generic_empty.png',
-            width: 128,
-            height: 128,
+            width: 256,
+            height: 256,
           ),
           const Padding(
             padding: EdgeInsets.only(top: 32),
