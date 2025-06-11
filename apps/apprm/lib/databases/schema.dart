@@ -235,6 +235,47 @@ Schema schema = Schema(
       ],
     ),
     const Table(
+      'elements',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('name'),
+        Column.text('description'),
+      ],
+      indexes: [
+        Index('elements_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
+      'screen_elements',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('screen_id'),
+        Column.text('element_id'),
+      ],
+      indexes: [
+        Index('screen_elements_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
+      'element_photos',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('element_id'),
+        Column.text('name'),
+        Column.text('description'),
+        Column.text('photo_id'),
+      ],
+      indexes: [
+        Index('element_photos_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
       'data_links',
       [
         Column.text('id'),

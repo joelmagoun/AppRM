@@ -19,7 +19,7 @@ import 'features/object/pages/object_adding_page.dart';
 import 'features/object/pages/object_detail_page.dart';
 import 'features/object/pages/object_listing_page.dart';
 import 'features/object/pages/object_updating_page.dart';
-import 'features/notification/pages/powersync_debug_page.dart';
+import 'features/screens/pages/screen_element_adding_page.dart';
 
 part 'router.g.dart';
 
@@ -231,6 +231,21 @@ class ObjectUpdatingRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return ObjectUpdatingPage(objectId: objectId);
+  }
+}
+
+@TypedGoRoute<ScreenElementAddingRoute>(
+  path: '/app/:appId/screens/:screenId/elements/add',
+)
+class ScreenElementAddingRoute extends GoRouteData {
+  const ScreenElementAddingRoute({required this.appId, required this.screenId});
+
+  final String appId;
+  final String screenId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ScreenElementAddingPage(appId: appId, screenId: screenId);
   }
 }
 

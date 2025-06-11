@@ -193,6 +193,29 @@ class ObjectRepository {
     }
   }
 
+  Future<List<Map<String, dynamic>>> getScreenElements({
+    required String screenId,
+  }) async {
+    try {
+      final results = await db.getAll(
+        '''
+        SELECT e.*
+        FROM elements e
+        LEFT JOIN screen_elements se ON se.element_id = e.id
+        WHERE se.screen_id = ?
+        ''',
+        [screenId],
+      );
+
+      return results
+          .map((r) => r.entries.fold<Map<String, dynamic>>(
+              {}, (res, e) => {...res, e.key: e.value}))
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future connectToExternalObject({
     required String objectType,
     required String objectId,

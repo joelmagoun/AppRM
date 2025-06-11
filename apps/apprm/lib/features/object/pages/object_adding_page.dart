@@ -145,6 +145,27 @@ class _ObjectAddingPageState extends State<ObjectAddingPage> {
         ),
       ],
     ),
+    'elements': (
+      label: 'element',
+      inputFields: [
+        (
+          key: 'name',
+          label: 'Name',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'description',
+          label: 'Description',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+      ],
+    ),
     'screen_functions': (
       label: 'function',
       inputFields: [
