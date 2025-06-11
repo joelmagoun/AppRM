@@ -5,6 +5,7 @@ import 'package:apprm/features/screens/widgets/screen_function_list.dart';
 import 'package:apprm/features/screens/widgets/data_link_list.dart';
 import 'package:apprm/features/screens/widgets/element_list.dart';
 import 'package:apprm/features/screens/widgets/element_photo_list.dart';
+import 'package:apprm/features/screens/widgets/navigation_list.dart';
 import 'package:apprm/typedefs/display_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,6 +16,7 @@ class ObjectDetailCard extends ConsumerWidget {
     required this.objectType,
     required this.objectId,
     required this.appId,
+    this.screenId,
     required this.displayFields,
     this.objectItem,
   });
@@ -22,6 +24,7 @@ class ObjectDetailCard extends ConsumerWidget {
   final String objectType;
   final String objectId;
   final String appId;
+  final String? screenId;
   final List<DisplayField> displayFields;
   final Map<String, dynamic>? objectItem;
 
@@ -84,9 +87,23 @@ class ObjectDetailCard extends ConsumerWidget {
                 appId: appId,
                 functionId: objectId,
               ),
+            if (objectType == 'screen_functions')
+              NavigationList(
+                appId: appId,
+                objectId: objectId,
+                objectType: 'function',
+                screenId: objectItem?['screen_id'],
+              ),
             if (objectType == 'elements')
               ElementPhotoList(
                 elementId: objectId,
+              ),
+            if (objectType == 'elements')
+              NavigationList(
+                appId: appId,
+                objectId: objectId,
+                objectType: 'element',
+                screenId: screenId,
               ),
           ],
         ),

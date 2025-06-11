@@ -290,6 +290,21 @@ Schema schema = Schema(
       ],
     ),
     const Table(
+      'navigations',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('navigation_from'),
+        Column.text('navigation_from_type'),
+        Column.text('navigation_to'),
+        Column.text('navigation_to_type'),
+      ],
+      indexes: [
+        Index('navigations_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
       'user_stories',
       [
         Column.text('id'),

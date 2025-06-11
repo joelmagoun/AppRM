@@ -126,12 +126,15 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
         GoRouterState.of(context).pathParameters['objectType']!;
     final objectIdParam = GoRouterState.of(context).pathParameters['objectId']!;
     final appIdParam = GoRouterState.of(context).pathParameters['appId'];
+    final screenIdParam =
+        GoRouterState.of(context).queryParameters['screen_id'];
     final objectData = objectDataMap[objectTypeParam];
 
     return ObjectDetailWrapper(
       objectType: objectTypeParam,
       objectId: objectIdParam,
       appId: appIdParam!,
+      screenId: screenIdParam,
       mapperFn: objectData?.dataMapperFn ?? (e) => ObjectItem.fromJson(e),
       displayFields: objectData?.displayFields
               .map((e) => (key: e.key, label: e.label))
