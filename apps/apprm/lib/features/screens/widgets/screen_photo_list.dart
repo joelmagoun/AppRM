@@ -180,7 +180,7 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Text(
-            'Photos',
+            'Design',
             style: TextStyle(
               color: Colors.black54,
             ),

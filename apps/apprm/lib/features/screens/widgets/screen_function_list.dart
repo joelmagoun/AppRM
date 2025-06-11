@@ -35,7 +35,7 @@ class _ScreenFunctionListState extends ConsumerState<ScreenFunctionList> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Text(
-            'Functions',
+            'Screen Functionality',
             style: TextStyle(
               color: Colors.black54,
             ),
