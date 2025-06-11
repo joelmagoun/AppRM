@@ -75,10 +75,10 @@ class ObjectDetailCard extends ConsumerWidget {
                 appId: appId,
                 screenId: objectId,
               ),
-              ScreenFunctionList(
+              ElementList(
                 screenId: objectId,
               ),
-              ElementList(
+              ScreenFunctionList(
                 screenId: objectId,
               ),
             ],
