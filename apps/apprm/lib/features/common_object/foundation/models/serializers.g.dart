@@ -19,6 +19,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Screen.serializer)
       ..add(ScreenFunction.serializer)
       ..add(Story.serializer)
+      ..add(UiElement.serializer)
       ..add(UserStory.serializer))
     .build();
 

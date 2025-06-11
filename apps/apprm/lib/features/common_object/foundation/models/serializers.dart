@@ -14,6 +14,7 @@ import 'data_field.dart';
 import 'data_link.dart';
 import 'screen.dart';
 import 'screen_function.dart';
+import 'ui_element.dart';
 import 'story.dart';
 import 'user_story.dart';
 import 'serialize_plugins/custom_8601_date_time_plugin.dart';
@@ -33,6 +34,7 @@ const List<Type> _registeredTypes = [
   DataField,
   Screen,
   ScreenFunction,
+  UiElement,
   DataLink,
   Story,
   UserStory,
