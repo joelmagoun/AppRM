@@ -66,11 +66,11 @@ class ObjectDetailCard extends ConsumerWidget {
                 dataObjectId: objectId,
               ),
             if (objectType == 'screens') ...[
-              ScreenFunctionList(
-                screenId: objectId,
-              ),
               ScreenPhotoList(
                 appId: appId,
+                screenId: objectId,
+              ),
+              ScreenFunctionList(
                 screenId: objectId,
               ),
             ],
