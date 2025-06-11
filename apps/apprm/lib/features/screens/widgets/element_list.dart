@@ -54,7 +54,8 @@ class _ElementListState extends ConsumerState<ElementList> {
           .push(context);
       onRefresh();
     } else if (option == 'existing') {
-      final selectedScreen = await showCupertinoModalBottomSheet<Map<String, dynamic>?>(
+      final selectedScreen =
+          await showCupertinoModalBottomSheet<Map<String, dynamic>?>(
         context: context,
         builder: (_) => ScreenSelection(
           appId: appId,
@@ -63,7 +64,8 @@ class _ElementListState extends ConsumerState<ElementList> {
       );
       if (selectedScreen == null) return;
 
-      final selectedElement = await showCupertinoModalBottomSheet<Map<String, dynamic>?>(
+      final selectedElement =
+          await showCupertinoModalBottomSheet<Map<String, dynamic>?>(
         context: context,
         builder: (_) => ElementSelection(screenId: selectedScreen['id']),
       );
@@ -130,11 +132,9 @@ class _ElementListState extends ConsumerState<ElementList> {
                     ...state.data!.map(
                       (e) => InkWell(
                         onTap: () async {
-                          final result = await ObjectDetailRoute(
-                            appId: appIdParam,
-                            objectType: 'elements',
-                            objectId: e['id'],
-                          ).push(context);
+                          final result = await context.push(
+                            '/app/$appIdParam/internal/elements/${e['id']}?screen_id=${widget.screenId}',
+                          );
                           if (result == true) {
                             onRefresh();
                           }

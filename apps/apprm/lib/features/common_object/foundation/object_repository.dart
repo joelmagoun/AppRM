@@ -216,6 +216,31 @@ class ObjectRepository {
     }
   }
 
+  Future<List<Map<String, dynamic>>> getNavigations({
+    required String fromId,
+    required String fromType,
+  }) async {
+    try {
+      final results = await db.getAll(
+        '''
+        SELECT n.*, s.name AS screen_name, sf.name AS function_name
+        FROM navigations n
+        LEFT JOIN screens s ON n.navigation_to = s.id AND n.navigation_to_type = 'screen'
+        LEFT JOIN screen_functions sf ON sf.id = n.navigation_to AND n.navigation_to_type = 'function'
+        WHERE n.navigation_from = ? AND n.navigation_from_type = ?
+        ''',
+        [fromId, fromType],
+      );
+
+      return results
+          .map((r) => r.entries.fold<Map<String, dynamic>>(
+              {}, (res, e) => {...res, e.key: e.value}))
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future connectToExternalObject({
     required String objectType,
     required String objectId,
