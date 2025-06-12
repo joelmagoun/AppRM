@@ -19,7 +19,7 @@ class HistoryListingPage extends StatelessWidget {
         centerTitle: false,
         title: const Text('History'),
       ),
-      body: const ObjectListWrapper(
+      body: ObjectListWrapper(
         objectType: 'history',
         mapperFn: HistoryToObjectItemMapper.fromJson,
         itemCardBuilder: (item) => GenericItemCard(item: item),
