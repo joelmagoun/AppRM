@@ -16,22 +16,18 @@ class ObjectRepository {
   }) async {
     var sortStatement = "";
     if (sortValues.isNotEmpty) {
-      final orderByKey =
-          sortValues.entries.map((e) => '${e.key} ${e.value}').join(', ');
+      final orderByKey = sortValues.entries.map((e) => '${e.key} ${e.value}').join(', ');
       sortStatement = " ORDER BY $orderByKey";
     }
 
     var filterStatement = "";
     if (filterValues.isNotEmpty) {
-      final conditionByKey = filterValues.entries
-          .map((e) => '${e.key}=\'${e.value}\'')
-          .join(' AND ');
+      final conditionByKey = filterValues.entries.map((e) => '${e.key}=\'${e.value}\'').join(' AND ');
       filterStatement = " WHERE $conditionByKey";
     }
 
     if (searchValue?.isNotEmpty ?? false) {
-      final searchStatement =
-          searchFields.map((e) => '$e LIKE \'%$searchValue%\'').join(' OR ');
+      final searchStatement = searchFields.map((e) => '$e LIKE \'%$searchValue%\'').join(' OR ');
       if (filterStatement.isNotEmpty) {
         filterStatement = "$filterStatement $searchStatement";
       } else {
@@ -47,14 +43,19 @@ class ObjectRepository {
           FROM work_logs wl
           LEFT JOIN profile p ON wl.user_id = p.id
           LEFT JOIN applications a ON wl.app_id = a.id''';
+      } else if (tableName == 'history') {
+        query = '''
+          SELECT h.*, p.name AS username, a.name AS app_name
+          FROM history h
+          LEFT JOIN profile p ON h.user_id = p.id
+          LEFT JOIN applications a ON h.app_id = a.id''';
       }
       query = '$query$filterStatement$sortStatement';
 
       final results = await db.getAll(query);
 
       return results
-          .map((r) => r.entries.fold<Map<String, dynamic>>(
-              {}, (res, e) => {...res, e.key: e.value}))
+          .map((r) => r.entries.fold<Map<String, dynamic>>({}, (res, e) => {...res, e.key: e.value}))
           .toList();
     } catch (e) {
       rethrow;
@@ -74,11 +75,17 @@ class ObjectRepository {
           LEFT JOIN profile p ON wl.user_id = p.id
           LEFT JOIN applications a ON wl.app_id = a.id
           WHERE wl.id = ?''';
+      } else if (tableName == 'history') {
+        query = '''
+          SELECT h.*, p.name AS username, a.name AS app_name
+          FROM history h
+          LEFT JOIN profile p ON h.user_id = p.id
+          LEFT JOIN applications a ON h.app_id = a.id
+          WHERE h.id = ?''';
       }
       final result = await db.get(query, [objectId]);
 
-      return result.entries
-          .fold<Map<String, dynamic>>({}, (res, e) => {...res, e.key: e.value});
+      return result.entries.fold<Map<String, dynamic>>({}, (res, e) => {...res, e.key: e.value});
     } catch (e) {
       rethrow;
     }
@@ -92,8 +99,7 @@ class ObjectRepository {
       final results = await db.getAll('SELECT DISTINCT $field FROM $tableName');
 
       return results
-          .map((r) => r.entries.fold<Map<String, dynamic>>(
-              {}, (res, e) => {...res, e.key: e.value}))
+          .map((r) => r.entries.fold<Map<String, dynamic>>({}, (res, e) => {...res, e.key: e.value}))
           .toList();
     } catch (e) {
       rethrow;
@@ -112,8 +118,20 @@ class ObjectRepository {
       final result = await db.execute(
         "INSERT INTO $tableName(id, $fieldStatement, created_at, updated_at) VALUES (uuid(), $valueStatement, datetime(), datetime()) RETURNING *",
       );
+      final id = result.firstWhere((e) => e.containsKey('id'))['id'];
 
-      return result.firstWhere((e) => e.containsKey('id'))['id'];
+      final appId = data['app_id'];
+      if (appId != null) {
+        final name = _extractName(data);
+        final message = 'Created $tableName${name.isNotEmpty ? ' \"$name\"' : ''}';
+        await _insertHistory(
+          appId: appId,
+          userId: getUserId(),
+          message: message,
+        );
+      }
+
+      return id;
     } catch (e) {
       rethrow;
     }
@@ -126,8 +144,7 @@ class ObjectRepository {
   }) async {
     if (data.isEmpty) throw Exception('Please input at least 1 field');
     try {
-      final setStatement =
-          data.entries.map((e) => "'${e.key}' = '${e.value ?? ''}'").join(', ');
+      final setStatement = data.entries.map((e) => "'${e.key}' = '${e.value ?? ''}'").join(', ');
       await db.execute(
         "UPDATE $tableName SET $setStatement WHERE id = ?",
         [objectId],
@@ -142,10 +159,22 @@ class ObjectRepository {
     required String objectId,
   }) async {
     try {
+      final item = await getObjectItem(tableName: tableName, objectId: objectId);
       await db.execute(
         "DELETE FROM $tableName WHERE id = ?",
         [objectId],
       );
+
+      final appId = item['app_id'];
+      if (appId != null) {
+        final name = _extractName(item);
+        final message = 'Deleted $tableName${name.isNotEmpty ? ' \"$name\"' : ''}';
+        await _insertHistory(
+          appId: appId,
+          userId: getUserId(),
+          message: message,
+        );
+      }
     } catch (e) {
       rethrow;
     }
@@ -162,8 +191,7 @@ class ObjectRepository {
       );
 
       return results
-          .map((r) => r.entries.fold<Map<String, dynamic>>(
-              {}, (res, e) => {...res, e.key: e.value}))
+          .map((r) => r.entries.fold<Map<String, dynamic>>({}, (res, e) => {...res, e.key: e.value}))
           .toList();
     } catch (e) {
       rethrow;
@@ -185,8 +213,7 @@ class ObjectRepository {
       );
 
       return results
-          .map((r) => r.entries.fold<Map<String, dynamic>>(
-              {}, (res, e) => {...res, e.key: e.value}))
+          .map((r) => r.entries.fold<Map<String, dynamic>>({}, (res, e) => {...res, e.key: e.value}))
           .toList();
     } catch (e) {
       rethrow;
@@ -208,8 +235,7 @@ class ObjectRepository {
       );
 
       return results
-          .map((r) => r.entries.fold<Map<String, dynamic>>(
-              {}, (res, e) => {...res, e.key: e.value}))
+          .map((r) => r.entries.fold<Map<String, dynamic>>({}, (res, e) => {...res, e.key: e.value}))
           .toList();
     } catch (e) {
       rethrow;
@@ -233,8 +259,7 @@ class ObjectRepository {
       );
 
       return results
-          .map((r) => r.entries.fold<Map<String, dynamic>>(
-              {}, (res, e) => {...res, e.key: e.value}))
+          .map((r) => r.entries.fold<Map<String, dynamic>>({}, (res, e) => {...res, e.key: e.value}))
           .toList();
     } catch (e) {
       rethrow;
@@ -300,6 +325,25 @@ class ObjectRepository {
           [objectType, externalObjectType, objectId, externalObjectId]);
     } catch (e) {
       rethrow;
+    }
+  }
+
+  String _extractName(Map<String, dynamic> data) {
+    return (data['name'] ?? data['requirement'] ?? data['description'] ?? '').toString();
+  }
+
+  Future<void> _insertHistory({
+    required String appId,
+    required String? userId,
+    required String message,
+  }) async {
+    try {
+      await db.execute(
+        "INSERT INTO history(id, app_id, user_id, message, created_at) VALUES (uuid(), ?, ?, ?, datetime())",
+        [appId, userId, message],
+      );
+    } catch (e) {
+      // ignore
     }
   }
 }
