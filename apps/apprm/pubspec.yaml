@@ -31,6 +31,7 @@ dependencies:
   pull_down_button: ^0.10.1
   easy_debounce: ^2.0.3
   encrypt: ^5.0.1
+  shared_preferences: ^2.3.2
 
   aad_b2c_webview:
     path: ../../libs/aad_b2c_webview

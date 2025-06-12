@@ -341,6 +341,7 @@ Schema schema = Schema(
         Column.text('updated_at'),
         Column.text('name'),
         Column.text('description'),
+        Column.text('secret'),
       ],
       indexes: [
         Index('applications_list', [IndexedColumn('id')])
