@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../constants/color.dart';
 import '../../common_object/widgets/listing/object_list_wrapper.dart';
-import '../../object/widgets/generic_item_card.dart';
+import '../widgets/history_item_card.dart';
 import '../../object/widgets/generic_list_empty.dart';
 import '../../common_object/mappers/history_mapper.dart';
 
@@ -22,7 +22,7 @@ class HistoryListingPage extends StatelessWidget {
       body: ObjectListWrapper(
         objectType: 'history',
         mapperFn: HistoryToObjectItemMapper.fromJson,
-        itemCardBuilder: (item) => GenericItemCard(item: item),
+        itemCardBuilder: (item) => HistoryItemCard(item: item),
         emptyBuilder: GenericListEmpty.new,
         sortFields: [
           (key: 'created_at', label: 'Date', value: null),
