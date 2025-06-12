@@ -363,6 +363,19 @@ Schema schema = Schema(
         Index('notifications_list', [IndexedColumn('id')])
       ],
     ),
+    const Table(
+      'history',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('app_id'),
+        Column.text('user_id'),
+        Column.text('message'),
+      ],
+      indexes: [
+        Index('history_list', [IndexedColumn('id')])
+      ],
+    ),
     AttachmentsQueueTable(
       attachmentsQueueTableName: defaultAttachmentsQueueTableName,
     )
