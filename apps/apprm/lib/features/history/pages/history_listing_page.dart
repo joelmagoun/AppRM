@@ -22,7 +22,7 @@ class HistoryListingPage extends StatelessWidget {
       body: const ObjectListWrapper(
         objectType: 'history',
         mapperFn: HistoryToObjectItemMapper.fromJson,
-        itemCardBuilder: GenericItemCard.new,
+        itemCardBuilder: (item) => GenericItemCard(item: item),
         emptyBuilder: GenericListEmpty.new,
         sortFields: [
           (key: 'created_at', label: 'Date', value: null),
