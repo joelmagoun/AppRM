@@ -4,6 +4,7 @@ class Application {
   final DateTime? updatedAt;
   final String? name;
   final String? description;
+  final String? secret;
 
   Application({
     required this.id,
@@ -11,16 +12,19 @@ class Application {
     this.updatedAt,
     this.name,
     this.description,
+    this.secret,
   });
 
   factory Application.fromJson(Map<String, dynamic> json) {
     return Application(
       id: json['id'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
-      updatedAt:
-          json['updated_at'] != null ? DateTime.parse(json['updated_at']) : null,
+      updatedAt: json['updated_at'] != null
+          ? DateTime.parse(json['updated_at'])
+          : null,
       name: json['name'] as String?,
       description: json['description'] as String?,
+      secret: json['secret'] as String?,
     );
   }
 
@@ -30,5 +34,6 @@ class Application {
         'updated_at': updatedAt?.toIso8601String(),
         'name': name,
         'description': description,
+        'secret': secret,
       };
 }

@@ -13,9 +13,7 @@ String executeEncrypt(String plainText, String secret) {
   final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
 
   final encrypted = encrypter.encrypt(plainText, iv: iv);
-  final decrypted = encrypter.decrypt(encrypted, iv: iv);
 
-  //print(decrypted); // Lorem ipsum dolor sit amet, consectetur adipiscing elit
   //print(encrypted.base64);
 
   String encTxt =
