@@ -15,16 +15,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final objectListData = [
-    (
-      icon: PhosphorIconsFill.appWindow,
-      title: 'Applications',
-      route: '/applications'
-    ),
-    (
-      icon: PhosphorIconsFill.clock,
-      title: 'Work Log',
-      route: '/work_logs'
-    )
+    (icon: PhosphorIconsFill.appWindow, title: 'Applications', route: '/applications'),
+    (icon: PhosphorIconsFill.clock, title: 'Work Log', route: '/work_logs'),
+    (icon: PhosphorIconsFill.clockCounterClockwise, title: 'History', route: '/history')
   ];
 
   @override

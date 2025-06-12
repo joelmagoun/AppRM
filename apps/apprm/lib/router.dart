@@ -12,6 +12,7 @@ import 'features/application/pages/application_home_page.dart';
 import 'features/application/pages/application_adding_page.dart';
 import 'features/home/pages/home_page.dart';
 import 'features/work_log/pages/work_log_listing_page.dart';
+import 'features/history/pages/history_listing_page.dart';
 import 'features/notification/pages/powersync_debug_page.dart';
 import 'features/object/pages/external_object_detail_page.dart';
 import 'features/object/pages/external_object_listing_page.dart';
@@ -31,8 +32,7 @@ final rootRouter = GoRouter(
   navigatorKey: rootNavigatorKey,
   redirect: (context, state) {
     final bool onAuthPage = state.location.startsWith('/auth');
-    final isAuthenticated =
-        Supabase.instance.client.auth.currentSession != null;
+    final isAuthenticated = Supabase.instance.client.auth.currentSession != null;
 
     if (isAuthenticated && onAuthPage) {
       return HomeRoute().location;
@@ -165,6 +165,18 @@ class WorkLogListingRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const WorkLogListingPage();
+  }
+}
+
+@TypedGoRoute<HistoryListingRoute>(
+  path: '/history',
+)
+class HistoryListingRoute extends GoRouteData {
+  const HistoryListingRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const HistoryListingPage();
   }
 }
 
