@@ -348,6 +348,19 @@ Schema schema = Schema(
       ],
     ),
     const Table(
+      'application_users',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('app_id'),
+        Column.text('user_id'),
+      ],
+      indexes: [
+        Index('application_users_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
       'actions',
       [
         Column.text('id'),

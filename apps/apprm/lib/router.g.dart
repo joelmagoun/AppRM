@@ -14,6 +14,7 @@ List<RouteBase> get $appRoutes => [
       $applicationAddingRoute,
       $workLogListingRoute,
       $historyListingRoute,
+      $adminRoute,
       $objectListingRoute,
       $screenElementAddingRoute,
       $externalObjectListingRoute,
@@ -54,13 +55,15 @@ extension $AuthPageRouteExtension on AuthPageRoute {
 
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
 }
 
 extension $SupabaseSignUpRouteExtension on SupabaseSignUpRoute {
-  static SupabaseSignUpRoute _fromState(GoRouterState state) => const SupabaseSignUpRoute();
+  static SupabaseSignUpRoute _fromState(GoRouterState state) =>
+      const SupabaseSignUpRoute();
 
   String get location => GoRouteData.$location(
         '/auth/sign-up',
@@ -70,13 +73,15 @@ extension $SupabaseSignUpRouteExtension on SupabaseSignUpRoute {
 
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
 }
 
 extension $SupabaseLoginRouteExtension on SupabaseLoginRoute {
-  static SupabaseLoginRoute _fromState(GoRouterState state) => SupabaseLoginRoute(
+  static SupabaseLoginRoute _fromState(GoRouterState state) =>
+      SupabaseLoginRoute(
         email: state.queryParameters['email'],
       );
 
@@ -91,13 +96,15 @@ extension $SupabaseLoginRouteExtension on SupabaseLoginRoute {
 
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
 }
 
 extension $AzureB2CLoginRouteExtension on AzureB2CLoginRoute {
-  static AzureB2CLoginRoute _fromState(GoRouterState state) => AzureB2CLoginRoute(
+  static AzureB2CLoginRoute _fromState(GoRouterState state) =>
+      AzureB2CLoginRoute(
         email: state.queryParameters['email'],
       );
 
@@ -112,7 +119,8 @@ extension $AzureB2CLoginRouteExtension on AzureB2CLoginRoute {
 
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
 }
@@ -133,7 +141,8 @@ extension $Auth0LoginRouteExtension on Auth0LoginRoute {
 
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
 }
@@ -154,7 +163,8 @@ extension $HomeRouteExtension on HomeRoute {
 
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
 }
@@ -165,7 +175,8 @@ RouteBase get $applicationHomeRoute => GoRouteData.$route(
     );
 
 extension $ApplicationHomeRouteExtension on ApplicationHomeRoute {
-  static ApplicationHomeRoute _fromState(GoRouterState state) => ApplicationHomeRoute(
+  static ApplicationHomeRoute _fromState(GoRouterState state) =>
+      ApplicationHomeRoute(
         appId: state.pathParameters['appId']!,
       );
 
@@ -177,7 +188,8 @@ extension $ApplicationHomeRouteExtension on ApplicationHomeRoute {
 
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
 }
@@ -188,7 +200,8 @@ RouteBase get $applicationListingRoute => GoRouteData.$route(
     );
 
 extension $ApplicationListingRouteExtension on ApplicationListingRoute {
-  static ApplicationListingRoute _fromState(GoRouterState state) => const ApplicationListingRoute();
+  static ApplicationListingRoute _fromState(GoRouterState state) =>
+      const ApplicationListingRoute();
 
   String get location => GoRouteData.$location(
         '/applications',
@@ -198,7 +211,8 @@ extension $ApplicationListingRouteExtension on ApplicationListingRoute {
 
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
 }
@@ -209,7 +223,8 @@ RouteBase get $applicationAddingRoute => GoRouteData.$route(
     );
 
 extension $ApplicationAddingRouteExtension on ApplicationAddingRoute {
-  static ApplicationAddingRoute _fromState(GoRouterState state) => ApplicationAddingRoute();
+  static ApplicationAddingRoute _fromState(GoRouterState state) =>
+      ApplicationAddingRoute();
 
   String get location => GoRouteData.$location(
         '/applications/add',
@@ -219,7 +234,8 @@ extension $ApplicationAddingRouteExtension on ApplicationAddingRoute {
 
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
 }
@@ -230,7 +246,8 @@ RouteBase get $workLogListingRoute => GoRouteData.$route(
     );
 
 extension $WorkLogListingRouteExtension on WorkLogListingRoute {
-  static WorkLogListingRoute _fromState(GoRouterState state) => const WorkLogListingRoute();
+  static WorkLogListingRoute _fromState(GoRouterState state) =>
+      const WorkLogListingRoute();
 
   String get location => GoRouteData.$location(
         '/work_logs',
@@ -240,7 +257,8 @@ extension $WorkLogListingRouteExtension on WorkLogListingRoute {
 
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
 }
@@ -251,7 +269,8 @@ RouteBase get $historyListingRoute => GoRouteData.$route(
     );
 
 extension $HistoryListingRouteExtension on HistoryListingRoute {
-  static HistoryListingRoute _fromState(GoRouterState state) => const HistoryListingRoute();
+  static HistoryListingRoute _fromState(GoRouterState state) =>
+      const HistoryListingRoute();
 
   String get location => GoRouteData.$location(
         '/history',
@@ -261,7 +280,30 @@ extension $HistoryListingRouteExtension on HistoryListingRoute {
 
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $adminRoute => GoRouteData.$route(
+      path: '/admin',
+      factory: $AdminRouteExtension._fromState,
+    );
+
+extension $AdminRouteExtension on AdminRoute {
+  static AdminRoute _fromState(GoRouterState state) => const AdminRoute();
+
+  String get location => GoRouteData.$location(
+        '/admin',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
 }
@@ -288,7 +330,8 @@ RouteBase get $objectListingRoute => GoRouteData.$route(
     );
 
 extension $ObjectListingRouteExtension on ObjectListingRoute {
-  static ObjectListingRoute _fromState(GoRouterState state) => ObjectListingRoute(
+  static ObjectListingRoute _fromState(GoRouterState state) =>
+      ObjectListingRoute(
         appId: state.pathParameters['appId']!,
         objectType: state.pathParameters['objectType']!,
       );
@@ -301,7 +344,8 @@ extension $ObjectListingRouteExtension on ObjectListingRoute {
 
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
 }
@@ -320,7 +364,8 @@ extension $ObjectAddingRouteExtension on ObjectAddingRoute {
 
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
 }
@@ -340,13 +385,15 @@ extension $ObjectDetailRouteExtension on ObjectDetailRoute {
 
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
 }
 
 extension $ObjectUpdatingRouteExtension on ObjectUpdatingRoute {
-  static ObjectUpdatingRoute _fromState(GoRouterState state) => ObjectUpdatingRoute(
+  static ObjectUpdatingRoute _fromState(GoRouterState state) =>
+      ObjectUpdatingRoute(
         appId: state.pathParameters['appId']!,
         objectType: state.pathParameters['objectType']!,
         objectId: state.pathParameters['objectId']!,
@@ -360,7 +407,8 @@ extension $ObjectUpdatingRouteExtension on ObjectUpdatingRoute {
 
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
 }
@@ -371,7 +419,8 @@ RouteBase get $screenElementAddingRoute => GoRouteData.$route(
     );
 
 extension $ScreenElementAddingRouteExtension on ScreenElementAddingRoute {
-  static ScreenElementAddingRoute _fromState(GoRouterState state) => ScreenElementAddingRoute(
+  static ScreenElementAddingRoute _fromState(GoRouterState state) =>
+      ScreenElementAddingRoute(
         appId: state.pathParameters['appId']!,
         screenId: state.pathParameters['screenId']!,
       );
@@ -384,7 +433,8 @@ extension $ScreenElementAddingRouteExtension on ScreenElementAddingRoute {
 
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
 }
@@ -401,7 +451,8 @@ RouteBase get $externalObjectListingRoute => GoRouteData.$route(
     );
 
 extension $ExternalObjectListingRouteExtension on ExternalObjectListingRoute {
-  static ExternalObjectListingRoute _fromState(GoRouterState state) => ExternalObjectListingRoute(
+  static ExternalObjectListingRoute _fromState(GoRouterState state) =>
+      ExternalObjectListingRoute(
         externalObjectType: state.pathParameters['externalObjectType']!,
         objectType: state.queryParameters['object-type'],
         objectId: state.queryParameters['object-id'],
@@ -419,13 +470,15 @@ extension $ExternalObjectListingRouteExtension on ExternalObjectListingRoute {
 
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
 }
 
 extension $ExternalObjectDetailRouteExtension on ExternalObjectDetailRoute {
-  static ExternalObjectDetailRoute _fromState(GoRouterState state) => ExternalObjectDetailRoute(
+  static ExternalObjectDetailRoute _fromState(GoRouterState state) =>
+      ExternalObjectDetailRoute(
         externalObjectType: state.pathParameters['externalObjectType']!,
         externalObjectId: state.pathParameters['externalObjectId']!,
         objectType: state.queryParameters['object-type'],
@@ -444,7 +497,8 @@ extension $ExternalObjectDetailRouteExtension on ExternalObjectDetailRoute {
 
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
 }
@@ -455,7 +509,8 @@ RouteBase get $notificationRoute => GoRouteData.$route(
     );
 
 extension $NotificationRouteExtension on NotificationRoute {
-  static NotificationRoute _fromState(GoRouterState state) => NotificationRoute();
+  static NotificationRoute _fromState(GoRouterState state) =>
+      NotificationRoute();
 
   String get location => GoRouteData.$location(
         '/notification',
@@ -465,7 +520,8 @@ extension $NotificationRouteExtension on NotificationRoute {
 
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
 }
