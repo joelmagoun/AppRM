@@ -14,6 +14,7 @@ import 'features/home/pages/home_page.dart';
 import 'features/work_log/pages/work_log_listing_page.dart';
 import 'features/history/pages/history_listing_page.dart';
 import 'features/notification/pages/powersync_debug_page.dart';
+import 'features/admin/pages/admin_page.dart';
 import 'features/object/pages/external_object_detail_page.dart';
 import 'features/object/pages/external_object_listing_page.dart';
 import 'features/object/pages/object_adding_page.dart';
@@ -32,7 +33,8 @@ final rootRouter = GoRouter(
   navigatorKey: rootNavigatorKey,
   redirect: (context, state) {
     final bool onAuthPage = state.location.startsWith('/auth');
-    final isAuthenticated = Supabase.instance.client.auth.currentSession != null;
+    final isAuthenticated =
+        Supabase.instance.client.auth.currentSession != null;
 
     if (isAuthenticated && onAuthPage) {
       return HomeRoute().location;
@@ -180,6 +182,18 @@ class HistoryListingRoute extends GoRouteData {
   }
 }
 
+@TypedGoRoute<AdminRoute>(
+  path: '/admin',
+)
+class AdminRoute extends GoRouteData {
+  const AdminRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const AdminPage();
+  }
+}
+
 @TypedGoRoute<ObjectListingRoute>(
   path: '/app/:appId/internal/:objectType',
   routes: [
@@ -221,7 +235,8 @@ class ObjectAddingRoute extends GoRouteData {
 }
 
 class ObjectDetailRoute extends GoRouteData {
-  ObjectDetailRoute({required this.appId, required this.objectType, required this.objectId});
+  ObjectDetailRoute(
+      {required this.appId, required this.objectType, required this.objectId});
 
   final String appId;
   final String objectType;
@@ -234,7 +249,8 @@ class ObjectDetailRoute extends GoRouteData {
 }
 
 class ObjectUpdatingRoute extends GoRouteData {
-  ObjectUpdatingRoute({required this.appId, required this.objectType, required this.objectId});
+  ObjectUpdatingRoute(
+      {required this.appId, required this.objectType, required this.objectId});
 
   final String appId;
   final String objectType;
