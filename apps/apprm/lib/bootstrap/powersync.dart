@@ -142,6 +142,15 @@ String? getUserId() {
   return Supabase.instance.client.auth.currentSession?.user.id;
 }
 
+Future<bool> isAdminUser() async {
+  final userId = getUserId();
+  if (userId == null) return false;
+  final result =
+      await db.get("SELECT role FROM profile WHERE id=?", [userId]);
+  final role = result['role'] as String?;
+  return role == 'ADMIN';
+}
+
 Future<String> getDatabasePath() async {
   const dbFilename = 'powersync-apprm.db';
   final dir = await getApplicationSupportDirectory();

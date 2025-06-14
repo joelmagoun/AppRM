@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+import '../../../bootstrap/powersync.dart';
+
 import '../../../constants/color.dart';
 import '../../common_object/entities/object_item.dart';
 import '../../common_object/mappers/application_mapper.dart';
@@ -19,6 +21,22 @@ class ApplicationListingPage extends StatefulWidget {
 
 class _ApplicationListingPageState extends State<ApplicationListingPage> {
   final listWrapperKey = GlobalKey<ObjectListWrapperState>();
+  bool _isAdmin = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadRole();
+  }
+
+  Future<void> _loadRole() async {
+    final admin = await isAdminUser();
+    if (mounted) {
+      setState(() {
+        _isAdmin = admin;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +50,27 @@ class _ApplicationListingPageState extends State<ApplicationListingPage> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16),
-            child: IconButton.filled(
-              onPressed: () async {
-                await ApplicationAddingRoute().push(context);
-                listWrapperKey.currentState?.listKey.currentState?.onRefreshList();
-              },
-              icon: const Icon(PhosphorIconsBold.plus),
-              style: IconButton.styleFrom(
-                backgroundColor: AppColors.primaryColor,
-                foregroundColor: Colors.white,
-              ),
-            ),
+            child: _isAdmin
+                ? IconButton.filled(
+                    onPressed: () async {
+                      await ApplicationAddingRoute().push(context);
+                      listWrapperKey.currentState?.listKey.currentState?.onRefreshList();
+                    },
+                    icon: const Icon(PhosphorIconsBold.plus),
+                    style: IconButton.styleFrom(
+                      backgroundColor: AppColors.primaryColor,
+                      foregroundColor: Colors.white,
+                    ),
+                  )
+                : IconButton(
+                    onPressed: () async {
+                      await logout();
+                      if (context.mounted) {
+                        const AuthPageRoute().pushReplacement(context);
+                      }
+                    },
+                    icon: const Icon(PhosphorIconsBold.signOut),
+                  ),
           )
         ],
       ),

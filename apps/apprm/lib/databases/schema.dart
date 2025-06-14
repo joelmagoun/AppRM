@@ -25,6 +25,7 @@ Schema schema = Schema(
         Column.text('id'),
         Column.text('email'),
         Column.text('name'),
+        Column.text('role'),
       ],
       indexes: [
         Index('profile_list', [IndexedColumn('id')])

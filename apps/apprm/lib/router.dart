@@ -10,7 +10,7 @@ import 'features/auth/pages/supabase_signup_page.dart';
 import 'features/application/pages/application_listing_page.dart';
 import 'features/application/pages/application_home_page.dart';
 import 'features/application/pages/application_adding_page.dart';
-import 'features/home/pages/home_page.dart';
+import 'features/home/pages/root_home_page.dart';
 import 'features/work_log/pages/work_log_listing_page.dart';
 import 'features/history/pages/history_listing_page.dart';
 import 'features/notification/pages/powersync_debug_page.dart';
@@ -118,7 +118,7 @@ class Auth0LoginRoute extends GoRouteData {
 class HomeRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const HomePage();
+    return const RootHomePage();
   }
 }
 
