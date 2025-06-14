@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:uuid/uuid.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../utils/crypt.dart';
 
 import '../../../attachments/queue.dart';
 import '../../../constants/color.dart';
@@ -29,6 +32,20 @@ class ScreenPhotoList extends ConsumerStatefulWidget {
 
 class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
   final ImagePicker _picker = ImagePicker();
+  String? _secret;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSecret();
+  }
+
+  Future<void> _loadSecret() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _secret = prefs.getString('app_${widget.appId}_secret');
+    });
+  }
 
   final _createMutation = Mutation<void, CreateObjectUseCaseParams>(
     queryFn: (params) => CreateObjectUseCase(
@@ -63,8 +80,15 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
       await destDir.create(recursive: true);
     }
 
-    await attachmentQueue.localStorage.copyFile(file.path, localUri);
-    await attachmentQueue.saveFile(photoId, bytes.length, folder: 'screens');
+    if (_secret != null) {
+      final encBytes = encryptBytes(bytes, _secret!);
+      await File(localUri).writeAsBytes(encBytes);
+      await attachmentQueue.saveFile(photoId, encBytes.length,
+          folder: 'screens');
+    } else {
+      await attachmentQueue.localStorage.copyFile(file.path, localUri);
+      await attachmentQueue.saveFile(photoId, bytes.length, folder: 'screens');
+    }
 
     await _createMutation.mutate(
       CreateObjectUseCaseParams(
@@ -92,7 +116,7 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
     _refresh();
   }
 
-  Future<void> _openFullScreenImage(String path) async {
+  Future<void> _openFullScreenImage(Uint8List bytes) async {
     if (!mounted) return;
     await Navigator.of(context).push(
       MaterialPageRoute(
@@ -103,7 +127,7 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
             onDoubleTap: () => Navigator.of(context).pop(),
             child: Center(
               child: InteractiveViewer(
-                child: Image.file(File(path)),
+                child: Image.memory(bytes),
               ),
             ),
           ),
@@ -112,9 +136,17 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
     );
   }
 
+  Future<Uint8List> _loadPhotoBytes(String photoId) async {
+    final path = await attachmentQueue.getLocalUri('screens/$photoId.jpg');
+    final fileBytes = await File(path).readAsBytes();
+    if (_secret != null) {
+      return decryptBytes(fileBytes, _secret!);
+    }
+    return fileBytes;
+  }
+
   Future<void> _openPhotoDetail(Map<String, dynamic> item) async {
-    final localPath =
-        await attachmentQueue.getLocalUri('screens/${item['photo_id']}.jpg');
+    final bytes = await _loadPhotoBytes(item['photo_id']);
     if (!mounted) return;
     await showDialog(
       context: context,
@@ -126,9 +158,9 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 GestureDetector(
-                  onTap: () => _openFullScreenImage(localPath),
-                  onDoubleTap: () => _openFullScreenImage(localPath),
-                  child: Image.file(File(localPath)),
+                  onTap: () => _openFullScreenImage(bytes),
+                  onDoubleTap: () => _openFullScreenImage(bytes),
+                  child: Image.memory(bytes),
                 ),
                 const SizedBox(height: 8),
                 Text(item['name'] ?? '',
@@ -227,23 +259,22 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
                       spacing: 8,
                       runSpacing: 8,
                       children: list.map((e) {
-                        return FutureBuilder<String>(
-                          future: attachmentQueue
-                              .getLocalUri('screens/${e['photo_id']}.jpg'),
+                        return FutureBuilder<Uint8List>(
+                          future: _loadPhotoBytes(e['photo_id']),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
                               return const SizedBox(
                                 width: 80,
                                 height: 80,
-                                child:
-                                    Center(child: CircularProgressIndicator()),
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
                               );
                             }
-                            final file = File(snapshot.data!);
                             return InkWell(
                               onTap: () => _openPhotoDetail(e),
-                              child: Image.file(
-                                file,
+                              child: Image.memory(
+                                snapshot.data!,
                                 width: 80,
                                 height: 80,
                                 fit: BoxFit.cover,

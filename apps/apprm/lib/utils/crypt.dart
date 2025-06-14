@@ -1,5 +1,6 @@
 import 'package:encrypt/encrypt.dart' as enc;
 import 'dart:convert';
+import 'dart:typed_data';
 
 String executeEncrypt(String plainText, String secret) {
   // this should eventually come in as an input
@@ -42,4 +43,16 @@ String executeDecrypt(String encText, String secret) {
 
   //print(decrypted);
   return decrypted;
+}
+
+Uint8List encryptBytes(Uint8List bytes, String secret) {
+  final base64String = base64.encode(bytes);
+  final encrypted = executeEncrypt(base64String, secret);
+  return Uint8List.fromList(utf8.encode(encrypted));
+}
+
+Uint8List decryptBytes(Uint8List bytes, String secret) {
+  final encryptedString = utf8.decode(bytes);
+  final decrypted = executeDecrypt(encryptedString, secret);
+  return Uint8List.fromList(base64.decode(decrypted));
 }
