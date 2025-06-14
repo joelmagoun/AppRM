@@ -450,6 +450,7 @@ class ObjectRepository {
     return newData;
   }
 
+
   Future<Map<String, dynamic>> _encryptNameDescriptionFields(
       String appId, Map<String, dynamic> data) async {
     final secret = await _getAppSecret(appId);
