@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:apprm/configs/supabase.dart';
 import 'package:powersync/powersync.dart';
@@ -39,8 +40,9 @@ class PhotoAttachmentQueue extends AbstractAttachmentQueue {
 
   @override
   Future<Attachment> saveFile(String fileId, int size,
-      {mediaType = 'image/jpeg'}) async {
-    String filename = '$fileId.jpg';
+      {mediaType = 'image/jpeg', String folder = ''}) async {
+    final path = folder.isNotEmpty ? '$folder/$fileId' : fileId;
+    String filename = '$path.jpg';
 
     Attachment photoAttachment = Attachment(
       id: fileId,
@@ -55,8 +57,9 @@ class PhotoAttachmentQueue extends AbstractAttachmentQueue {
   }
 
   @override
-  Future<Attachment> deleteFile(String fileId) async {
-    String filename = '$fileId.jpg';
+  Future<Attachment> deleteFile(String fileId, {String folder = ''}) async {
+    final path = folder.isNotEmpty ? '$folder/$fileId' : fileId;
+    String filename = '$path.jpg';
 
     Attachment photoAttachment = Attachment(
         id: fileId,
@@ -68,17 +71,38 @@ class PhotoAttachmentQueue extends AbstractAttachmentQueue {
 
   @override
   StreamSubscription<void> watchIds({String fileExtension = 'jpg'}) {
-    log.info('Watching screen photos...');
+    log.info('Watching screen and element photos...');
     return db.watch('''
-      SELECT photo_id FROM screen_photos
-      WHERE photo_id IS NOT NULL
+      SELECT photo_id, 'screens' AS folder FROM screen_photos
+        WHERE photo_id IS NOT NULL
+      UNION
+      SELECT photo_id, 'elements' AS folder FROM element_photos
+        WHERE photo_id IS NOT NULL
     ''').map((results) {
-      return results.map((row) => row['photo_id'] as String).toList();
-    }).listen((ids) async {
+      return results
+          .map((row) => {
+                'id': row['photo_id'] as String,
+                'folder': row['folder'] as String
+              })
+          .toList();
+    }).listen((rows) async {
       List<String> idsInQueue = await attachmentsService.getAttachmentIds();
-      List<String> relevantIds =
-          ids.where((element) => !idsInQueue.contains(element)).toList();
-      syncingService.processIds(relevantIds, fileExtension);
+      List<Attachment> attachments = [];
+      for (final row in rows) {
+        final id = row['id'] as String;
+        if (idsInQueue.contains(id)) continue;
+        final folder = row['folder'] as String;
+        final filename =
+            '${folder.isNotEmpty ? '$folder/' : ''}$id.$fileExtension';
+        final localUri = await getLocalUri(filename);
+        if (!await File(localUri).exists()) {
+          attachments.add(Attachment(
+              id: id,
+              filename: filename,
+              state: AttachmentState.queuedDownload.index));
+        }
+      }
+      await attachmentsService.saveAttachments(attachments);
     });
   }
 }

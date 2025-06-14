@@ -54,7 +54,7 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
 
     final bytes = await file.readAsBytes();
     final photoId = const Uuid().v4();
-    final filename = '$photoId.jpg';
+    final filename = 'screens/$photoId.jpg';
     final localUri = await attachmentQueue.getLocalUri(filename);
 
     // Ensure the directory exists
@@ -64,7 +64,7 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
     }
 
     await attachmentQueue.localStorage.copyFile(file.path, localUri);
-    await attachmentQueue.saveFile(photoId, bytes.length);
+    await attachmentQueue.saveFile(photoId, bytes.length, folder: 'screens');
 
     await _createMutation.mutate(
       CreateObjectUseCaseParams(
@@ -82,7 +82,7 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
   }
 
   Future<void> _deletePhoto(Map<String, dynamic> item) async {
-    await attachmentQueue.deleteFile(item['photo_id']);
+    await attachmentQueue.deleteFile(item['photo_id'], folder: 'screens');
     await _deleteMutation.mutate(
       DeleteObjectItemUseCaseParams(
         objectType: 'screen_photos',
@@ -114,7 +114,7 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
 
   Future<void> _openPhotoDetail(Map<String, dynamic> item) async {
     final localPath =
-        await attachmentQueue.getLocalUri('${item['photo_id']}.jpg');
+        await attachmentQueue.getLocalUri('screens/${item['photo_id']}.jpg');
     if (!mounted) return;
     await showDialog(
       context: context,
@@ -229,7 +229,7 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
                       children: list.map((e) {
                         return FutureBuilder<String>(
                           future: attachmentQueue
-                              .getLocalUri('${e['photo_id']}.jpg'),
+                              .getLocalUri('screens/${e['photo_id']}.jpg'),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
                               return const SizedBox(
