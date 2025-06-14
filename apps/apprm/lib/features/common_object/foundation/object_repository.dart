@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../bootstrap/powersync.dart';
+import '../../../utils/crypt.dart';
 
 final objectRepositoryProvider = Provider<ObjectRepository>(
   (ref) => ObjectRepository(),
@@ -68,10 +70,18 @@ class ObjectRepository {
 
       final results = await db.getAll(query);
 
-      return results
+      final list = results
           .map((r) => r.entries.fold<Map<String, dynamic>>(
               {}, (res, e) => {...res, e.key: e.value}))
           .toList();
+
+      if (tableName == 'requirements') {
+        for (var i = 0; i < list.length; i++) {
+          list[i] = await _decryptRequirementFields(list[i]);
+        }
+      }
+
+      return list;
     } catch (e) {
       rethrow;
     }
@@ -100,8 +110,14 @@ class ObjectRepository {
       }
       final result = await db.get(query, [objectId]);
 
-      return result.entries
+      var map = result.entries
           .fold<Map<String, dynamic>>({}, (res, e) => {...res, e.key: e.value});
+
+      if (tableName == 'requirements') {
+        map = await _decryptRequirementFields(map);
+      }
+
+      return map;
     } catch (e) {
       rethrow;
     }
@@ -129,6 +145,9 @@ class ObjectRepository {
   }) async {
     if (data.isEmpty) throw Exception('Please input at least 1 field');
     try {
+      if (tableName == 'requirements' && data['app_id'] != null) {
+        data = await _encryptRequirementFields(data['app_id'], data);
+      }
       final fieldStatement = data.keys.map((e) => "'$e'").join(', ');
       final valueStatement = data.values.map((e) => "'$e'").join(', ');
 
@@ -162,6 +181,14 @@ class ObjectRepository {
   }) async {
     if (data.isEmpty) throw Exception('Please input at least 1 field');
     try {
+      if (tableName == 'requirements') {
+        final existing =
+            await getObjectItem(tableName: tableName, objectId: objectId);
+        final appId = existing['app_id'];
+        if (appId != null) {
+          data = await _encryptRequirementFields(appId, data);
+        }
+      }
       final setStatement =
           data.entries.map((e) => "'${e.key}' = '${e.value ?? ''}'").join(', ');
       await db.execute(
@@ -356,6 +383,45 @@ class ObjectRepository {
   String _extractName(Map<String, dynamic> data) {
     return (data['name'] ?? data['requirement'] ?? data['description'] ?? '')
         .toString();
+  }
+
+  Future<String?> _getAppSecret(String appId) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('app_${appId}_secret');
+  }
+
+  Future<Map<String, dynamic>> _encryptRequirementFields(
+      String appId, Map<String, dynamic> data) async {
+    final secret = await _getAppSecret(appId);
+    if (secret == null) return data;
+    final newData = Map<String, dynamic>.from(data);
+    if (newData['requirement'] != null) {
+      newData['requirement'] =
+          executeEncrypt(newData['requirement'].toString(), secret);
+    }
+    if (newData['description'] != null) {
+      newData['description'] =
+          executeEncrypt(newData['description'].toString(), secret);
+    }
+    return newData;
+  }
+
+  Future<Map<String, dynamic>> _decryptRequirementFields(
+      Map<String, dynamic> data) async {
+    final appId = data['app_id'];
+    if (appId == null) return data;
+    final secret = await _getAppSecret(appId);
+    if (secret == null) return data;
+    final newData = Map<String, dynamic>.from(data);
+    if (newData['requirement'] != null) {
+      newData['requirement'] =
+          executeDecrypt(newData['requirement'].toString(), secret);
+    }
+    if (newData['description'] != null) {
+      newData['description'] =
+          executeDecrypt(newData['description'].toString(), secret);
+    }
+    return newData;
   }
 
   Future<void> _insertHistory({
