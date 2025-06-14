@@ -6,6 +6,7 @@ import '../../../utils/crypt.dart';
 
 const _encryptedNameDescriptionTables = {
   'data_objects',
+  'data_fields',
   'screens',
   'screen_functions',
   'user_stories',
