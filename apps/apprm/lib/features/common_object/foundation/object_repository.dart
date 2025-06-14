@@ -1,6 +1,22 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../bootstrap/powersync.dart';
+import '../../../utils/crypt.dart';
+
+const _encryptedNameDescriptionTables = {
+  'data_objects',
+  'screens',
+  'screen_functions',
+  'user_stories',
+  'screen_photos',
+  'elements',
+  'element_photos',
+};
+
+const _encryptedDataFieldTables = {
+  'data_fields',
+};
 
 final objectRepositoryProvider = Provider<ObjectRepository>(
   (ref) => ObjectRepository(),
@@ -68,10 +84,26 @@ class ObjectRepository {
 
       final results = await db.getAll(query);
 
-      return results
+      final list = results
           .map((r) => r.entries.fold<Map<String, dynamic>>(
               {}, (res, e) => {...res, e.key: e.value}))
           .toList();
+
+      if (tableName == 'requirements' ||
+          _encryptedNameDescriptionTables.contains(tableName) ||
+          _encryptedDataFieldTables.contains(tableName)) {
+        for (var i = 0; i < list.length; i++) {
+          if (tableName == 'requirements') {
+            list[i] = await _decryptRequirementFields(list[i]);
+          } else if (_encryptedNameDescriptionTables.contains(tableName)) {
+            list[i] = await _decryptNameDescriptionFields(list[i]);
+          } else {
+            list[i] = await _decryptDataFieldFields(list[i]);
+          }
+        }
+      }
+
+      return list;
     } catch (e) {
       rethrow;
     }
@@ -100,8 +132,22 @@ class ObjectRepository {
       }
       final result = await db.get(query, [objectId]);
 
-      return result.entries
+      var map = result.entries
           .fold<Map<String, dynamic>>({}, (res, e) => {...res, e.key: e.value});
+
+      if (tableName == 'requirements' ||
+          _encryptedNameDescriptionTables.contains(tableName) ||
+          _encryptedDataFieldTables.contains(tableName)) {
+        if (tableName == 'requirements') {
+          map = await _decryptRequirementFields(map);
+        } else if (_encryptedNameDescriptionTables.contains(tableName)) {
+          map = await _decryptNameDescriptionFields(map);
+        } else {
+          map = await _decryptDataFieldFields(map);
+        }
+      }
+
+      return map;
     } catch (e) {
       rethrow;
     }
@@ -129,6 +175,15 @@ class ObjectRepository {
   }) async {
     if (data.isEmpty) throw Exception('Please input at least 1 field');
     try {
+      if (tableName == 'requirements' && data['app_id'] != null) {
+        data = await _encryptRequirementFields(data['app_id'], data);
+      } else if (_encryptedNameDescriptionTables.contains(tableName) &&
+          data['app_id'] != null) {
+        data = await _encryptNameDescriptionFields(data['app_id'], data);
+      } else if (_encryptedDataFieldTables.contains(tableName) &&
+          data['app_id'] != null) {
+        data = await _encryptDataFieldFields(data['app_id'], data);
+      }
       final fieldStatement = data.keys.map((e) => "'$e'").join(', ');
       final valueStatement = data.values.map((e) => "'$e'").join(', ');
 
@@ -162,6 +217,22 @@ class ObjectRepository {
   }) async {
     if (data.isEmpty) throw Exception('Please input at least 1 field');
     try {
+      if (tableName == 'requirements' ||
+          _encryptedNameDescriptionTables.contains(tableName) ||
+          _encryptedDataFieldTables.contains(tableName)) {
+        final existing =
+            await getObjectItem(tableName: tableName, objectId: objectId);
+        final appId = existing['app_id'];
+        if (appId != null) {
+          if (tableName == 'requirements') {
+            data = await _encryptRequirementFields(appId, data);
+          } else if (_encryptedNameDescriptionTables.contains(tableName)) {
+            data = await _encryptNameDescriptionFields(appId, data);
+          } else {
+            data = await _encryptDataFieldFields(appId, data);
+          }
+        }
+      }
       final setStatement =
           data.entries.map((e) => "'${e.key}' = '${e.value ?? ''}'").join(', ');
       await db.execute(
@@ -356,6 +427,123 @@ class ObjectRepository {
   String _extractName(Map<String, dynamic> data) {
     return (data['name'] ?? data['requirement'] ?? data['description'] ?? '')
         .toString();
+  }
+
+  Future<String?> _getAppSecret(String appId) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('app_${appId}_secret');
+  }
+
+  Future<Map<String, dynamic>> _encryptRequirementFields(
+      String appId, Map<String, dynamic> data) async {
+    final secret = await _getAppSecret(appId);
+    if (secret == null) return data;
+    final newData = Map<String, dynamic>.from(data);
+    if (newData['requirement'] != null) {
+      newData['requirement'] =
+          executeEncrypt(newData['requirement'].toString(), secret);
+    }
+    if (newData['description'] != null) {
+      newData['description'] =
+          executeEncrypt(newData['description'].toString(), secret);
+    }
+    return newData;
+  }
+
+  Future<Map<String, dynamic>> _encryptNameDescriptionFields(
+      String appId, Map<String, dynamic> data) async {
+    final secret = await _getAppSecret(appId);
+    if (secret == null) return data;
+    final newData = Map<String, dynamic>.from(data);
+    if (newData['name'] != null) {
+      newData['name'] = executeEncrypt(newData['name'].toString(), secret);
+    }
+    if (newData['description'] != null) {
+      newData['description'] =
+          executeEncrypt(newData['description'].toString(), secret);
+    }
+    return newData;
+  }
+
+  Future<Map<String, dynamic>> _encryptDataFieldFields(
+      String appId, Map<String, dynamic> data) async {
+    final secret = await _getAppSecret(appId);
+    if (secret == null) return data;
+    final newData = Map<String, dynamic>.from(data);
+    if (newData['name'] != null) {
+      newData['name'] = executeEncrypt(newData['name'].toString(), secret);
+    }
+    if (newData['description'] != null) {
+      newData['description'] =
+          executeEncrypt(newData['description'].toString(), secret);
+    }
+    if (newData['type'] != null) {
+      newData['type'] = executeEncrypt(newData['type'].toString(), secret);
+    }
+    if (newData['default_value'] != null) {
+      newData['default_value'] =
+          executeEncrypt(newData['default_value'].toString(), secret);
+    }
+    return newData;
+  }
+
+  Future<Map<String, dynamic>> _decryptRequirementFields(
+      Map<String, dynamic> data) async {
+    final appId = data['app_id'];
+    if (appId == null) return data;
+    final secret = await _getAppSecret(appId);
+    if (secret == null) return data;
+    final newData = Map<String, dynamic>.from(data);
+    if (newData['requirement'] != null) {
+      newData['requirement'] =
+          executeDecrypt(newData['requirement'].toString(), secret);
+    }
+    if (newData['description'] != null) {
+      newData['description'] =
+          executeDecrypt(newData['description'].toString(), secret);
+    }
+    return newData;
+  }
+
+  Future<Map<String, dynamic>> _decryptNameDescriptionFields(
+      Map<String, dynamic> data) async {
+    final appId = data['app_id'];
+    if (appId == null) return data;
+    final secret = await _getAppSecret(appId);
+    if (secret == null) return data;
+    final newData = Map<String, dynamic>.from(data);
+    if (newData['name'] != null) {
+      newData['name'] = executeDecrypt(newData['name'].toString(), secret);
+    }
+    if (newData['description'] != null) {
+      newData['description'] =
+          executeDecrypt(newData['description'].toString(), secret);
+    }
+    return newData;
+  }
+
+  Future<Map<String, dynamic>> _decryptDataFieldFields(
+      Map<String, dynamic> data) async {
+    final appId = data['app_id'];
+    if (appId == null) return data;
+    final secret = await _getAppSecret(appId);
+    if (secret == null) return data;
+    final newData = Map<String, dynamic>.from(data);
+    if (newData['name'] != null) {
+      newData['name'] = executeDecrypt(newData['name'].toString(), secret);
+    }
+    if (newData['description'] != null) {
+      newData['description'] =
+          executeDecrypt(newData['description'].toString(), secret);
+    }
+    if (newData['type'] != null) {
+      newData['type'] = executeDecrypt(newData['type'].toString(), secret);
+    }
+    if (newData['default_value'] != null) {
+      newData['default_value'] =
+          executeDecrypt(newData['default_value'].toString(), secret);
+    }
+    return newData;
   }
 
   Future<void> _insertHistory({
