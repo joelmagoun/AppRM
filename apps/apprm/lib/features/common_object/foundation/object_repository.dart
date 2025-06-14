@@ -6,6 +6,7 @@ import '../../../utils/crypt.dart';
 
 const _encryptedNameDescriptionTables = {
   'data_objects',
+  'data_fields',
   'screens',
   'screen_functions',
   'user_stories',
@@ -446,6 +447,13 @@ class ObjectRepository {
       newData['description'] =
           executeEncrypt(newData['description'].toString(), secret);
     }
+    if (newData['type'] != null) {
+      newData['type'] = executeEncrypt(newData['type'].toString(), secret);
+    }
+    if (newData['default_value'] != null) {
+      newData['default_value'] =
+          executeEncrypt(newData['default_value'].toString(), secret);
+    }
     return newData;
   }
 
@@ -482,6 +490,13 @@ class ObjectRepository {
     if (newData['description'] != null) {
       newData['description'] =
           executeDecrypt(newData['description'].toString(), secret);
+    }
+    if (newData['type'] != null) {
+      newData['type'] = executeDecrypt(newData['type'].toString(), secret);
+    }
+    if (newData['default_value'] != null) {
+      newData['default_value'] =
+          executeDecrypt(newData['default_value'].toString(), secret);
     }
     return newData;
   }
