@@ -10,6 +10,8 @@ const _encryptedNameDescriptionTables = {
   'screen_functions',
   'user_stories',
   'screen_photos',
+  'elements',
+  'element_photos',
 };
 
 final objectRepositoryProvider = Provider<ObjectRepository>(
@@ -84,10 +86,13 @@ class ObjectRepository {
           .toList();
 
       if (tableName == 'requirements' ||
+          tableName == 'data_fields' ||
           _encryptedNameDescriptionTables.contains(tableName)) {
         for (var i = 0; i < list.length; i++) {
           if (tableName == 'requirements') {
             list[i] = await _decryptRequirementFields(list[i]);
+          } else if (tableName == 'data_fields') {
+            list[i] = await _decryptDataFieldFields(list[i]);
           } else {
             list[i] = await _decryptNameDescriptionFields(list[i]);
           }
@@ -127,9 +132,12 @@ class ObjectRepository {
           .fold<Map<String, dynamic>>({}, (res, e) => {...res, e.key: e.value});
 
       if (tableName == 'requirements' ||
+          tableName == 'data_fields' ||
           _encryptedNameDescriptionTables.contains(tableName)) {
         if (tableName == 'requirements') {
           map = await _decryptRequirementFields(map);
+        } else if (tableName == 'data_fields') {
+          map = await _decryptDataFieldFields(map);
         } else {
           map = await _decryptNameDescriptionFields(map);
         }
@@ -165,10 +173,11 @@ class ObjectRepository {
     try {
       if (tableName == 'requirements' && data['app_id'] != null) {
         data = await _encryptRequirementFields(data['app_id'], data);
+      } else if (tableName == 'data_fields' && data['app_id'] != null) {
+        data = await _encryptDataFieldFields(data['app_id'], data);
       } else if (_encryptedNameDescriptionTables.contains(tableName) &&
           data['app_id'] != null) {
         data = await _encryptNameDescriptionFields(data['app_id'], data);
-
       }
       final fieldStatement = data.keys.map((e) => "'$e'").join(', ');
       final valueStatement = data.values.map((e) => "'$e'").join(', ');
@@ -204,6 +213,7 @@ class ObjectRepository {
     if (data.isEmpty) throw Exception('Please input at least 1 field');
     try {
       if (tableName == 'requirements' ||
+          tableName == 'data_fields' ||
           _encryptedNameDescriptionTables.contains(tableName)) {
         final existing =
             await getObjectItem(tableName: tableName, objectId: objectId);
@@ -211,6 +221,8 @@ class ObjectRepository {
         if (appId != null) {
           if (tableName == 'requirements') {
             data = await _encryptRequirementFields(appId, data);
+          } else if (tableName == 'data_fields') {
+            data = await _encryptDataFieldFields(appId, data);
           } else {
             data = await _encryptNameDescriptionFields(appId, data);
           }
@@ -433,6 +445,18 @@ class ObjectRepository {
     return newData;
   }
 
+  Future<Map<String, dynamic>> _encryptDataFieldFields(
+      String appId, Map<String, dynamic> data) async {
+    final secret = await _getAppSecret(appId);
+    if (secret == null) return data;
+    final newData = Map<String, dynamic>.from(data);
+    for (final key in ['name', 'description', 'type', 'default_value']) {
+      if (newData[key] != null) {
+        newData[key] = executeEncrypt(newData[key].toString(), secret);
+      }
+    }
+    return newData;
+  }
 
   Future<Map<String, dynamic>> _encryptNameDescriptionFields(
       String appId, Map<String, dynamic> data) async {
@@ -448,7 +472,6 @@ class ObjectRepository {
     }
     return newData;
   }
-
 
   Future<Map<String, dynamic>> _decryptRequirementFields(
       Map<String, dynamic> data) async {
@@ -468,6 +491,20 @@ class ObjectRepository {
     return newData;
   }
 
+  Future<Map<String, dynamic>> _decryptDataFieldFields(
+      Map<String, dynamic> data) async {
+    final appId = data['app_id'];
+    if (appId == null) return data;
+    final secret = await _getAppSecret(appId);
+    if (secret == null) return data;
+    final newData = Map<String, dynamic>.from(data);
+    for (final key in ['name', 'description', 'type', 'default_value']) {
+      if (newData[key] != null) {
+        newData[key] = executeDecrypt(newData[key].toString(), secret);
+      }
+    }
+    return newData;
+  }
 
   Future<Map<String, dynamic>> _decryptNameDescriptionFields(
       Map<String, dynamic> data) async {
@@ -485,7 +522,6 @@ class ObjectRepository {
     }
     return newData;
   }
-
 
   Future<void> _insertHistory({
     required String appId,
