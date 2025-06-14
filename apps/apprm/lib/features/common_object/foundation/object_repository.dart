@@ -168,6 +168,7 @@ class ObjectRepository {
       } else if (_encryptedNameDescriptionTables.contains(tableName) &&
           data['app_id'] != null) {
         data = await _encryptNameDescriptionFields(data['app_id'], data);
+
       }
       final fieldStatement = data.keys.map((e) => "'$e'").join(', ');
       final valueStatement = data.values.map((e) => "'$e'").join(', ');
@@ -432,6 +433,7 @@ class ObjectRepository {
     return newData;
   }
 
+
   Future<Map<String, dynamic>> _encryptNameDescriptionFields(
       String appId, Map<String, dynamic> data) async {
     final secret = await _getAppSecret(appId);
@@ -446,6 +448,7 @@ class ObjectRepository {
     }
     return newData;
   }
+
 
   Future<Map<String, dynamic>> _decryptRequirementFields(
       Map<String, dynamic> data) async {
@@ -465,6 +468,7 @@ class ObjectRepository {
     return newData;
   }
 
+
   Future<Map<String, dynamic>> _decryptNameDescriptionFields(
       Map<String, dynamic> data) async {
     final appId = data['app_id'];
@@ -481,6 +485,7 @@ class ObjectRepository {
     }
     return newData;
   }
+
 
   Future<void> _insertHistory({
     required String appId,
