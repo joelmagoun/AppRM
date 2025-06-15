@@ -181,7 +181,17 @@ class ObjectRepository {
 
       final appId = data['app_id'];
       if (appId != null) {
-        final name = _extractName(data);
+        var name = _extractName(data);
+        if (name.isNotEmpty) {
+          final secret = await _getAppSecret(appId);
+          if (secret != null) {
+            try {
+              name = executeDecrypt(name, secret);
+            } catch (_) {
+              // ignore decrypt errors
+            }
+          }
+        }
         final message =
             'Created $tableName${name.isNotEmpty ? ' \"$name\"' : ''}';
         await _insertHistory(
