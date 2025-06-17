@@ -17,6 +17,7 @@ List<RouteBase> get $appRoutes => [
       $adminRoute,
       $objectListingRoute,
       $screenElementAddingRoute,
+      $userStoryStepAddingRoute,
       $externalObjectListingRoute,
       $notificationRoute,
     ];
@@ -427,6 +428,32 @@ extension $ScreenElementAddingRouteExtension on ScreenElementAddingRoute {
 
   String get location => GoRouteData.$location(
         '/app/${Uri.encodeComponent(appId)}/screens/${Uri.encodeComponent(screenId)}/elements/add',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $userStoryStepAddingRoute => GoRouteData.$route(
+      path: '/app/:appId/user_stories/:storyId/steps/add',
+      factory: $UserStoryStepAddingRouteExtension._fromState,
+    );
+
+extension $UserStoryStepAddingRouteExtension on UserStoryStepAddingRoute {
+  static UserStoryStepAddingRoute _fromState(GoRouterState state) =>
+      UserStoryStepAddingRoute(
+        appId: state.pathParameters['appId']!,
+        storyId: state.pathParameters['storyId']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/app/${Uri.encodeComponent(appId)}/user_stories/${Uri.encodeComponent(storyId)}/steps/add',
       );
 
   void go(BuildContext context) => context.go(location);

@@ -356,6 +356,57 @@ class ObjectRepository {
     }
   }
 
+  Future<List<Map<String, dynamic>>> getUserStorySteps({
+    required String storyId,
+  }) async {
+    try {
+      final results = await db.getAll(
+        '''
+        SELECT * FROM user_story_steps
+        WHERE story_id = ?
+        ORDER BY rank
+        ''',
+        [storyId],
+      );
+
+      return results
+          .map((r) => r.entries.fold<Map<String, dynamic>>(
+                {},
+                (res, e) => {...res, e.key: e.value},
+              ))
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getStepActions({
+    required String stepId,
+  }) async {
+    try {
+      final results = await db.getAll(
+        '''
+        SELECT sa.*, e.name AS element_name, sf.name AS function_name
+        FROM user_story_step_actions sa
+        LEFT JOIN elements e ON sa.target_id = e.id AND sa.target_type = 'element'
+        LEFT JOIN screen_functions sf ON sa.target_id = sf.id AND sa.target_type = 'screen_function'
+        WHERE sa.step_id = ?
+        ORDER BY sa.rank
+        ''',
+        [stepId],
+      );
+
+      return results
+          .map((r) => r.entries.fold<Map<String, dynamic>>(
+                {},
+                (res, e) => {...res, e.key: e.value},
+              ))
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future connectToExternalObject({
     required String objectType,
     required String objectId,
