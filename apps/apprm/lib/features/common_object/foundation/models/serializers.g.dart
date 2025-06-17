@@ -20,7 +20,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(ScreenFunction.serializer)
       ..add(Story.serializer)
       ..add(UiElement.serializer)
-      ..add(UserStory.serializer))
+      ..add(UserStory.serializer)
+      ..add(UserStoryStep.serializer)
+      ..add(UserStoryStepAction.serializer))
     .build();
 
 // ignore_for_file: deprecated_member_use_from_same_package,type=lint

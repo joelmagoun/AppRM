@@ -320,6 +320,37 @@ Schema schema = Schema(
       ],
     ),
     const Table(
+      'user_story_steps',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('story_id'),
+        Column.text('rank'),
+        Column.text('name'),
+        Column.text('description'),
+      ],
+      indexes: [
+        Index('user_story_steps_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
+      'user_story_step_actions',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('step_id'),
+        Column.text('target_id'),
+        Column.text('target_type'),
+        Column.text('description'),
+        Column.text('rank'),
+      ],
+      indexes: [
+        Index('user_story_step_actions_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
       'work_logs',
       [
         Column.text('id'),

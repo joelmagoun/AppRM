@@ -22,6 +22,7 @@ import 'features/object/pages/object_detail_page.dart';
 import 'features/object/pages/object_listing_page.dart';
 import 'features/object/pages/object_updating_page.dart';
 import 'features/screens/pages/screen_element_adding_page.dart';
+import 'features/user_stories/pages/user_story_step_adding_page.dart';
 
 part 'router.g.dart';
 
@@ -274,6 +275,21 @@ class ScreenElementAddingRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return ScreenElementAddingPage(appId: appId, screenId: screenId);
+  }
+}
+
+@TypedGoRoute<UserStoryStepAddingRoute>(
+  path: '/app/:appId/user_stories/:storyId/steps/add',
+)
+class UserStoryStepAddingRoute extends GoRouteData {
+  const UserStoryStepAddingRoute({required this.appId, required this.storyId});
+
+  final String appId;
+  final String storyId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return UserStoryStepAddingPage(appId: appId, storyId: storyId);
   }
 }
 
