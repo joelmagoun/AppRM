@@ -208,6 +208,72 @@ class _ObjectAddingPageState extends State<ObjectAddingPage> {
         ),
       ],
     ),
+    'user_story_steps': (
+      label: 'step',
+      inputFields: [
+        (
+          key: 'name',
+          label: 'Name',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'description',
+          label: 'Description',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'story_id',
+          label: 'Story ID',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+      ],
+    ),
+    'user_story_step_actions': (
+      label: 'step action',
+      inputFields: [
+        (
+          key: 'description',
+          label: 'Description',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'step_id',
+          label: 'Step ID',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'target_id',
+          label: 'Target',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'target_type',
+          label: 'Target Type',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: ['element', 'screen_function'],
+          asyncOptions: null,
+        ),
+      ],
+    ),
     'work_logs': (
       label: 'work log',
       inputFields: [

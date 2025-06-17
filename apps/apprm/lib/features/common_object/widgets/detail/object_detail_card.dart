@@ -6,6 +6,8 @@ import 'package:apprm/features/screens/widgets/data_link_list.dart';
 import 'package:apprm/features/screens/widgets/element_list.dart';
 import 'package:apprm/features/screens/widgets/element_photo_list.dart';
 import 'package:apprm/features/screens/widgets/navigation_list.dart';
+import 'package:apprm/features/user_story/widgets/step_list.dart';
+import 'package:apprm/features/user_story/widgets/step_action_list.dart';
 import 'package:apprm/typedefs/display_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -70,6 +72,10 @@ class ObjectDetailCard extends ConsumerWidget {
               DataFieldList(
                 dataObjectId: objectId,
               ),
+            if (objectType == 'user_stories')
+              StepList(
+                storyId: objectId,
+              ),
             if (objectType == 'screens') ...[
               ScreenPhotoList(
                 appId: appId,
@@ -104,6 +110,11 @@ class ObjectDetailCard extends ConsumerWidget {
                 objectId: objectId,
                 objectType: 'element',
                 screenId: screenId,
+              ),
+            if (objectType == 'user_story_steps')
+              StepActionList(
+                appId: appId,
+                stepId: objectId,
               ),
           ],
         ),

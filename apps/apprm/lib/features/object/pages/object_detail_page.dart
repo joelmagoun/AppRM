@@ -15,6 +15,8 @@ import '../../common_object/mappers/data_field_mapper.dart';
 import '../../common_object/mappers/screen_function_mapper.dart';
 import '../../common_object/mappers/ui_element_mapper.dart';
 import '../../common_object/mappers/work_log_mapper.dart';
+import '../../common_object/mappers/user_story_step_mapper.dart';
+import '../../common_object/mappers/user_story_step_action_mapper.dart';
 import '../../common_object/widgets/detail/object_detail_wrapper.dart';
 
 class ObjectDetailPage extends StatefulWidget {
@@ -83,6 +85,20 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
       dataMapperFn: UserStoryToObjectItemMapper.fromJson,
       displayFields: [
         (key: 'name', label: 'Name'),
+        (key: 'description', label: 'Description'),
+      ],
+    ),
+    'user_story_steps': (
+      dataMapperFn: UserStoryStepToObjectItemMapper.fromJson,
+      displayFields: [
+        (key: 'name', label: 'Name'),
+        (key: 'description', label: 'Description'),
+      ],
+    ),
+    'user_story_step_actions': (
+      dataMapperFn: UserStoryStepActionToObjectItemMapper.fromJson,
+      displayFields: [
+        (key: 'target_type', label: 'Target Type'),
         (key: 'description', label: 'Description'),
       ],
     ),
