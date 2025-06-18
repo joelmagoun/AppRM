@@ -12,6 +12,7 @@ const _encryptedNameDescriptionTables = {
   'user_stories',
   'screen_photos',
   'user_story_steps',
+  'user_story_step_actions',
 };
 
 final objectRepositoryProvider = Provider<ObjectRepository>(
@@ -128,6 +129,15 @@ class ObjectRepository {
           FROM user_story_steps ss
           JOIN user_stories us ON ss.story_id = us.id
           WHERE ss.id = ?''';
+      } else if (tableName == 'user_story_step_actions') {
+        query = '''
+          SELECT sa.*, us.app_id, e.name AS element_name, sf.name AS function_name
+          FROM user_story_step_actions sa
+          JOIN user_story_steps ss ON sa.step_id = ss.id
+          JOIN user_stories us ON ss.story_id = us.id
+          LEFT JOIN elements e ON sa.target_id = e.id AND sa.target_type = 'element'
+          LEFT JOIN screen_functions sf ON sa.target_id = sf.id AND sa.target_type = 'screen_function'
+          WHERE sa.id = ?''';
       }
       final result = await db.get(query, [objectId]);
 
@@ -174,6 +184,11 @@ class ObjectRepository {
       String? appId = data['app_id'];
       if (tableName == 'user_story_steps' && data['story_id'] != null) {
         appId = await _getAppIdFromStory(data['story_id']);
+        if (appId != null) {
+          data = await _encryptNameDescriptionFields(appId, data);
+        }
+      } else if (tableName == 'user_story_step_actions' && data['step_id'] != null) {
+        appId = await _getAppIdFromStep(data['step_id']);
         if (appId != null) {
           data = await _encryptNameDescriptionFields(appId, data);
         }
@@ -227,6 +242,11 @@ class ObjectRepository {
     try {
       if (tableName == 'user_story_steps') {
         final appId = await _getAppIdFromStep(objectId);
+        if (appId != null) {
+          data = await _encryptNameDescriptionFields(appId, data);
+        }
+      } else if (tableName == 'user_story_step_actions') {
+        final appId = await _getAppIdFromStepAction(objectId);
         if (appId != null) {
           data = await _encryptNameDescriptionFields(appId, data);
         }
@@ -410,8 +430,10 @@ class ObjectRepository {
     try {
       final results = await db.getAll(
         '''
-        SELECT sa.*, e.name AS element_name, sf.name AS function_name
+        SELECT sa.*, us.app_id, e.name AS element_name, sf.name AS function_name
         FROM user_story_step_actions sa
+        JOIN user_story_steps ss ON sa.step_id = ss.id
+        JOIN user_stories us ON ss.story_id = us.id
         LEFT JOIN elements e ON sa.target_id = e.id AND sa.target_type = 'element'
         LEFT JOIN screen_functions sf ON sa.target_id = sf.id AND sa.target_type = 'screen_function'
         WHERE sa.step_id = ?
@@ -420,12 +442,18 @@ class ObjectRepository {
         [stepId],
       );
 
-      return results
+      final list = results
           .map((r) => r.entries.fold<Map<String, dynamic>>(
                 {},
                 (res, e) => {...res, e.key: e.value},
               ))
           .toList();
+
+      for (var i = 0; i < list.length; i++) {
+        list[i] = await _decryptNameDescriptionFields(list[i]);
+      }
+
+      return list;
     } catch (e) {
       rethrow;
     }
@@ -525,6 +553,24 @@ class ObjectRepository {
         WHERE ss.id = ?
         ''',
         [stepId],
+      );
+      return result['app_id'] as String?;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<String?> _getAppIdFromStepAction(String actionId) async {
+    try {
+      final result = await db.get(
+        '''
+        SELECT us.app_id
+        FROM user_story_step_actions sa
+        JOIN user_story_steps ss ON sa.step_id = ss.id
+        JOIN user_stories us ON ss.story_id = us.id
+        WHERE sa.id = ?
+        ''',
+        [actionId],
       );
       return result['app_id'] as String?;
     } catch (_) {

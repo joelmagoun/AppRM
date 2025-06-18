@@ -23,6 +23,7 @@ import 'features/object/pages/object_listing_page.dart';
 import 'features/object/pages/object_updating_page.dart';
 import 'features/screens/pages/screen_element_adding_page.dart';
 import 'features/user_stories/pages/user_story_step_adding_page.dart';
+import 'features/user_stories/pages/step_action_detail_page.dart';
 
 part 'router.g.dart';
 
@@ -290,6 +291,38 @@ class UserStoryStepAddingRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return UserStoryStepAddingPage(appId: appId, storyId: storyId);
+  }
+}
+
+@TypedGoRoute<StepActionDetailRoute>(
+  path: '/app/:appId/step_actions/:actionId',
+  routes: [
+    TypedGoRoute<StepActionUpdatingRoute>(
+      path: 'update',
+    ),
+  ],
+)
+class StepActionDetailRoute extends GoRouteData {
+  const StepActionDetailRoute({required this.appId, required this.actionId});
+
+  final String appId;
+  final String actionId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return StepActionDetailPage(appId: appId, actionId: actionId);
+  }
+}
+
+class StepActionUpdatingRoute extends GoRouteData {
+  const StepActionUpdatingRoute({required this.appId, required this.actionId});
+
+  final String appId;
+  final String actionId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return StepActionUpdatingPage(actionId: actionId);
   }
 }
 

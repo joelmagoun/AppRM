@@ -64,37 +64,62 @@ class _StepActionListState extends ConsumerState<StepActionList> {
     );
     if (selectedScreen == null) return;
 
+    String? targetId;
+    String? targetType;
     if (option == 'element') {
       final selectedElement = await showCupertinoModalBottomSheet<Map<String, dynamic>?>(
         context: context,
         builder: (_) => ElementSelection(screenId: selectedScreen['id']),
       );
       if (selectedElement == null) return;
-
-      await _createMutation.mutate(
-        CreateObjectUseCaseParams(
-          objectType: 'user_story_step_actions',
-          data: {
-            'step_id': widget.stepId,
-            'target_id': selectedElement['id'],
-            'target_type': 'element',
-          },
-        ),
-      );
+      targetId = selectedElement['id'];
+      targetType = 'element';
     } else if (option == 'function') {
       final selectedFunction = await showCupertinoModalBottomSheet<Map<String, dynamic>?>(
         context: context,
         builder: (_) => FunctionSelection(screenId: selectedScreen['id']),
       );
       if (selectedFunction == null) return;
+      targetId = selectedFunction['id'];
+      targetType = 'screen_function';
+    }
+
+    if (targetId != null && targetType != null) {
+      final description = await showDialog<String>(
+        context: context,
+        builder: (dialogContext) {
+          final controller = TextEditingController();
+          return AlertDialog(
+            title: const Text('Description'),
+            content: TextField(
+              controller: controller,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(controller.text),
+                child: const Text('Save'),
+              ),
+            ],
+          );
+        },
+      );
+      if (description == null) return;
 
       await _createMutation.mutate(
         CreateObjectUseCaseParams(
           objectType: 'user_story_step_actions',
           data: {
             'step_id': widget.stepId,
-            'target_id': selectedFunction['id'],
-            'target_type': 'screen_function',
+            'target_id': targetId,
+            'target_type': targetType,
+            'description': description,
           },
         ),
       );
@@ -153,16 +178,13 @@ class _StepActionListState extends ConsumerState<StepActionList> {
                     ...list.map(
                       (e) => InkWell(
                         onTap: () async {
-                          final targetType = e['target_type'] as String?;
-                          final targetId = e['target_id'] as String?;
-                          if (targetType == null || targetId == null) return;
-                          await ObjectDetailRoute(
+                          final result = await StepActionDetailRoute(
                             appId: appIdParam,
-                            objectType: targetType == 'element'
-                                ? 'elements'
-                                : 'screen_functions',
-                            objectId: targetId,
+                            actionId: e['id'],
                           ).push(context);
+                          if (result == true) {
+                            _refresh();
+                          }
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
@@ -170,9 +192,10 @@ class _StepActionListState extends ConsumerState<StepActionList> {
                             horizontal: 12,
                           ),
                           child: Text(
-                            e['target_type'] == 'element'
-                                ? (e['element_name'] ?? e['target_id'])
-                                : (e['function_name'] ?? e['target_id']),
+                            e['description'] ??
+                                (e['target_type'] == 'element'
+                                    ? (e['element_name'] ?? e['target_id'])
+                                    : (e['function_name'] ?? e['target_id'])),
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
