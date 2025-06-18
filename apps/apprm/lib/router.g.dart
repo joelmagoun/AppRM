@@ -18,6 +18,7 @@ List<RouteBase> get $appRoutes => [
       $objectListingRoute,
       $screenElementAddingRoute,
       $userStoryStepAddingRoute,
+      $stepActionDetailRoute,
       $externalObjectListingRoute,
       $notificationRoute,
     ];
@@ -454,6 +455,59 @@ extension $UserStoryStepAddingRouteExtension on UserStoryStepAddingRoute {
 
   String get location => GoRouteData.$location(
         '/app/${Uri.encodeComponent(appId)}/user_stories/${Uri.encodeComponent(storyId)}/steps/add',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $stepActionDetailRoute => GoRouteData.$route(
+      path: '/app/:appId/step_actions/:actionId',
+      factory: $StepActionDetailRouteExtension._fromState,
+      routes: [
+        GoRouteData.$route(
+          path: 'update',
+          factory: $StepActionUpdatingRouteExtension._fromState,
+        ),
+      ],
+    );
+
+extension $StepActionDetailRouteExtension on StepActionDetailRoute {
+  static StepActionDetailRoute _fromState(GoRouterState state) =>
+      StepActionDetailRoute(
+        appId: state.pathParameters['appId']!,
+        actionId: state.pathParameters['actionId']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/app/${Uri.encodeComponent(appId)}/step_actions/${Uri.encodeComponent(actionId)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $StepActionUpdatingRouteExtension on StepActionUpdatingRoute {
+  static StepActionUpdatingRoute _fromState(GoRouterState state) =>
+      StepActionUpdatingRoute(
+        appId: state.pathParameters['appId']!,
+        actionId: state.pathParameters['actionId']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/app/${Uri.encodeComponent(appId)}/step_actions/${Uri.encodeComponent(actionId)}/update',
       );
 
   void go(BuildContext context) => context.go(location);
