@@ -11,6 +11,7 @@ const _encryptedNameDescriptionTables = {
   'screen_functions',
   'user_stories',
   'screen_photos',
+  'user_story_steps',
 };
 
 final objectRepositoryProvider = Provider<ObjectRepository>(
@@ -121,6 +122,12 @@ class ObjectRepository {
           LEFT JOIN profile p ON h.user_id = p.id
           LEFT JOIN applications a ON h.app_id = a.id
           WHERE h.id = ?''';
+      } else if (tableName == 'user_story_steps') {
+        query = '''
+          SELECT ss.*, us.app_id
+          FROM user_story_steps ss
+          JOIN user_stories us ON ss.story_id = us.id
+          WHERE ss.id = ?''';
       }
       final result = await db.get(query, [objectId]);
 
@@ -164,12 +171,17 @@ class ObjectRepository {
   }) async {
     if (data.isEmpty) throw Exception('Please input at least 1 field');
     try {
-      if (tableName == 'requirements' && data['app_id'] != null) {
-        data = await _encryptRequirementFields(data['app_id'], data);
+      String? appId = data['app_id'];
+      if (tableName == 'user_story_steps' && data['story_id'] != null) {
+        appId = await _getAppIdFromStory(data['story_id']);
+        if (appId != null) {
+          data = await _encryptNameDescriptionFields(appId, data);
+        }
+      } else if (tableName == 'requirements' && appId != null) {
+        data = await _encryptRequirementFields(appId, data);
       } else if (_encryptedNameDescriptionTables.contains(tableName) &&
-          data['app_id'] != null) {
-        data = await _encryptNameDescriptionFields(data['app_id'], data);
-
+          appId != null) {
+        data = await _encryptNameDescriptionFields(appId, data);
       }
       final fieldStatement = data.keys.map((e) => "'$e'").join(', ');
       final valueStatement = data.values.map((e) => "'$e'").join(', ');
@@ -179,7 +191,6 @@ class ObjectRepository {
       );
       final id = result.firstWhere((e) => e.containsKey('id'))['id'];
 
-      final appId = data['app_id'];
       if (appId != null) {
         var name = _extractName(data);
         if (name.isNotEmpty) {
@@ -214,7 +225,12 @@ class ObjectRepository {
   }) async {
     if (data.isEmpty) throw Exception('Please input at least 1 field');
     try {
-      if (tableName == 'requirements' ||
+      if (tableName == 'user_story_steps') {
+        final appId = await _getAppIdFromStep(objectId);
+        if (appId != null) {
+          data = await _encryptNameDescriptionFields(appId, data);
+        }
+      } else if (tableName == 'requirements' ||
           _encryptedNameDescriptionTables.contains(tableName)) {
         final existing =
             await getObjectItem(tableName: tableName, objectId: objectId);
@@ -362,19 +378,27 @@ class ObjectRepository {
     try {
       final results = await db.getAll(
         '''
-        SELECT * FROM user_story_steps
-        WHERE story_id = ?
+        SELECT ss.*, us.app_id
+        FROM user_story_steps ss
+        JOIN user_stories us ON ss.story_id = us.id
+        WHERE ss.story_id = ?
         ORDER BY rank
         ''',
         [storyId],
       );
 
-      return results
+      final list = results
           .map((r) => r.entries.fold<Map<String, dynamic>>(
                 {},
                 (res, e) => {...res, e.key: e.value},
               ))
           .toList();
+
+      for (var i = 0; i < list.length; i++) {
+        list[i] = await _decryptNameDescriptionFields(list[i]);
+      }
+
+      return list;
     } catch (e) {
       rethrow;
     }
@@ -479,6 +503,35 @@ class ObjectRepository {
     return prefs.getString('app_${appId}_secret');
   }
 
+  Future<String?> _getAppIdFromStory(String storyId) async {
+    try {
+      final result = await db.get(
+        'SELECT app_id FROM user_stories WHERE id = ?',
+        [storyId],
+      );
+      return result['app_id'] as String?;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<String?> _getAppIdFromStep(String stepId) async {
+    try {
+      final result = await db.get(
+        '''
+        SELECT us.app_id
+        FROM user_story_steps ss
+        JOIN user_stories us ON ss.story_id = us.id
+        WHERE ss.id = ?
+        ''',
+        [stepId],
+      );
+      return result['app_id'] as String?;
+    } catch (_) {
+      return null;
+    }
+  }
+
   Future<Map<String, dynamic>> _encryptRequirementFields(
       String appId, Map<String, dynamic> data) async {
     final secret = await _getAppSecret(appId);
@@ -494,7 +547,6 @@ class ObjectRepository {
     }
     return newData;
   }
-
 
   Future<Map<String, dynamic>> _encryptNameDescriptionFields(
       String appId, Map<String, dynamic> data) async {
@@ -518,7 +570,6 @@ class ObjectRepository {
     return newData;
   }
 
-
   Future<Map<String, dynamic>> _decryptRequirementFields(
       Map<String, dynamic> data) async {
     final appId = data['app_id'];
@@ -536,7 +587,6 @@ class ObjectRepository {
     }
     return newData;
   }
-
 
   Future<Map<String, dynamic>> _decryptNameDescriptionFields(
       Map<String, dynamic> data) async {
@@ -561,7 +611,6 @@ class ObjectRepository {
     }
     return newData;
   }
-
 
   Future<void> _insertHistory({
     required String appId,
