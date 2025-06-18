@@ -410,8 +410,10 @@ class ObjectRepository {
     try {
       final results = await db.getAll(
         '''
-        SELECT sa.*, e.name AS element_name, sf.name AS function_name
+        SELECT sa.*, ss.story_id, us.app_id, e.name AS element_name, sf.name AS function_name
         FROM user_story_step_actions sa
+        JOIN user_story_steps ss ON sa.step_id = ss.id
+        JOIN user_stories us ON ss.story_id = us.id
         LEFT JOIN elements e ON sa.target_id = e.id AND sa.target_type = 'element'
         LEFT JOIN screen_functions sf ON sa.target_id = sf.id AND sa.target_type = 'screen_function'
         WHERE sa.step_id = ?
@@ -420,12 +422,33 @@ class ObjectRepository {
         [stepId],
       );
 
-      return results
+      final list = results
           .map((r) => r.entries.fold<Map<String, dynamic>>(
                 {},
                 (res, e) => {...res, e.key: e.value},
               ))
           .toList();
+
+      for (var i = 0; i < list.length; i++) {
+        final appId = list[i]['app_id'] as String?;
+        if (appId == null) continue;
+        final secret = await _getAppSecret(appId);
+        if (secret == null) continue;
+        if (list[i]['element_name'] != null) {
+          try {
+            list[i]['element_name'] =
+                executeDecrypt(list[i]['element_name'].toString(), secret);
+          } catch (_) {}
+        }
+        if (list[i]['function_name'] != null) {
+          try {
+            list[i]['function_name'] =
+                executeDecrypt(list[i]['function_name'].toString(), secret);
+          } catch (_) {}
+        }
+      }
+
+      return list;
     } catch (e) {
       rethrow;
     }
