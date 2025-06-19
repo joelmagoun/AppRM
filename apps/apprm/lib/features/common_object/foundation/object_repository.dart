@@ -655,6 +655,18 @@ class ObjectRepository {
       newData['default_value'] =
           executeDecrypt(newData['default_value'].toString(), secret);
     }
+    if (newData['element_name'] != null) {
+      newData['element_name'] =
+          executeDecrypt(newData['element_name'].toString(), secret);
+    }
+    if (newData['function_name'] != null) {
+      newData['function_name'] =
+          executeDecrypt(newData['function_name'].toString(), secret);
+    }
+    if (newData['screen_name'] != null) {
+      newData['screen_name'] =
+          executeDecrypt(newData['screen_name'].toString(), secret);
+    }
     return newData;
   }
 

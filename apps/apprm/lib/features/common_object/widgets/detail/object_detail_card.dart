@@ -11,6 +11,7 @@ import 'package:apprm/features/user_stories/widgets/step_action_list.dart';
 import 'package:apprm/typedefs/display_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../router.dart';
 
 class ObjectDetailCard extends ConsumerWidget {
   const ObjectDetailCard({
@@ -41,27 +42,74 @@ class ObjectDetailCard extends ConsumerWidget {
           runSpacing: 12,
           children: [
             ...displayFields.map(
-              (e) => SizedBox(
-                width: double.infinity,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      e.label,
-                      style: const TextStyle(
-                        color: Colors.black54,
+              (e) {
+                final value = objectItem?[e.key];
+                Widget valueWidget = Text(
+                  value ?? '--',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                );
+
+                if (objectType == 'user_story_step_actions' && value != null) {
+                  if (e.key == 'element_name' &&
+                      objectItem?['target_type'] == 'element') {
+                    valueWidget = InkWell(
+                      onTap: () async {
+                        await ObjectDetailRoute(
+                          appId: appId,
+                          objectType: 'elements',
+                          objectId: objectItem?['target_id'],
+                        ).push(context);
+                      },
+                      child: Text(
+                        value,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.blue,
+                        ),
                       ),
-                    ),
-                    Text(
-                      objectItem?[e.key] ?? '--',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                    );
+                  } else if (e.key == 'function_name' &&
+                      objectItem?['target_type'] == 'screen_function') {
+                    valueWidget = InkWell(
+                      onTap: () async {
+                        await ObjectDetailRoute(
+                          appId: appId,
+                          objectType: 'screen_functions',
+                          objectId: objectItem?['target_id'],
+                        ).push(context);
+                      },
+                      child: Text(
+                        value,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.blue,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
+                    );
+                  }
+                }
+
+                return SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        e.label,
+                        style: const TextStyle(
+                          color: Colors.black54,
+                        ),
+                      ),
+                      valueWidget,
+                    ],
+                  ),
+                );
+              },
             ),
             if (objectType == 'people')
               ExternalSystemConnected(
