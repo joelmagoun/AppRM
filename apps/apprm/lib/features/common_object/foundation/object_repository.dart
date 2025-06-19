@@ -655,6 +655,18 @@ class ObjectRepository {
       newData['default_value'] =
           executeDecrypt(newData['default_value'].toString(), secret);
     }
+
+    // decrypt any additional fields that end with `_name`
+    for (final entry in newData.entries) {
+      if (entry.key.endsWith('_name') && entry.value != null) {
+        try {
+          newData[entry.key] =
+              executeDecrypt(entry.value.toString(), secret);
+        } catch (_) {
+          // ignore decrypt errors
+        }
+      }
+    }
     return newData;
   }
 
