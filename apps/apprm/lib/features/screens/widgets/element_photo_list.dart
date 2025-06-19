@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,8 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:uuid/uuid.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../utils/crypt.dart';
 
 import '../../../attachments/queue.dart';
 import '../../../constants/color.dart';
@@ -17,9 +20,11 @@ import '../../common_object/foundation/use_cases/delete_object_item_usecase.dart
 import '../../common_object/foundation/use_cases/get_object_list_usecase.dart';
 
 class ElementPhotoList extends ConsumerStatefulWidget {
-  const ElementPhotoList({super.key, required this.elementId});
+  const ElementPhotoList(
+      {super.key, required this.elementId, required this.appId});
 
   final String elementId;
+  final String appId;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -28,6 +33,20 @@ class ElementPhotoList extends ConsumerStatefulWidget {
 
 class _ElementPhotoListState extends ConsumerState<ElementPhotoList> {
   final ImagePicker _picker = ImagePicker();
+  String? _secret;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSecret();
+  }
+
+  Future<void> _loadSecret() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _secret = prefs.getString('app_${widget.appId}_secret');
+    });
+  }
 
   final _createMutation = Mutation<void, CreateObjectUseCaseParams>(
     queryFn: (params) => CreateObjectUseCase(
@@ -61,8 +80,15 @@ class _ElementPhotoListState extends ConsumerState<ElementPhotoList> {
       await destDir.create(recursive: true);
     }
 
-    await attachmentQueue.localStorage.copyFile(file.path, localUri);
-    await attachmentQueue.saveFile(photoId, bytes.length, folder: 'elements');
+    if (_secret != null) {
+      final encBytes = encryptBytes(bytes, _secret!);
+      await File(localUri).writeAsBytes(encBytes);
+      await attachmentQueue.saveFile(photoId, encBytes.length,
+          folder: 'elements');
+    } else {
+      await attachmentQueue.localStorage.copyFile(file.path, localUri);
+      await attachmentQueue.saveFile(photoId, bytes.length, folder: 'elements');
+    }
 
     await _createMutation.mutate(
       CreateObjectUseCaseParams(
@@ -89,7 +115,16 @@ class _ElementPhotoListState extends ConsumerState<ElementPhotoList> {
     _refresh();
   }
 
-  Future<void> _openFullScreenImage(String path) async {
+  Future<Uint8List> _loadPhotoBytes(String photoId) async {
+    final path = await attachmentQueue.getLocalUri('elements/$photoId.jpg');
+    final fileBytes = await File(path).readAsBytes();
+    if (_secret != null) {
+      return decryptBytes(fileBytes, _secret!);
+    }
+    return fileBytes;
+  }
+
+  Future<void> _openFullScreenImage(Uint8List bytes) async {
     if (!mounted) return;
     await Navigator.of(context).push(
       MaterialPageRoute(
@@ -100,7 +135,7 @@ class _ElementPhotoListState extends ConsumerState<ElementPhotoList> {
             onDoubleTap: () => Navigator.of(context).pop(),
             child: Center(
               child: InteractiveViewer(
-                child: Image.file(File(path)),
+                child: Image.memory(bytes),
               ),
             ),
           ),
@@ -110,8 +145,7 @@ class _ElementPhotoListState extends ConsumerState<ElementPhotoList> {
   }
 
   Future<void> _openPhotoDetail(Map<String, dynamic> item) async {
-    final localPath =
-        await attachmentQueue.getLocalUri('elements/${item['photo_id']}.jpg');
+    final bytes = await _loadPhotoBytes(item['photo_id']);
     if (!mounted) return;
     await showDialog(
       context: context,
@@ -123,9 +157,9 @@ class _ElementPhotoListState extends ConsumerState<ElementPhotoList> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 GestureDetector(
-                  onTap: () => _openFullScreenImage(localPath),
-                  onDoubleTap: () => _openFullScreenImage(localPath),
-                  child: Image.file(File(localPath)),
+                  onTap: () => _openFullScreenImage(bytes),
+                  onDoubleTap: () => _openFullScreenImage(bytes),
+                  child: Image.memory(bytes),
                 ),
                 const SizedBox(height: 8),
                 Text(item['name'] ?? '',
@@ -224,23 +258,22 @@ class _ElementPhotoListState extends ConsumerState<ElementPhotoList> {
                       spacing: 8,
                       runSpacing: 8,
                       children: list.map((e) {
-                        return FutureBuilder<String>(
-                          future: attachmentQueue
-                              .getLocalUri('elements/${e['photo_id']}.jpg'),
+                        return FutureBuilder<Uint8List>(
+                          future: _loadPhotoBytes(e['photo_id']),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
                               return const SizedBox(
                                 width: 80,
                                 height: 80,
-                                child:
-                                    Center(child: CircularProgressIndicator()),
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
                               );
                             }
-                            final file = File(snapshot.data!);
                             return InkWell(
                               onTap: () => _openPhotoDetail(e),
-                              child: Image.file(
-                                file,
+                              child: Image.memory(
+                                snapshot.data!,
                                 width: 80,
                                 height: 80,
                                 fit: BoxFit.cover,

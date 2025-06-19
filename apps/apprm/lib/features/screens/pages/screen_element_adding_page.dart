@@ -10,16 +10,19 @@ import '../../../constants/color.dart';
 import '../../common_object/foundation/object_repository.dart';
 
 class ScreenElementAddingPage extends ConsumerStatefulWidget {
-  const ScreenElementAddingPage({super.key, required this.appId, required this.screenId});
+  const ScreenElementAddingPage(
+      {super.key, required this.appId, required this.screenId});
 
   final String appId;
   final String screenId;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ScreenElementAddingPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ScreenElementAddingPageState();
 }
 
-class _ScreenElementAddingPageState extends ConsumerState<ScreenElementAddingPage> {
+class _ScreenElementAddingPageState
+    extends ConsumerState<ScreenElementAddingPage> {
   late FormGroup formGroup;
   final ObjectRepository _repository = ObjectRepository();
 
@@ -40,6 +43,7 @@ class _ScreenElementAddingPageState extends ConsumerState<ScreenElementAddingPag
         final elementId = await _repository.createObject(
           tableName: 'elements',
           data: {
+            'app_id': widget.appId,
             'name': formGroup.control('name').value,
             'description': formGroup.control('description').value,
           },
