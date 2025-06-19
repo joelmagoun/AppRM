@@ -99,6 +99,7 @@ class ObjectDetailCard extends ConsumerWidget {
             if (objectType == 'elements')
               ElementPhotoList(
                 elementId: objectId,
+                appId: appId,
               ),
             if (objectType == 'elements')
               NavigationList(

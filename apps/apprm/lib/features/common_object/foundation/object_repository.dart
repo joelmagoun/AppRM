@@ -11,6 +11,7 @@ const _encryptedNameDescriptionTables = {
   'screen_functions',
   'user_stories',
   'screen_photos',
+  'elements',
   'user_story_steps',
   'user_story_step_actions',
 };
@@ -187,7 +188,8 @@ class ObjectRepository {
         if (appId != null) {
           data = await _encryptNameDescriptionFields(appId, data);
         }
-      } else if (tableName == 'user_story_step_actions' && data['step_id'] != null) {
+      } else if (tableName == 'user_story_step_actions' &&
+          data['step_id'] != null) {
         appId = await _getAppIdFromStep(data['step_id']);
         if (appId != null) {
           data = await _encryptNameDescriptionFields(appId, data);
@@ -358,10 +360,18 @@ class ObjectRepository {
         [screenId],
       );
 
-      return results
+      final list = results
           .map((r) => r.entries.fold<Map<String, dynamic>>(
-              {}, (res, e) => {...res, e.key: e.value}))
+                {},
+                (res, e) => {...res, e.key: e.value},
+              ))
           .toList();
+
+      for (var i = 0; i < list.length; i++) {
+        list[i] = await _decryptNameDescriptionFields(list[i]);
+      }
+
+      return list;
     } catch (e) {
       rethrow;
     }
@@ -660,8 +670,7 @@ class ObjectRepository {
     for (final entry in newData.entries) {
       if (entry.key.endsWith('_name') && entry.value != null) {
         try {
-          newData[entry.key] =
-              executeDecrypt(entry.value.toString(), secret);
+          newData[entry.key] = executeDecrypt(entry.value.toString(), secret);
         } catch (_) {
           // ignore decrypt errors
         }
