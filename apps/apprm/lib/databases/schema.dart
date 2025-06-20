@@ -159,6 +159,20 @@ Schema schema = Schema(
       ],
     ),
     const Table(
+      'ideas',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('app_id'),
+        Column.text('name'),
+        Column.text('description'),
+      ],
+      indexes: [
+        Index('ideas_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
       'data_objects',
       [
         Column.text('id'),

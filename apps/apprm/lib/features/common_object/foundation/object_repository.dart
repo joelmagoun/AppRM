@@ -14,6 +14,7 @@ const _encryptedNameDescriptionTables = {
   'elements',
   'user_story_steps',
   'user_story_step_actions',
+  'ideas',
 };
 
 final objectRepositoryProvider = Provider<ObjectRepository>(

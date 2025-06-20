@@ -136,6 +136,11 @@ class _ApplicationHomePageState extends State<ApplicationHomePage> {
         icon: PhosphorIconsFill.clock,
         title: 'Work Log',
         route: '/app/${widget.appId}/internal/work_logs'
+      ),
+      (
+        icon: PhosphorIconsFill.lightbulb,
+        title: 'Ideas',
+        route: '/app/${widget.appId}/internal/ideas'
       )
     ];
 
