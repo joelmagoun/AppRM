@@ -94,6 +94,7 @@ class _ElementPhotoListState extends ConsumerState<ElementPhotoList> {
       CreateObjectUseCaseParams(
         objectType: 'element_photos',
         data: {
+          'app_id': widget.appId,
           'element_id': widget.elementId,
           'name': file.name,
           'photo_id': photoId,

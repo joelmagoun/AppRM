@@ -282,6 +282,7 @@ Schema schema = Schema(
         Column.text('id'),
         Column.text('created_at'),
         Column.text('updated_at'),
+        Column.text('app_id'),
         Column.text('element_id'),
         Column.text('name'),
         Column.text('description'),

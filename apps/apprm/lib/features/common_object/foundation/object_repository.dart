@@ -11,6 +11,7 @@ const _encryptedNameDescriptionTables = {
   'screen_functions',
   'user_stories',
   'screen_photos',
+  'element_photos',
   'elements',
   'user_story_steps',
   'user_story_step_actions',
