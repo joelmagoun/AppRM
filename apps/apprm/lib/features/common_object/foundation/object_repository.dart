@@ -386,7 +386,8 @@ class ObjectRepository {
     try {
       final results = await db.getAll(
         '''
-        SELECT n.*, s.name AS screen_name, sf.name AS function_name
+        SELECT n.*, s.name AS screen_name, sf.name AS function_name,
+               s.app_id AS screen_app_id, sf.app_id AS function_app_id
         FROM navigations n
         LEFT JOIN screens s ON n.navigation_to = s.id AND n.navigation_to_type = 'screen'
         LEFT JOIN screen_functions sf ON sf.id = n.navigation_to AND n.navigation_to_type = 'function'
@@ -395,10 +396,21 @@ class ObjectRepository {
         [fromId, fromType],
       );
 
-      return results
+      final list = results
           .map((r) => r.entries.fold<Map<String, dynamic>>(
               {}, (res, e) => {...res, e.key: e.value}))
           .toList();
+
+      for (var i = 0; i < list.length; i++) {
+        final appId = list[i]['screen_app_id'] ?? list[i]['function_app_id'];
+        if (appId != null) {
+          list[i]['app_id'] = appId;
+          list[i] = await _decryptNameDescriptionFields(list[i]);
+          list[i].remove('app_id');
+        }
+      }
+
+      return list;
     } catch (e) {
       rethrow;
     }
