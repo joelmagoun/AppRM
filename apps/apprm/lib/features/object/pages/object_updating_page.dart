@@ -280,6 +280,27 @@ class _ObjectUpdatingPageState extends State<ObjectUpdatingPage> {
         ),
       ],
     ),
+    'user_story_steps': (
+      label: 'step',
+      inputFields: [
+        (
+          key: 'name',
+          label: 'Name',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'description',
+          label: 'Description',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+      ],
+    ),
     'work_logs': (
       label: 'work log',
       inputFields: [
