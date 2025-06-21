@@ -50,6 +50,7 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
       displayFields: [
         (key: 'requirement', label: 'Requirement'),
         (key: 'description', label: 'Description'),
+        (key: 'prompt', label: 'Prompt'),
         (key: 'completed', label: 'Completed'),
       ],
     ),
@@ -58,6 +59,7 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
       displayFields: [
         (key: 'name', label: 'Name'),
         (key: 'description', label: 'Description'),
+        (key: 'prompt', label: 'Prompt'),
       ],
     ),
     'screens': (
@@ -107,6 +109,7 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
       displayFields: [
         (key: 'name', label: 'Name'),
         (key: 'description', label: 'Description'),
+        (key: 'prompt', label: 'Prompt'),
       ],
     ),
     'data_objects': (

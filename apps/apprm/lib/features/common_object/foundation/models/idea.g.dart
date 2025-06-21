@@ -53,6 +53,13 @@ class _$IdeaSerializer implements StructuredSerializer<Idea> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.prompt;
+    if (value != null) {
+      result
+        ..add('prompt')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -91,6 +98,10 @@ class _$IdeaSerializer implements StructuredSerializer<Idea> {
           result.description = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
+        case 'prompt':
+          result.prompt = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
       }
     }
 
@@ -111,6 +122,8 @@ class _$Idea extends Idea {
   final String? name;
   @override
   final String? description;
+  @override
+  final String? prompt;
 
   factory _$Idea([void Function(IdeaBuilder)? updates]) =>
       (new IdeaBuilder()..update(updates))._build();
@@ -121,7 +134,8 @@ class _$Idea extends Idea {
       this.updatedAt,
       this.appId,
       this.name,
-      this.description})
+      this.description,
+      this.prompt})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, r'Idea', 'id');
     BuiltValueNullFieldError.checkNotNull(createdAt, r'Idea', 'createdAt');
@@ -143,7 +157,8 @@ class _$Idea extends Idea {
         updatedAt == other.updatedAt &&
         appId == other.appId &&
         name == other.name &&
-        description == other.description;
+        description == other.description &&
+        prompt == other.prompt;
   }
 
   @override
@@ -155,6 +170,7 @@ class _$Idea extends Idea {
     _$hash = $jc(_$hash, appId.hashCode);
     _$hash = $jc(_$hash, name.hashCode);
     _$hash = $jc(_$hash, description.hashCode);
+    _$hash = $jc(_$hash, prompt.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -167,7 +183,8 @@ class _$Idea extends Idea {
           ..add('updatedAt', updatedAt)
           ..add('appId', appId)
           ..add('name', name)
-          ..add('description', description))
+          ..add('description', description)
+          ..add('prompt', prompt))
         .toString();
   }
 }
@@ -199,6 +216,10 @@ class IdeaBuilder implements Builder<Idea, IdeaBuilder> {
   String? get description => _$this._description;
   set description(String? description) => _$this._description = description;
 
+  String? _prompt;
+  String? get prompt => _$this._prompt;
+  set prompt(String? prompt) => _$this._prompt = prompt;
+
   IdeaBuilder();
 
   IdeaBuilder get _$this {
@@ -210,6 +231,7 @@ class IdeaBuilder implements Builder<Idea, IdeaBuilder> {
       _appId = $v.appId;
       _name = $v.name;
       _description = $v.description;
+      _prompt = $v.prompt;
       _$v = null;
     }
     return this;
@@ -238,7 +260,8 @@ class IdeaBuilder implements Builder<Idea, IdeaBuilder> {
             updatedAt: updatedAt,
             appId: appId,
             name: name,
-            description: description);
+            description: description,
+            prompt: prompt);
     replace(_$result);
     return _$result;
   }
