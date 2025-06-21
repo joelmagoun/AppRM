@@ -21,6 +21,8 @@ abstract class Requirement implements Built<Requirement, RequirementBuilder> {
 
   String? get description;
 
+  String? get prompt;
+
   String? get completed;
 
   @BuiltValueField(wireName: 'completed_at')

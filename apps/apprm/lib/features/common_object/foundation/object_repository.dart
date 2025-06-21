@@ -654,6 +654,9 @@ class ObjectRepository {
       newData['description'] =
           executeEncrypt(newData['description'].toString(), secret);
     }
+    if (newData['prompt'] != null) {
+      newData['prompt'] = executeEncrypt(newData['prompt'].toString(), secret);
+    }
     return newData;
   }
 
@@ -668,6 +671,9 @@ class ObjectRepository {
     if (newData['description'] != null) {
       newData['description'] =
           executeEncrypt(newData['description'].toString(), secret);
+    }
+    if (newData['prompt'] != null) {
+      newData['prompt'] = executeEncrypt(newData['prompt'].toString(), secret);
     }
     if (newData['type'] != null) {
       newData['type'] = executeEncrypt(newData['type'].toString(), secret);
@@ -694,6 +700,9 @@ class ObjectRepository {
       newData['description'] =
           executeDecrypt(newData['description'].toString(), secret);
     }
+    if (newData['prompt'] != null) {
+      newData['prompt'] = executeDecrypt(newData['prompt'].toString(), secret);
+    }
     return newData;
   }
 
@@ -710,6 +719,10 @@ class ObjectRepository {
     if (newData['description'] != null) {
       newData['description'] =
           executeDecrypt(newData['description'].toString(), secret);
+    }
+    if (newData['prompt'] != null) {
+      newData['prompt'] =
+          executeDecrypt(newData['prompt'].toString(), secret);
     }
     if (newData['type'] != null) {
       newData['type'] = executeDecrypt(newData['type'].toString(), secret);
