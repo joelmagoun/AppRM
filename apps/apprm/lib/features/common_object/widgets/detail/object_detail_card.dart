@@ -6,6 +6,8 @@ import 'package:apprm/features/screens/widgets/data_link_list.dart';
 import 'package:apprm/features/screens/widgets/element_list.dart';
 import 'package:apprm/features/screens/widgets/element_photo_list.dart';
 import 'package:apprm/features/screens/widgets/navigation_list.dart';
+import 'package:apprm/features/screens/widgets/element_screen_list.dart';
+import 'package:apprm/router.dart';
 import 'package:apprm/features/user_stories/widgets/story_step_list.dart';
 import 'package:apprm/features/user_stories/widgets/step_action_list.dart';
 import 'package:apprm/typedefs/display_field.dart';
@@ -63,6 +65,20 @@ class ObjectDetailCard extends ConsumerWidget {
                 ),
               ),
             ),
+            if (objectType == 'screen_functions')
+              _buildField(
+                'Screen',
+                objectItem?['screen_name'],
+                onTap: objectItem?['screen_id'] != null
+                    ? () async {
+                        await ObjectDetailRoute(
+                          appId: appId,
+                          objectType: 'screens',
+                          objectId: objectItem?['screen_id'],
+                        ).push(context);
+                      }
+                    : null,
+              ),
             if (objectType == 'people')
               ExternalSystemConnected(
                 objectType: objectType,
@@ -102,6 +118,10 @@ class ObjectDetailCard extends ConsumerWidget {
                 appId: appId,
               ),
             if (objectType == 'elements')
+              ElementScreenList(
+                elementId: objectId,
+              ),
+            if (objectType == 'elements')
               NavigationList(
                 appId: appId,
                 objectId: objectId,
@@ -119,6 +139,31 @@ class ObjectDetailCard extends ConsumerWidget {
               ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildField(String label, String? value, {VoidCallback? onTap}) {
+    final text = Text(
+      value ?? '--',
+      style: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+      ),
+    );
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              color: Colors.black54,
+            ),
+          ),
+          onTap != null ? InkWell(onTap: onTap, child: text) : text,
+        ],
       ),
     );
   }
