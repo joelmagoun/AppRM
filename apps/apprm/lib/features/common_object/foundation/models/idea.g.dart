@@ -21,37 +21,38 @@ class _$IdeaSerializer implements StructuredSerializer<Idea> {
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
       'created_at',
-      serializers.serialize(object.createdAt,
-          specifiedType: const FullType(DateTime)),
+      serializers.serialize(object.createdAt, specifiedType: const FullType(DateTime)),
     ];
     Object? value;
     value = object.updatedAt;
     if (value != null) {
       result
         ..add('updated_at')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(DateTime)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(DateTime)));
     }
     value = object.appId;
     if (value != null) {
       result
         ..add('app_id')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
     }
     value = object.name;
     if (value != null) {
       result
         ..add('name')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
     }
     value = object.description;
     if (value != null) {
       result
         ..add('description')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
+    }
+    value = object.prompt;
+    if (value != null) {
+      result
+        ..add('prompt')
+        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
     }
     return result;
   }
@@ -68,28 +69,32 @@ class _$IdeaSerializer implements StructuredSerializer<Idea> {
       final Object? value = iterator.current;
       switch (key) {
         case 'id':
-          result.id = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+          result.id =
+              serializers.deserialize(value, specifiedType: const FullType(String))! as String;
           break;
         case 'created_at':
-          result.createdAt = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime))! as DateTime;
+          result.createdAt =
+              serializers.deserialize(value, specifiedType: const FullType(DateTime))! as DateTime;
           break;
         case 'updated_at':
-          result.updatedAt = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime)) as DateTime?;
+          result.updatedAt =
+              serializers.deserialize(value, specifiedType: const FullType(DateTime)) as DateTime?;
           break;
         case 'app_id':
-          result.appId = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.appId =
+              serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
           break;
         case 'name':
-          result.name = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.name =
+              serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
           break;
         case 'description':
-          result.description = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.description =
+              serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
+          break;
+        case 'prompt':
+          result.prompt =
+              serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
           break;
       }
     }
@@ -111,6 +116,8 @@ class _$Idea extends Idea {
   final String? name;
   @override
   final String? description;
+  @override
+  final String? prompt;
 
   factory _$Idea([void Function(IdeaBuilder)? updates]) =>
       (new IdeaBuilder()..update(updates))._build();
@@ -121,15 +128,15 @@ class _$Idea extends Idea {
       this.updatedAt,
       this.appId,
       this.name,
-      this.description})
+      this.description,
+      this.prompt})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, r'Idea', 'id');
     BuiltValueNullFieldError.checkNotNull(createdAt, r'Idea', 'createdAt');
   }
 
   @override
-  Idea rebuild(void Function(IdeaBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+  Idea rebuild(void Function(IdeaBuilder) updates) => (toBuilder()..update(updates)).build();
 
   @override
   IdeaBuilder toBuilder() => new IdeaBuilder()..replace(this);
@@ -143,7 +150,8 @@ class _$Idea extends Idea {
         updatedAt == other.updatedAt &&
         appId == other.appId &&
         name == other.name &&
-        description == other.description;
+        description == other.description &&
+        prompt == other.prompt;
   }
 
   @override
@@ -155,6 +163,7 @@ class _$Idea extends Idea {
     _$hash = $jc(_$hash, appId.hashCode);
     _$hash = $jc(_$hash, name.hashCode);
     _$hash = $jc(_$hash, description.hashCode);
+    _$hash = $jc(_$hash, prompt.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -167,7 +176,8 @@ class _$Idea extends Idea {
           ..add('updatedAt', updatedAt)
           ..add('appId', appId)
           ..add('name', name)
-          ..add('description', description))
+          ..add('description', description)
+          ..add('prompt', prompt))
         .toString();
   }
 }
@@ -199,6 +209,10 @@ class IdeaBuilder implements Builder<Idea, IdeaBuilder> {
   String? get description => _$this._description;
   set description(String? description) => _$this._description = description;
 
+  String? _prompt;
+  String? get prompt => _$this._prompt;
+  set prompt(String? prompt) => _$this._prompt = prompt;
+
   IdeaBuilder();
 
   IdeaBuilder get _$this {
@@ -210,6 +224,7 @@ class IdeaBuilder implements Builder<Idea, IdeaBuilder> {
       _appId = $v.appId;
       _name = $v.name;
       _description = $v.description;
+      _prompt = $v.prompt;
       _$v = null;
     }
     return this;
@@ -233,12 +248,12 @@ class IdeaBuilder implements Builder<Idea, IdeaBuilder> {
     final _$result = _$v ??
         new _$Idea._(
             id: BuiltValueNullFieldError.checkNotNull(id, r'Idea', 'id'),
-            createdAt: BuiltValueNullFieldError.checkNotNull(
-                createdAt, r'Idea', 'createdAt'),
+            createdAt: BuiltValueNullFieldError.checkNotNull(createdAt, r'Idea', 'createdAt'),
             updatedAt: updatedAt,
             appId: appId,
             name: name,
-            description: description);
+            description: description,
+            prompt: prompt);
     replace(_$result);
     return _$result;
   }

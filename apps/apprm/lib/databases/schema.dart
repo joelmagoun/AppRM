@@ -137,6 +137,7 @@ Schema schema = Schema(
         Column.text('app_id'),
         Column.text('requirement'),
         Column.text('description'),
+        Column.text('prompt'),
         Column.text('completed'),
         Column.text('completed_at'),
       ],
@@ -167,6 +168,7 @@ Schema schema = Schema(
         Column.text('app_id'),
         Column.text('name'),
         Column.text('description'),
+        Column.text('prompt'),
       ],
       indexes: [
         Index('ideas_list', [IndexedColumn('id')])

@@ -21,6 +21,8 @@ abstract class Idea implements Built<Idea, IdeaBuilder> {
 
   String? get description;
 
+  String? get prompt;
+
   Idea._();
   factory Idea([void Function(IdeaBuilder) updates]) = _$Idea;
 

@@ -21,6 +21,8 @@ abstract class Requirement implements Built<Requirement, RequirementBuilder> {
 
   String? get description;
 
+  String? get prompt;
+
   String? get completed;
 
   @BuiltValueField(wireName: 'completed_at')
@@ -36,4 +38,4 @@ abstract class Requirement implements Built<Requirement, RequirementBuilder> {
 
   Map<String, dynamic> toJson() =>
       serializers.serializeWith(serializer, this)! as Map<String, dynamic>;
-} 
+}
