@@ -124,6 +124,14 @@ class _ObjectUpdatingPageState extends State<ObjectUpdatingPage> {
           asyncOptions: null,
         ),
         (
+          key: 'prompt',
+          label: 'Prompt',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
           key: 'completed',
           label: 'Completed',
           placeholder: null,
@@ -147,6 +155,14 @@ class _ObjectUpdatingPageState extends State<ObjectUpdatingPage> {
         (
           key: 'description',
           label: 'Description',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'prompt',
+          label: 'Prompt',
           placeholder: null,
           displayMode: 'TEXT',
           options: null,
@@ -450,8 +466,7 @@ class _ObjectUpdatingPageState extends State<ObjectUpdatingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final objectTypeParam =
-        GoRouterState.of(context).pathParameters['objectType']!;
+    final objectTypeParam = GoRouterState.of(context).pathParameters['objectType']!;
     final objectIdParam = GoRouterState.of(context).pathParameters['objectId']!;
     final objectData = objectDataMap[objectTypeParam];
 

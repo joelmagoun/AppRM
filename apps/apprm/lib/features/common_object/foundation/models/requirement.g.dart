@@ -21,51 +21,50 @@ class _$RequirementSerializer implements StructuredSerializer<Requirement> {
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
       'created_at',
-      serializers.serialize(object.createdAt,
-          specifiedType: const FullType(DateTime)),
+      serializers.serialize(object.createdAt, specifiedType: const FullType(DateTime)),
     ];
     Object? value;
     value = object.updatedAt;
     if (value != null) {
       result
         ..add('updated_at')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(DateTime)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(DateTime)));
     }
     value = object.appId;
     if (value != null) {
       result
         ..add('app_id')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
     }
     value = object.requirement;
     if (value != null) {
       result
         ..add('requirement')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
     }
     value = object.description;
     if (value != null) {
       result
         ..add('description')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
+    }
+    value = object.prompt;
+    if (value != null) {
+      result
+        ..add('prompt')
+        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
     }
     value = object.completed;
     if (value != null) {
       result
         ..add('completed')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
     }
     value = object.completedAt;
     if (value != null) {
       result
         ..add('completed_at')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(DateTime)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(DateTime)));
     }
     return result;
   }
@@ -82,36 +81,40 @@ class _$RequirementSerializer implements StructuredSerializer<Requirement> {
       final Object? value = iterator.current;
       switch (key) {
         case 'id':
-          result.id = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+          result.id =
+              serializers.deserialize(value, specifiedType: const FullType(String))! as String;
           break;
         case 'created_at':
-          result.createdAt = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime))! as DateTime;
+          result.createdAt =
+              serializers.deserialize(value, specifiedType: const FullType(DateTime))! as DateTime;
           break;
         case 'updated_at':
-          result.updatedAt = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime)) as DateTime?;
+          result.updatedAt =
+              serializers.deserialize(value, specifiedType: const FullType(DateTime)) as DateTime?;
           break;
         case 'app_id':
-          result.appId = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.appId =
+              serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
           break;
         case 'requirement':
-          result.requirement = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.requirement =
+              serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
           break;
         case 'description':
-          result.description = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.description =
+              serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
+          break;
+        case 'prompt':
+          result.prompt =
+              serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
           break;
         case 'completed':
-          result.completed = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.completed =
+              serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
           break;
         case 'completed_at':
-          result.completedAt = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime)) as DateTime?;
+          result.completedAt =
+              serializers.deserialize(value, specifiedType: const FullType(DateTime)) as DateTime?;
           break;
       }
     }
@@ -134,6 +137,8 @@ class _$Requirement extends Requirement {
   @override
   final String? description;
   @override
+  final String? prompt;
+  @override
   final String? completed;
   @override
   final DateTime? completedAt;
@@ -148,12 +153,12 @@ class _$Requirement extends Requirement {
       this.appId,
       this.requirement,
       this.description,
+      this.prompt,
       this.completed,
       this.completedAt})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, r'Requirement', 'id');
-    BuiltValueNullFieldError.checkNotNull(
-        createdAt, r'Requirement', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(createdAt, r'Requirement', 'createdAt');
   }
 
   @override
@@ -173,6 +178,7 @@ class _$Requirement extends Requirement {
         appId == other.appId &&
         requirement == other.requirement &&
         description == other.description &&
+        prompt == other.prompt &&
         completed == other.completed &&
         completedAt == other.completedAt;
   }
@@ -186,6 +192,7 @@ class _$Requirement extends Requirement {
     _$hash = $jc(_$hash, appId.hashCode);
     _$hash = $jc(_$hash, requirement.hashCode);
     _$hash = $jc(_$hash, description.hashCode);
+    _$hash = $jc(_$hash, prompt.hashCode);
     _$hash = $jc(_$hash, completed.hashCode);
     _$hash = $jc(_$hash, completedAt.hashCode);
     _$hash = $jf(_$hash);
@@ -201,6 +208,7 @@ class _$Requirement extends Requirement {
           ..add('appId', appId)
           ..add('requirement', requirement)
           ..add('description', description)
+          ..add('prompt', prompt)
           ..add('completed', completed)
           ..add('completedAt', completedAt))
         .toString();
@@ -234,6 +242,10 @@ class RequirementBuilder implements Builder<Requirement, RequirementBuilder> {
   String? get description => _$this._description;
   set description(String? description) => _$this._description = description;
 
+  String? _prompt;
+  String? get prompt => _$this._prompt;
+  set prompt(String? prompt) => _$this._prompt = prompt;
+
   String? _completed;
   String? get completed => _$this._completed;
   set completed(String? completed) => _$this._completed = completed;
@@ -253,6 +265,7 @@ class RequirementBuilder implements Builder<Requirement, RequirementBuilder> {
       _appId = $v.appId;
       _requirement = $v.requirement;
       _description = $v.description;
+      _prompt = $v.prompt;
       _completed = $v.completed;
       _completedAt = $v.completedAt;
       _$v = null;
@@ -278,12 +291,13 @@ class RequirementBuilder implements Builder<Requirement, RequirementBuilder> {
     final _$result = _$v ??
         new _$Requirement._(
             id: BuiltValueNullFieldError.checkNotNull(id, r'Requirement', 'id'),
-            createdAt: BuiltValueNullFieldError.checkNotNull(
-                createdAt, r'Requirement', 'createdAt'),
+            createdAt:
+                BuiltValueNullFieldError.checkNotNull(createdAt, r'Requirement', 'createdAt'),
             updatedAt: updatedAt,
             appId: appId,
             requirement: requirement,
             description: description,
+            prompt: prompt,
             completed: completed,
             completedAt: completedAt);
     replace(_$result);

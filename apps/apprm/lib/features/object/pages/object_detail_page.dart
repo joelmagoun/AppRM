@@ -50,6 +50,7 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
       displayFields: [
         (key: 'requirement', label: 'Requirement'),
         (key: 'description', label: 'Description'),
+        (key: 'prompt', label: 'Prompt'),
         (key: 'completed', label: 'Completed'),
       ],
     ),
@@ -58,6 +59,7 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
       displayFields: [
         (key: 'name', label: 'Name'),
         (key: 'description', label: 'Description'),
+        (key: 'prompt', label: 'Prompt'),
       ],
     ),
     'screens': (
@@ -65,6 +67,7 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
       displayFields: [
         (key: 'name', label: 'Name'),
         (key: 'description', label: 'Description'),
+        (key: 'prompt', label: 'Prompt'),
       ],
     ),
     'elements': (
@@ -138,12 +141,10 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final objectTypeParam =
-        GoRouterState.of(context).pathParameters['objectType']!;
+    final objectTypeParam = GoRouterState.of(context).pathParameters['objectType']!;
     final objectIdParam = GoRouterState.of(context).pathParameters['objectId']!;
     final appIdParam = GoRouterState.of(context).pathParameters['appId'];
-    final screenIdParam =
-        GoRouterState.of(context).queryParameters['screen_id'];
+    final screenIdParam = GoRouterState.of(context).queryParameters['screen_id'];
     final objectData = objectDataMap[objectTypeParam];
 
     return ObjectDetailWrapper(
@@ -152,10 +153,8 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
       appId: appIdParam!,
       screenId: screenIdParam,
       mapperFn: objectData?.dataMapperFn ?? (e) => ObjectItem.fromJson(e),
-      displayFields: objectData?.displayFields
-              .map((e) => (key: e.key, label: e.label))
-              .toList() ??
-          [],
+      displayFields:
+          objectData?.displayFields.map((e) => (key: e.key, label: e.label)).toList() ?? [],
       onEditingNavigateFn: () {
         ObjectUpdatingRoute(
           appId: appIdParam!,
