@@ -12,6 +12,7 @@ import '../../common_object/foundation/use_cases/get_step_actions_usecase.dart';
 import '../../screens/widgets/element_selection.dart';
 import '../../screens/widgets/function_selection.dart';
 import '../../screens/widgets/screen_selection.dart';
+import 'user_story_selection.dart';
 
 class StepActionList extends ConsumerStatefulWidget {
   const StepActionList({super.key, required this.appId, required this.stepId});
@@ -51,6 +52,10 @@ class _StepActionListState extends ConsumerState<StepActionList> {
               onPressed: () => Navigator.of(context).pop('function'),
               child: const Text('Function'),
             ),
+            SimpleDialogOption(
+              onPressed: () => Navigator.of(context).pop('user_story'),
+              child: const Text('User Story'),
+            ),
           ],
         );
       },
@@ -58,30 +63,46 @@ class _StepActionListState extends ConsumerState<StepActionList> {
 
     if (option == null) return;
 
-    final selectedScreen = await showCupertinoModalBottomSheet<Map<String, dynamic>?>(
-      context: context,
-      builder: (_) => ScreenSelection(appId: widget.appId),
-    );
-    if (selectedScreen == null) return;
+    Map<String, dynamic>? selectedScreen;
+    if (option == 'element' || option == 'function') {
+      selectedScreen =
+          await showCupertinoModalBottomSheet<Map<String, dynamic>?>(
+        context: context,
+        builder: (_) => ScreenSelection(appId: widget.appId),
+      );
+      if (selectedScreen == null) return;
+    }
 
     String? targetId;
     String? targetType;
     if (option == 'element') {
-      final selectedElement = await showCupertinoModalBottomSheet<Map<String, dynamic>?>(
+      final selectedElement =
+          await showCupertinoModalBottomSheet<Map<String, dynamic>?>(
         context: context,
-        builder: (_) => ElementSelection(screenId: selectedScreen['id']),
+        builder: (_) => ElementSelection(screenId: selectedScreen!['id']),
       );
       if (selectedElement == null) return;
       targetId = selectedElement['id'];
       targetType = 'element';
     } else if (option == 'function') {
-      final selectedFunction = await showCupertinoModalBottomSheet<Map<String, dynamic>?>(
+      final selectedFunction =
+          await showCupertinoModalBottomSheet<Map<String, dynamic>?>(
         context: context,
-        builder: (_) => FunctionSelection(screenId: selectedScreen['id']),
+        builder: (_) => FunctionSelection(screenId: selectedScreen!['id']),
       );
       if (selectedFunction == null) return;
       targetId = selectedFunction['id'];
       targetType = 'screen_function';
+    } else if (option == 'user_story') {
+      final selectedStory =
+          await showCupertinoModalBottomSheet<Map<String, dynamic>?>(
+        context: context,
+        builder: (_) =>
+            UserStorySelection(appId: widget.appId, excludeStoryId: null),
+      );
+      if (selectedStory == null) return;
+      targetId = selectedStory['id'];
+      targetType = 'user_story';
     }
 
     if (targetId != null && targetType != null) {
@@ -103,7 +124,8 @@ class _StepActionListState extends ConsumerState<StepActionList> {
                 child: const Text('Cancel'),
               ),
               TextButton(
-                onPressed: () => Navigator.of(dialogContext).pop(controller.text),
+                onPressed: () =>
+                    Navigator.of(dialogContext).pop(controller.text),
                 child: const Text('Save'),
               ),
             ],
@@ -195,7 +217,10 @@ class _StepActionListState extends ConsumerState<StepActionList> {
                             e['description'] ??
                                 (e['target_type'] == 'element'
                                     ? (e['element_name'] ?? e['target_id'])
-                                    : (e['function_name'] ?? e['target_id'])),
+                                    : e['target_type'] == 'screen_function'
+                                        ? (e['function_name'] ?? e['target_id'])
+                                        : (e['user_story_name'] ??
+                                            e['target_id'])),
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,

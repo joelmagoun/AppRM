@@ -16,13 +16,15 @@ import '../../common_object/foundation/use_cases/delete_object_item_usecase.dart
 import '../../common_object/foundation/use_cases/get_object_item_usecase.dart';
 
 class StepActionDetailPage extends ConsumerStatefulWidget {
-  const StepActionDetailPage({super.key, required this.appId, required this.actionId});
+  const StepActionDetailPage(
+      {super.key, required this.appId, required this.actionId});
 
   final String appId;
   final String actionId;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _StepActionDetailPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _StepActionDetailPageState();
 }
 
 class _StepActionDetailPageState extends ConsumerState<StepActionDetailPage> {
@@ -34,7 +36,7 @@ class _StepActionDetailPageState extends ConsumerState<StepActionDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return QueryBuilder<Map<String, dynamic>>( 
+    return QueryBuilder<Map<String, dynamic>>(
       query: Query(
         key: [
           'user_story_step_actions',
@@ -59,8 +61,7 @@ class _StepActionDetailPageState extends ConsumerState<StepActionDetailPage> {
       ),
       builder: (context, state) {
         final title = state.data != null
-            ? UserStoryStepActionToObjectItemMapper.fromJson(state.data!)
-                .title
+            ? UserStoryStepActionToObjectItemMapper.fromJson(state.data!).title
             : '--';
 
         return Scaffold(
@@ -186,7 +187,14 @@ class StepActionUpdatingPage extends StatelessWidget {
       objectId: actionId,
       objectLabel: 'step action',
       inputFields: const [
-        (key: 'description', label: 'Description', placeholder: null, displayMode: 'TEXT', options: null, asyncOptions: null),
+        (
+          key: 'description',
+          label: 'Description',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null
+        ),
       ],
     );
   }
@@ -206,6 +214,7 @@ class StepActionDetailCard extends StatelessWidget {
   Widget build(BuildContext context) {
     String? elementName = action?['element_name'];
     String? functionName = action?['function_name'];
+    String? userStoryName = action?['user_story_name'];
     return Card(
       color: Colors.white,
       child: Container(
@@ -236,6 +245,19 @@ class StepActionDetailCard extends StatelessWidget {
                       await ObjectDetailRoute(
                         appId: appId,
                         objectType: 'screen_functions',
+                        objectId: action?['target_id'],
+                      ).push(context);
+                    }
+                  : null,
+            ),
+            _buildField(
+              'User Story',
+              userStoryName,
+              onTap: userStoryName != null
+                  ? () async {
+                      await ObjectDetailRoute(
+                        appId: appId,
+                        objectType: 'user_stories',
                         objectId: action?['target_id'],
                       ).push(context);
                     }
