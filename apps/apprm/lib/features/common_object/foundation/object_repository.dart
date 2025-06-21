@@ -134,12 +134,13 @@ class ObjectRepository {
           WHERE ss.id = ?''';
       } else if (tableName == 'user_story_step_actions') {
         query = '''
-          SELECT sa.*, us.app_id, e.name AS element_name, sf.name AS function_name
+          SELECT sa.*, us.app_id, e.name AS element_name, sf.name AS function_name, us2.name AS user_story_name
           FROM user_story_step_actions sa
           JOIN user_story_steps ss ON sa.step_id = ss.id
           JOIN user_stories us ON ss.story_id = us.id
           LEFT JOIN elements e ON sa.target_id = e.id AND sa.target_type = 'element'
           LEFT JOIN screen_functions sf ON sa.target_id = sf.id AND sa.target_type = 'screen_function'
+          LEFT JOIN user_stories us2 ON sa.target_id = us2.id AND sa.target_type = 'user_story'
           WHERE sa.id = ?''';
       } else if (tableName == 'screen_functions') {
         query = '''
@@ -491,12 +492,13 @@ class ObjectRepository {
     try {
       final results = await db.getAll(
         '''
-        SELECT sa.*, us.app_id, e.name AS element_name, sf.name AS function_name
+        SELECT sa.*, us.app_id, e.name AS element_name, sf.name AS function_name, us2.name AS user_story_name
         FROM user_story_step_actions sa
         JOIN user_story_steps ss ON sa.step_id = ss.id
         JOIN user_stories us ON ss.story_id = us.id
         LEFT JOIN elements e ON sa.target_id = e.id AND sa.target_type = 'element'
         LEFT JOIN screen_functions sf ON sa.target_id = sf.id AND sa.target_type = 'screen_function'
+        LEFT JOIN user_stories us2 ON sa.target_id = us2.id AND sa.target_type = 'user_story'
         WHERE sa.step_id = ?
         ORDER BY sa.rank
         ''',
