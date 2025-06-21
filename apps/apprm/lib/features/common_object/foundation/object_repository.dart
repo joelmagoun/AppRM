@@ -141,6 +141,12 @@ class ObjectRepository {
           LEFT JOIN elements e ON sa.target_id = e.id AND sa.target_type = 'element'
           LEFT JOIN screen_functions sf ON sa.target_id = sf.id AND sa.target_type = 'screen_function'
           WHERE sa.id = ?''';
+      } else if (tableName == 'screen_functions') {
+        query = '''
+          SELECT sf.*, s.name AS screen_name
+          FROM screen_functions sf
+          LEFT JOIN screens s ON sf.screen_id = s.id
+          WHERE sf.id = ?''';
       }
       final result = await db.get(query, [objectId]);
 
@@ -360,6 +366,37 @@ class ObjectRepository {
         WHERE se.screen_id = ?
         ''',
         [screenId],
+      );
+
+      final list = results
+          .map((r) => r.entries.fold<Map<String, dynamic>>(
+                {},
+                (res, e) => {...res, e.key: e.value},
+              ))
+          .toList();
+
+      for (var i = 0; i < list.length; i++) {
+        list[i] = await _decryptNameDescriptionFields(list[i]);
+      }
+
+      return list;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getElementScreens({
+    required String elementId,
+  }) async {
+    try {
+      final results = await db.getAll(
+        '''
+        SELECT s.*
+        FROM screens s
+        LEFT JOIN screen_elements se ON se.screen_id = s.id
+        WHERE se.element_id = ?
+        ''',
+        [elementId],
       );
 
       final list = results
