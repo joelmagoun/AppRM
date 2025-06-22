@@ -231,6 +231,7 @@ Schema schema = Schema(
         Column.text('description'),
         Column.text('path'),
         Column.text('photo_id'),
+        Column.text('category'),
       ],
       indexes: [
         Index('screen_photos_list', [IndexedColumn('id')])

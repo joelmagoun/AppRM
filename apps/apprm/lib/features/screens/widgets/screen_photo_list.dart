@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:convert';
 
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,8 @@ class ScreenPhotoList extends ConsumerStatefulWidget {
 class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
   final ImagePicker _picker = ImagePicker();
   String? _secret;
+  String _category = 'current';
+  final _categories = ['current', 'prototype', 'archive'];
 
   @override
   void initState() {
@@ -60,9 +63,14 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
   );
 
   void _refresh() {
-    CachedQuery.instance.refetchQueries(keys: [
-      ['screen_photos', 'list', widget.screenId]
-    ]);
+    CachedQuery.instance.refetchQueries(
+      filterFn: (keys, _) {
+        return (keys as List)
+            .where((e) => jsonEncode(e).startsWith(
+                jsonEncode(['screen_photos', 'list', widget.screenId])))
+            .isNotEmpty;
+      },
+    );
   }
 
   Future<void> _addPhoto() async {
@@ -98,6 +106,7 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
           'screen_id': widget.screenId,
           'name': file.name,
           'photo_id': photoId,
+          'category': 'current',
         },
       ),
     );
@@ -217,12 +226,30 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
               color: Colors.black54,
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: DropdownButton<String>(
+              isExpanded: true,
+              value: _category,
+              items: _categories
+                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                  .toList(),
+              onChanged: (val) {
+                if (val != null) {
+                  setState(() {
+                    _category = val;
+                  });
+                }
+              },
+            ),
+          ),
           QueryBuilder<List<Map<String, dynamic>>>(
             query: Query(
                 key: [
                   'screen_photos',
                   'list',
                   widget.screenId,
+                  _category,
                 ],
                 queryFn: () async {
                   return await GetObjectListUseCase(
@@ -231,7 +258,10 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
                     GetObjectListUseCaseParams(
                       objectType: 'screen_photos',
                       sortValues: const {},
-                      filterValues: {'screen_id': widget.screenId},
+                      filterValues: {
+                        'screen_id': widget.screenId,
+                        'category': _category
+                      },
                       searchFields: const ['name'],
                     ),
                   );
