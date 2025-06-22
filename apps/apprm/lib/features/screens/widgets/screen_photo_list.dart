@@ -33,6 +33,7 @@ class ScreenPhotoList extends ConsumerStatefulWidget {
 class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
   final ImagePicker _picker = ImagePicker();
   String? _secret;
+  String _category = 'current';
 
   @override
   void initState() {
@@ -61,7 +62,7 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
 
   void _refresh() {
     CachedQuery.instance.refetchQueries(keys: [
-      ['screen_photos', 'list', widget.screenId]
+      ['screen_photos', 'list', widget.screenId, _category]
     ]);
   }
 
@@ -98,6 +99,7 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
           'screen_id': widget.screenId,
           'name': file.name,
           'photo_id': photoId,
+          'category': 'current',
         },
       ),
     );
@@ -217,12 +219,32 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
               color: Colors.black54,
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: DropdownButton<String>(
+              value: _category,
+              onChanged: (value) {
+                if (value != null) {
+                  setState(() {
+                    _category = value;
+                  });
+                  _refresh();
+                }
+              },
+              items: const [
+                DropdownMenuItem(value: 'current', child: Text('Current')),
+                DropdownMenuItem(value: 'prototype', child: Text('Prototype')),
+                DropdownMenuItem(value: 'archive', child: Text('Archive')),
+              ],
+            ),
+          ),
           QueryBuilder<List<Map<String, dynamic>>>(
             query: Query(
                 key: [
                   'screen_photos',
                   'list',
                   widget.screenId,
+                  _category,
                 ],
                 queryFn: () async {
                   return await GetObjectListUseCase(
@@ -231,7 +253,10 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
                     GetObjectListUseCaseParams(
                       objectType: 'screen_photos',
                       sortValues: const {},
-                      filterValues: {'screen_id': widget.screenId},
+                      filterValues: {
+                        'screen_id': widget.screenId,
+                        'category': _category
+                      },
                       searchFields: const ['name'],
                     ),
                   );
