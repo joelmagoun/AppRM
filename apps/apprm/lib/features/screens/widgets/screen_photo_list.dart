@@ -33,6 +33,8 @@ class ScreenPhotoList extends ConsumerStatefulWidget {
 class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
   final ImagePicker _picker = ImagePicker();
   String? _secret;
+  static const _categories = ['current', 'prototype', 'archive'];
+  String _selectedCategory = 'current';
 
   @override
   void initState() {
@@ -61,7 +63,7 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
 
   void _refresh() {
     CachedQuery.instance.refetchQueries(keys: [
-      ['screen_photos', 'list', widget.screenId]
+      ['screen_photos', 'list', widget.screenId, _selectedCategory]
     ]);
   }
 
@@ -97,6 +99,7 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
           'app_id': widget.appId,
           'screen_id': widget.screenId,
           'name': file.name,
+          'category': 'current',
           'photo_id': photoId,
         },
       ),
@@ -217,12 +220,27 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
               color: Colors.black54,
             ),
           ),
+          DropdownButton<String>(
+            value: _selectedCategory,
+            onChanged: (v) {
+              if (v != null) {
+                setState(() {
+                  _selectedCategory = v;
+                });
+                _refresh();
+              }
+            },
+            items: _categories
+                .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                .toList(),
+          ),
           QueryBuilder<List<Map<String, dynamic>>>(
             query: Query(
                 key: [
                   'screen_photos',
                   'list',
                   widget.screenId,
+                  _selectedCategory,
                 ],
                 queryFn: () async {
                   return await GetObjectListUseCase(
@@ -231,7 +249,10 @@ class _ScreenPhotoListState extends ConsumerState<ScreenPhotoList> {
                     GetObjectListUseCaseParams(
                       objectType: 'screen_photos',
                       sortValues: const {},
-                      filterValues: {'screen_id': widget.screenId},
+                      filterValues: {
+                        'screen_id': widget.screenId,
+                        'category': _selectedCategory
+                      },
                       searchFields: const ['name'],
                     ),
                   );

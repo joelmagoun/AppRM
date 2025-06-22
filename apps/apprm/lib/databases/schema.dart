@@ -229,6 +229,7 @@ Schema schema = Schema(
         Column.text('screen_id'),
         Column.text('name'),
         Column.text('description'),
+        Column.text('category'),
         Column.text('path'),
         Column.text('photo_id'),
       ],
