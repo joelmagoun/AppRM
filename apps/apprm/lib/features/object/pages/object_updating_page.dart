@@ -181,6 +181,14 @@ class _ObjectUpdatingPageState extends State<ObjectUpdatingPage> {
           options: null,
           asyncOptions: null,
         ),
+        (
+          key: 'category',
+          label: 'Category',
+          placeholder: null,
+          displayMode: 'SINGLE_SELECT',
+          options: ['current', 'prototype', 'archive'],
+          asyncOptions: null,
+        ),
       ],
     ),
     'elements': (
