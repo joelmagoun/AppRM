@@ -122,14 +122,6 @@ class _ObjectAddingPageState extends State<ObjectAddingPage> {
           options: null,
           asyncOptions: null,
         ),
-        (
-          key: 'prompt',
-          label: 'Prompt',
-          placeholder: null,
-          displayMode: 'TEXT',
-          options: null,
-          asyncOptions: null,
-        ),
       ],
     ),
     'screens': (
@@ -251,6 +243,14 @@ class _ObjectAddingPageState extends State<ObjectAddingPage> {
         (
           key: 'description',
           label: 'Description',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'prompt',
+          label: 'Prompt',
           placeholder: null,
           displayMode: 'TEXT',
           options: null,

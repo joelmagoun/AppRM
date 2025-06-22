@@ -160,14 +160,6 @@ class _ObjectUpdatingPageState extends State<ObjectUpdatingPage> {
           options: null,
           asyncOptions: null,
         ),
-        (
-          key: 'prompt',
-          label: 'Prompt',
-          placeholder: null,
-          displayMode: 'TEXT',
-          options: null,
-          asyncOptions: null,
-        ),
       ],
     ),
     'screens': (
@@ -352,6 +344,14 @@ class _ObjectUpdatingPageState extends State<ObjectUpdatingPage> {
         (
           key: 'description',
           label: 'Description',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'prompt',
+          label: 'Prompt',
           placeholder: null,
           displayMode: 'TEXT',
           options: null,

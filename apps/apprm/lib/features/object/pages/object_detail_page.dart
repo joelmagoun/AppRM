@@ -59,7 +59,6 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
       displayFields: [
         (key: 'name', label: 'Name'),
         (key: 'description', label: 'Description'),
-        (key: 'prompt', label: 'Prompt'),
       ],
     ),
     'screens': (
