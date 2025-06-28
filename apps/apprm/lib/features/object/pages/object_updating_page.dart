@@ -367,6 +367,35 @@ class _ObjectUpdatingPageState extends State<ObjectUpdatingPage> {
         ),
       ],
     ),
+    'prompts': (
+      label: 'prompt',
+      inputFields: [
+        (
+          key: 'purpose',
+          label: 'Purpose',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'prompt',
+          label: 'Prompt',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+        (
+          key: 'notes',
+          label: 'Notes',
+          placeholder: null,
+          displayMode: 'TEXT',
+          options: null,
+          asyncOptions: null,
+        ),
+      ],
+    ),
     'data_objects': (
       label: 'data_object',
       inputFields: [

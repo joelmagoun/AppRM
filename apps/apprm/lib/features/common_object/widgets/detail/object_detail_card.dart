@@ -23,6 +23,7 @@ class ObjectDetailCard extends ConsumerWidget {
     this.screenId,
     required this.displayFields,
     this.objectItem,
+    this.onExecuted,
   });
 
   final String objectType;
@@ -31,6 +32,7 @@ class ObjectDetailCard extends ConsumerWidget {
   final String? screenId;
   final List<DisplayField> displayFields;
   final Map<String, dynamic>? objectItem;
+  final VoidCallback? onExecuted;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -136,6 +138,14 @@ class ObjectDetailCard extends ConsumerWidget {
               StepActionList(
                 appId: appId,
                 stepId: objectId,
+              ),
+            if (objectType == 'prompts' && objectItem?['executed_at'] == null)
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: onExecuted,
+                  child: const Text('Executed'),
+                ),
               ),
           ],
         ),

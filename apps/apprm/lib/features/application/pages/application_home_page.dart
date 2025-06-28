@@ -138,6 +138,11 @@ class _ApplicationHomePageState extends State<ApplicationHomePage> {
         route: '/app/${widget.appId}/internal/work_logs'
       ),
       (
+        icon: PhosphorIconsFill.pencil,
+        title: 'Prompts',
+        route: '/app/${widget.appId}/internal/prompts'
+      ),
+      (
         icon: PhosphorIconsFill.lightbulb,
         title: 'Ideas',
         route: '/app/${widget.appId}/internal/ideas'

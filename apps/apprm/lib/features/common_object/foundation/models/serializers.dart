@@ -20,6 +20,7 @@ import 'user_story.dart';
 import 'user_story_step.dart';
 import 'user_story_step_action.dart';
 import 'idea.dart';
+import 'prompt.dart';
 import 'serialize_plugins/custom_8601_date_time_plugin.dart';
 import 'requirement.dart';
 
@@ -44,6 +45,7 @@ const List<Type> _registeredTypes = [
   UserStoryStep,
   UserStoryStepAction,
   Idea,
+  Prompt,
 ];
 
 /// Addition builder factories, if needed.
