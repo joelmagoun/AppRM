@@ -16,6 +16,7 @@ const _encryptedNameDescriptionTables = {
   'user_story_steps',
   'user_story_step_actions',
   'ideas',
+  'prompts',
 };
 
 final objectRepositoryProvider = Provider<ObjectRepository>(
@@ -657,6 +658,12 @@ class ObjectRepository {
     if (newData['prompt'] != null) {
       newData['prompt'] = executeEncrypt(newData['prompt'].toString(), secret);
     }
+    if (newData['purpose'] != null) {
+      newData['purpose'] = executeEncrypt(newData['purpose'].toString(), secret);
+    }
+    if (newData['notes'] != null) {
+      newData['notes'] = executeEncrypt(newData['notes'].toString(), secret);
+    }
     return newData;
   }
 
@@ -723,6 +730,14 @@ class ObjectRepository {
     if (newData['prompt'] != null) {
       newData['prompt'] =
           executeDecrypt(newData['prompt'].toString(), secret);
+    }
+    if (newData['purpose'] != null) {
+      newData['purpose'] =
+          executeDecrypt(newData['purpose'].toString(), secret);
+    }
+    if (newData['notes'] != null) {
+      newData['notes'] =
+          executeDecrypt(newData['notes'].toString(), secret);
     }
     if (newData['type'] != null) {
       newData['type'] = executeDecrypt(newData['type'].toString(), secret);

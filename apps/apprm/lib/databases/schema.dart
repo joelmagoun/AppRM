@@ -175,6 +175,22 @@ Schema schema = Schema(
       ],
     ),
     const Table(
+      'prompts',
+      [
+        Column.text('id'),
+        Column.text('created_at'),
+        Column.text('updated_at'),
+        Column.text('app_id'),
+        Column.text('purpose'),
+        Column.text('prompt'),
+        Column.text('executed_at'),
+        Column.text('notes'),
+      ],
+      indexes: [
+        Index('prompts_list', [IndexedColumn('id')])
+      ],
+    ),
+    const Table(
       'data_objects',
       [
         Column.text('id'),

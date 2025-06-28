@@ -16,6 +16,7 @@ import '../../common_object/mappers/data_object_mapper.dart';
 import '../../common_object/mappers/requirement_mapper.dart';
 import '../../common_object/mappers/work_log_mapper.dart';
 import '../../common_object/mappers/idea_mapper.dart';
+import '../../common_object/mappers/prompt_mapper.dart';
 import '../../common_object/widgets/listing/object_list_wrapper.dart';
 import '../widgets/generic_item_card.dart';
 import '../widgets/generic_list_empty.dart';
@@ -130,6 +131,17 @@ class _ObjectListingPageState extends State<ObjectListingPage> {
         (key: 'name', label: 'Name'),
       ],
       searchField: ['name']
+    ),
+    'prompts': (
+      title: 'Prompts',
+      objectItemCard: (item) => GenericItemCard(item: item),
+      objectEmptyWidget: () => const GenericListEmpty(),
+      dataMapperFn: PromptToObjectItemMapper.fromJson,
+      sortFields: [
+        (key: 'purpose', label: 'Purpose'),
+      ],
+      filterFields: [],
+      searchField: ['purpose', 'prompt', 'notes']
     ),
     'stories': (
       title: 'Stories',

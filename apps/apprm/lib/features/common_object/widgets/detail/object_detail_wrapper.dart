@@ -15,6 +15,7 @@ import '../../entities/object_item.dart';
 import '../../foundation/object_repository.dart';
 import '../../foundation/use_cases/delete_object_item_usecase.dart';
 import '../../foundation/use_cases/get_object_item_usecase.dart';
+import '../../foundation/use_cases/update_object_item_usecase.dart';
 import 'object_detail_card.dart';
 
 class ObjectDetailWrapper extends ConsumerStatefulWidget {
@@ -46,6 +47,13 @@ class _ObjectDetailWrapperState extends ConsumerState<ObjectDetailWrapper> {
   final deleteObjectItemMutation =
       Mutation<void, DeleteObjectItemUseCaseParams>(
     queryFn: (params) => DeleteObjectItemUseCase(
+      objectRepository: ObjectRepository(),
+    ).execute(params),
+  );
+
+  final updateObjectItemMutation =
+      Mutation<void, UpdateObjectItemUseCaseParams>(
+    queryFn: (params) => UpdateObjectItemUseCase(
       objectRepository: ObjectRepository(),
     ).execute(params),
   );
@@ -198,6 +206,30 @@ class _ObjectDetailWrapperState extends ConsumerState<ObjectDetailWrapper> {
                 screenId: widget.screenId,
                 displayFields: widget.displayFields,
                 objectItem: state.data,
+                onExecuted: widget.objectType == 'prompts'
+                    ? () async {
+                        await updateObjectItemMutation.mutate(
+                          UpdateObjectItemUseCaseParams(
+                            objectType: widget.objectType,
+                            objectId: widget.objectId,
+                            data: {
+                              'executed_at': DateTime.now().toIso8601String(),
+                              'updated_at': DateTime.now().toIso8601String(),
+                            },
+                          ),
+                        );
+                        CachedQuery.instance.refetchQueries(
+                          keys: [
+                            widget.objectType,
+                            'item',
+                            widget.objectId,
+                          ],
+                        );
+                        CachedQuery.instance.refetchQueries(
+                          keys: [widget.objectType, 'list'],
+                        );
+                      }
+                    : null,
               ),
             ),
           );

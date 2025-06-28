@@ -17,6 +17,7 @@ import '../../common_object/mappers/ui_element_mapper.dart';
 import '../../common_object/mappers/work_log_mapper.dart';
 import '../../common_object/mappers/user_story_step_mapper.dart';
 import '../../common_object/mappers/idea_mapper.dart';
+import '../../common_object/mappers/prompt_mapper.dart';
 import '../../common_object/widgets/detail/object_detail_wrapper.dart';
 
 class ObjectDetailPage extends StatefulWidget {
@@ -109,6 +110,15 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
         (key: 'name', label: 'Name'),
         (key: 'description', label: 'Description'),
         (key: 'prompt', label: 'Prompt'),
+      ],
+    ),
+    'prompts': (
+      dataMapperFn: PromptToObjectItemMapper.fromJson,
+      displayFields: [
+        (key: 'purpose', label: 'Purpose'),
+        (key: 'prompt', label: 'Prompt'),
+        (key: 'notes', label: 'Notes'),
+        (key: 'executed_at', label: 'Executed At'),
       ],
     ),
     'data_objects': (
